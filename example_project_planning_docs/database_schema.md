@@ -6,6 +6,8 @@
 |-------------|-----------|---------------------------|
 | id          | integer   | not null, primary key     |
 | username    | string    | not null,                 |
+| firstName    | string    | not null,                 |
+| lastName    | string    | not null,                 |
 | email       | string    | not null, indexed, unique |
 | created_at  | datetime  | not null                  |
 | updated-at  | datetime  | not null                  |
@@ -27,11 +29,25 @@
 |-------------|-----------|-----------------------|
 | id          | integer   | not null, primary key |
 | name        |  string   | not null              |
-| userId      | integer   | not null, foreign key |
+| organizerId      | integer   | not null, foreign key |
 | created_at  | datetime  | not null              |
 | updated-at  | datetime  | not null              |
 
+* `organizerId` references `users` table
+
+## `memberss`
+
+| column name | data type | details                   |
+|-------------|-----------|---------------------------|
+| id          | integer   | not null, primary key     |
+| groupId    | integer    | not null, foreign key     |
+| userId    | integer    | not null, foreign key     |
+| status    | string    | not null    |
+| created_at  | datetime  | not null                  |
+| updated-at  | datetime  | not null                  |
+
 * `userId` references `users` table
+* `groupId` references `groupss` table
 
 ## `comments`
 
@@ -57,7 +73,7 @@
 | payerId        | integer   | not null, indexed, foreign key |
 | payeeId        | integer   | not null, indexed, foreign key |
 | status        | varchar   | not null                       |
-| type          | varchar, splitting ration (equally or in some ratio)   | not null                       |
+| amount        | integer   | not null                       |
 | commentId     | integer   | indexed, foreign key           |
 | created_at    | datetime  | not null              |
 | updated-at    | datetime  | not null              |

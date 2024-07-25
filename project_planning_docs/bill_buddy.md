@@ -1,5 +1,7 @@
 # **Database Schema**
 
+![alt text](dbDiagram.png)
+
 ## `users`
 
 | column name | data type | details                   |

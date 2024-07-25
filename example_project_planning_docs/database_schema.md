@@ -35,7 +35,7 @@
 
 * `organizerId` references `users` table
 
-## `memberss`
+## `members`
 
 | column name | data type | details                   |
 |-------------|-----------|---------------------------|

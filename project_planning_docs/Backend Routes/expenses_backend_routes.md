@@ -32,7 +32,7 @@ Successful Response when the user is loggen in.
 }
 ```
 
-### Creates new expense for the user and splits with selected friends
+### Creates new expense for the user and splits with selected users
 
 * Require Authentication: true
 * Request
@@ -42,7 +42,7 @@ Successful Response when the user is loggen in.
 ```json
 {
     "description": "Went to applebees for bachelor party",
-    "payerId": 1,
+    "ownerId": 1,
     "groupId": 1,
     "amount": 100,
     "split": [
@@ -66,7 +66,7 @@ Successful Response when the user is loggen in.
         "description": "Went to applebees for bachelor party",
         "amount": 100.00,
         "groupId": 1,
-        "payerId": 1
+        "ownerId": 1
     },
     "Expense Shares": [
         {
@@ -119,7 +119,7 @@ Successful response when user is logged in.
             "description": "updated the description",
             "amount": 200.00,
             "groupId": 1,
-            "payerId": 1
+            "ownerId": 1
         },
         "Expense Shares": [
             {

@@ -10,6 +10,11 @@ Returns all of the pending and settled expenses that belong to the user.
   * Body: none
 
 Successful Response when the user is loggen in.
+
+* Status Code: 200
+* Headers:
+   * Content-Type: application/json
+* Body:
 ```json
 {
     "Expenses": [
@@ -51,7 +56,7 @@ Successful Response when the user is loggen in.
 
 * Status Code: 200
 * Headers:
-    Content-Type: application/json
+   * Content-Type: application/json
 * Body:
 
 ```json
@@ -102,6 +107,11 @@ Successful Response when the user is loggen in.
     }
 
 Successful response when user is logged in.
+
+* Status Code: 200
+* Headers:
+   * Content-Type: application/json
+* Body:
 ```json
     {
         "Expense": {
@@ -138,7 +148,12 @@ Successful response when user is logged in.
   * URL: /api/expenses/:expenseId
   * Body: none
 
-  Successful response when user is logged in.
+Successful response when user is logged in.
+
+* Status Code: 200
+* Headers:
+   * Content-Type: application/json
+* Body:
   ```json
   {
     "message": "Successfully deleted"

@@ -44,7 +44,7 @@ Returns the frienss of of the logged in user
 
 ### Request a friend connection with another user
 
-Request a new membership
+Request a new friendship
 
 * Require Authentication: false
 * Request

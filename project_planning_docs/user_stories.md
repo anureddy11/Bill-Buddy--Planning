@@ -38,37 +38,55 @@
     * I can log out of my account and be redirected to a page displaying recent FauxTweets.
       * So that I can easily log out to keep my information secure.
 
-## FauxTweets
+Feature List / User Story
+User story template: As a [type of user], I want [an action] so that [a benefit or value].
+As a < WHO >, I want < WHAT > so that < WHY >.	
 
-### Create FauxTweets
+Expenses - Alex
 
-* As a logged in user, I want to be able to post new FauxTweets.
-  * When I'm on the `/new-fauxtweet` page:
-    * I can write and submit a new FauxTweet.
-      * So that I can share my thoughts and memes with my friends.
+Users should be able to view all of their pending and settled expenses.
+As a user, I want to be able to view all my payments, pending and settled, so that I can stay on top of my bills and expenses.
+Users should be able to create a new expense and split it with other users.
+As a user, I would like an easy and trackable way to split bills with friends and colleagues so that we can all be on the same page after a night out.
+Users should be able to update expenses they created.
+As a user, I should be able to update what my expenses are inline with my goal of staying on top of my bills.
+Users should be able to delete expenses if they have not been settled.
+As a user, I should be able to delete expenses that I create in the event that a mistake was made when creating the expense. 
 
-### Viewing FauxTweets
+Comments - Derek
 
-* As a logged in _or_ logged out user, I want to be able to view a selection of the most recent FauxTweets.
-  * When I'm on the `/fauxtweets` page:
-    * I can view the ten most recently posted FauxTweets.
-      * So that I can read and interact with the thoughts and memes of my friends.
+Users should be able to view all comments on expenses they are a part of.
+As a user, I want to be able to view all comments on expenses I’m a part of so I can see the context related to the expense
+Users should be able to create new comments on expenses they are a part of.
+As a user, I want to be able to create new comments on expenses I’m a part of so I can create context about the expense and communicate with others.
+Users should be able to update their comments on an expense.
+As a user, I want to be able to update my comments on an expense so I can change/clarify messages.
+Users should be able to delete their comments from an expense.
+As a user, I want to be able to delete my own comments from an expense so I can remove incorrect/unnecessary information.
+Payments– Anurag 
+Users should be able to view all prior and pending payments.
+As Logged in User I should be able to view all my prior payments so you can keep track/log your previous payment history
+As Logged in User I should be able to view all my pending payments so that I can settle up
+Users should be able to settle their pending expenses.
+As Logged in User I should be able to settle up all my pending payments to pay what I owe 
+As Logged in User I should be able to view all the options to settle up to select the most suitable transaction mode
 
-* As a logged in _or_ logged out user, I want to be able to view a specific FauxTweet and its associated FauxComments and FauxLikes.
-  * When I'm on the `/fauxtweets/:id` page:
-    * I can view the content of the FauxTweet, as well as the associated FauxComments and FauxLikes.
-      * So that I can read and interact with the thoughts and memes of my friends, and add my own thoughts and memes in the FauxComments.
+Friends– Kem 
 
-### Updating FauxTweets
-
-* As a logged in user, I want to be able to edit my FauxTweets by clicking an Edit button associated with the FauxTweet anywhere that FauxTweet appears.
-  * When I'm on the `/fauxtweets`, `/fauxtweets/:id`, or `/users/:id/fauxtweets` pages:
-    * I can click "Edit" to make permanent changes to FauxTweets I have posted.
-      * So that I can fix any errors I make in my FauxTweets.
-
-### Deleting FauxTweets
-
-* As a logged in user, I want to be able to delete my FauxTweets by clicking a Delete button associated with the FauxTweet anywhere that FauxTweet appears.
-  * When I'm on the `/fauxtweets`, `/fauxtweets/:id`, or `/users/:id/fauxtweets` pages:
-    * I can click "Delete" to permanently delete a FauxTweet I have posted.
-      * So that when I realize I shouldn't have publicly said something, I can easily remove it.
+Users should be able to view all of their friends.
+As a logged in user I should be to able to view all my friends in a list
+Users should be able to add new friends.
+As a user, I should be able to add new friends so that I can connect with others and more easily split expenses with them
+Users should be able to remove friends.
+As a user, I want to be able to remove other users from my friends list to maintain autonomy over who is in my network.
+Bonus: Groups
+Users should be able to view all groups they are a part of.
+As a logged in user I should be able to view all the groups I am part to 
+Users should be able to create recurring expenses for groups.
+As a logged in user I should be able to create recurring expenses 
+Users should be able to update recurring expenses for groups.
+	As a user, I should be able to update recurring expenses for a group in the event we all share a monthly payment like utilities or netflix.
+Users should be able to delete recurring expenses for groups.
+As a user, I should be able to delete group expenses in the event that the group is no longer active for its intended purpose.
+Users should be able to add and remove friends from groups.
+As a user, I want to be able to control who is and is not on my friends list to maintain autonomy over who is in my network, and to organize who is and is not apart of the group. 

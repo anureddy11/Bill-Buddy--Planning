@@ -2,9 +2,9 @@
 
 ### Get all Friends of the logged in user
 
-Returns the frienss of of the logged in user
+Returns the friends of the logged in user
 
-* Require Authentication: false
+* Require Authentication: True [changed from false to True]
 * Request
   * Method: GET
   * URL: /api/friends
@@ -40,16 +40,17 @@ Returns the frienss of of the logged in user
         },
       ]
     }
+  ```
 
 
 ### Request a friend connection with another user
 
-Request a new friendship
+Request a new friendship via friendId
 
-* Require Authentication: false
+* Require Authentication: True [changed from False to True]
 * Request
   * Method: POST
-  * URL: /api/userId/:friendId/friendship
+  * URL: /api/friends/:friendId/request
   * Headers:
     * Content-Type: application/json
   * Body: none
@@ -74,11 +75,10 @@ Request a new friendship
 
     ```json
     {
-      "message": "user with id couldn't be found"
+      "message": "User with the specified id couldn't be found"
     }
     ```
-* Error response: Current User already has a pending membership
-  for the group
+* Error response: Current User already has a pending friend request
   * Status Code: 400
   * Headers:
     * Content-Type: application/json
@@ -86,10 +86,10 @@ Request a new friendship
 
     ```json
     {
-      "message": "Friend request all ready requested"
+      "message": "Friend request already requested"
     }
     ```
-* Error response: Current User is already an accepted member of the group
+* Error response: Current User is already friends with the user
   * Status Code: 400
   * Headers:
     * Content-Type: application/json
@@ -100,3 +100,72 @@ Request a new friendship
       "message": "User is already a friend"
     }
     ```
+
+### Accept a friend request
+
+Accepting a friend request.
+
+* Require Authentication: True 
+* Request
+  * Method: POST
+  * URL: /api/friends/:friendId/accept
+  * Body: none
+
+* Successful Response:
+  * Status Code: 200
+  * Headers:
+    * Content-Type: application/json
+  * Body: 
+  
+  ```json
+  {
+    "friendId": 2,
+    "status": "accepted"
+  }
+  ```
+* Error response: Couldn't find a friend request with the specified id
+  * Status Code: 404
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+      "message": "Friend request with the specified id couldn't be found"
+    }
+    ```
+
+### Remove a friend
+
+Remove an existing friend.
+
+* Request
+  * Method: DELETE
+  * URL: /api/friends/:friendId
+  * Headers:
+    * Content-Type: application/json
+  * Body: none
+  
+* Successful Response:
+  * Status Code: 200
+  * Headers:
+    * Content-Type: application/json
+  * Body: 
+  
+    ```json
+    {
+      "message": "Successfully removed friend. Goodbye :) "
+    }
+    ```
+
+* Error response: Couldn't find a Friend with the specified id
+  * Status Code: 404
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+  
+  ```json
+    {
+      "message": "Friend with the specified id couldn't be found"
+    }
+  ```

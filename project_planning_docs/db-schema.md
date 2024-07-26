@@ -74,7 +74,7 @@
 |-------------|-----------|--------------------------------|
 | id          | integer   | primary key                    |
 | description | varchar   |                                |
-| payerId     | integer   | ref: > users.id, not null      |
+| ownerId     | integer   | ref: > users.id, not null      |
 | groupId     | integer   | ref: > groups.id               |
 | amount      | integer   | not null                       |
 | created_at  | datetime  |                                |

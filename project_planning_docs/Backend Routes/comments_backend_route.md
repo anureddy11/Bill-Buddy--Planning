@@ -110,7 +110,7 @@ Updates and returns an existing comment.
 
 * **Request**
   * **Method**: PUT
-  * **URL**: `/api/comments/:id`
+  * **URL**: `/api/comments/:commentId`
   * **Headers**:
     * `Content-Type: application/json`
   * **Body**:
@@ -186,7 +186,7 @@ Deletes an existing comment.
 
 * **Request**
   * **Method**: DELETE
-  * **URL**: `/api/comments/:id`
+  * **URL**: `/api/comments/:commentId`
   * **Body**: None
 
 * **Successful Response**

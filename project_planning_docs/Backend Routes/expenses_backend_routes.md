@@ -19,14 +19,46 @@ Successful Response when the user is loggen in.
 {
     "Expenses": [
         {
+            "id": 1,
             "description": "This is the description of expense one.",
             "amount": 100.00,
-            "groupId": 3
+            "expenseShares": [
+            {
+                "userId": 1,
+                "amount": 33.33,
+                "settled": true,
+            },
+            {
+                "userId": 2,
+                "amount": 33.33,
+                "settled": false,
+            },
+            {
+                "userId": 2,
+                "amount": 33.34,
+                "settled": false,
+            }]
         },
         {
+            "id":2,
             "description": "This is the description of the expense two.",
             "amount": 100.00,
-            "groupId": null
+            "expenseShares": [
+            {
+                "userId": 1,
+                "amount": 33.33,
+                "settled": true,
+            },
+            {
+                "userId": 2,
+                "amount": 33.33,
+                "settled": false,
+            },
+            {
+                "userId": 2,
+                "amount": 33.34,
+                "settled": false,
+            }]
         }
     ]
 }
@@ -65,7 +97,6 @@ Successful Response when the user is loggen in.
         "id": 1,
         "description": "Went to applebees for bachelor party",
         "amount": 100.00,
-        "groupId": 1,
         "ownerId": 1
     },
     "Expense Shares": [

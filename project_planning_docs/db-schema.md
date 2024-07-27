@@ -13,8 +13,8 @@ This document provides the schema for the `users`, `friends`, `comments`, `payme
 | firstName   | string    | not null                    |
 | lastName    | string    | not null                    |
 | email       | string    | not null, unique            |
-| created_at  | datetime  |                             |
-| updated_at  | datetime  |                             |
+| createdAt  | datetime  |                             |
+| updatedAt  | datetime  |                             |
 
 ### friends
 
@@ -24,8 +24,8 @@ This document provides the schema for the `users`, `friends`, `comments`, `payme
 | sender      | integer   | ref: users.id, not null     |
 | receiver    | integer   | ref: users.id, not null     |
 | status      | string    |                             |
-| created_at  | datetime  |                             |
-| updated_at  | datetime  |                             |
+| createdAt  | datetime  |                             |
+| updatedAt  | datetime  |                             |
 
 ### comments
 
@@ -35,8 +35,8 @@ This document provides the schema for the `users`, `friends`, `comments`, `payme
 | content     | string    | not null                    |
 | userId      | integer   | ref: users.id, not null     |
 | expenseId   | integer   | ref: expenses.id, not null  |
-| created_at  | datetime  | not null                    |
-| updated_at  | datetime  | not null                    |
+| createdAt  | datetime  | not null                    |
+| updatedAt  | datetime  | not null                    |
 
 ### payments
 
@@ -48,8 +48,8 @@ This document provides the schema for the `users`, `friends`, `comments`, `payme
 | status      | varchar   | not null                    |
 | amount      | integer   | not null                    |
 | commentId   | integer   | ref: comments.id            |
-| created_at  | datetime  |                             |
-| updated_at  | datetime  |                             |
+| createdAt  | datetime  |                             |
+| updatedAt  | datetime  |                             |
 
 ### expenses
 
@@ -60,8 +60,8 @@ This document provides the schema for the `users`, `friends`, `comments`, `payme
 | ownerId     | integer   | ref: users.id, not null     |
 | amount      | integer   | not null                    |
 | settled     | boolean   |                             |
-| created_at  | datetime  |                             |
-| updated_at  | datetime  |                             |
+| createdAt  | datetime  |                             |
+| updatedAt  | datetime  |                             |
 
 ### expense_shares
 
@@ -72,3 +72,5 @@ This document provides the schema for the `users`, `friends`, `comments`, `payme
 | amount      | integer   |                             |
 | settled     | boolean   |                             |
 | userId      | integer   | ref: users.id, not null     |
+| createdAt  | datetime  |                             |
+| updatedAt  | datetime  |                             |

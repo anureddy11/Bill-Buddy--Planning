@@ -6,19 +6,19 @@ const state = {
                 firstName: "Clark",
                 lastName: "Adams",
                 username: "clark11",
-                email: "clark@gmal.com"
+                email: "clark@gmail.com"
             },
             3: {
                 id: 3,
                 firstName: "John",
                 lastName: "Smith",
-                email: "jsmith@gmal.com"
+                email: "jsmith@gmail.com"
             },
             4: {
                 id: 4,
                 firstName: "Jane",
                 lastName: "Doe",
-                email: "janeDoe@gmal.com"
+                email: "janeDoe@gmail.com"
             }
         },
         allIds: [2, 3, 4]

@@ -9,7 +9,7 @@ Returns all of the pending and settled expenses that belong to the user.
   * URL: /api/expenses
   * Body: none
 
-Successful Response when the user is loggen in.
+Successful Response when the user is logged in.
 
 * Status Code: 200
 * Headers:
@@ -84,7 +84,7 @@ Successful Response when the user is loggen in.
     ]
 }
 ```
-Successful Response when the user is loggen in.
+Successful Response when the user is logged in.
 
 * Status Code: 200
 * Headers:

@@ -31,7 +31,7 @@ Returns all the payments for the logged in user.
   * Component/Pages :Payments
 
 
-### Create a Payement
+### Create a Payement 11111
 
 * Require Authentication: true
 * Request

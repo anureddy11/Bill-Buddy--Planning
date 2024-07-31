@@ -10,22 +10,23 @@ This document provides the schema for the `users`, `friends`, `comments`, `payme
 |-------------|-----------|-----------------------------|
 | id          | integer   | primary key                 |
 | username    | string    | not null                    |
-| firstName   | string    | not null                    |
-| lastName    | string    | not null                    |
+| first_name  | string    | not null                    |
+| last_name   | string    | not null                    |
 | email       | string    | not null, unique            |
-| createdAt  | datetime  |                             |
-| updatedAt  | datetime  |                             |
+| hashed_password| string | not null                    |
+| created_at  | datetime  |                             |
+| updated_at  | datetime  |                             |
 
 ### friends
 
 | Column      | Type      | Details                     |
 |-------------|-----------|-----------------------------|
 | id          | integer   | primary key                 |
-| sender      | integer   | ref: users.id, not null     |
-| receiver    | integer   | ref: users.id, not null     |
-| status      | string    |                             |
-| createdAt  | datetime  |                             |
-| updatedAt  | datetime  |                             |
+| user1_id    | integer   | ref: users.id, not null     |
+| user2_id    | integer   | ref: users.id, not null     |
+| requester   | integer   | not null                    |
+| created_at  | datetime  |                             |
+| updated_at  | datetime  |                             |
 
 ### comments
 
@@ -33,23 +34,23 @@ This document provides the schema for the `users`, `friends`, `comments`, `payme
 |-------------|-----------|-----------------------------|
 | id          | integer   | primary key                 |
 | content     | string    | not null                    |
-| userId      | integer   | ref: users.id, not null     |
-| expenseId   | integer   | ref: expenses.id, not null  |
-| createdAt  | datetime  | not null                    |
-| updatedAt  | datetime  | not null                    |
+| user_id     | integer   | ref: users.id, not null     |
+| expense_id  | integer   | ref: expenses.id, not null  |
+| created_at  | datetime  | not null                    |
+| updated_at  | datetime  | not null                    |
 
 ### payments
 
 | Column      | Type      | Details                     |
 |-------------|-----------|-----------------------------|
 | id          | integer   | primary key                 |
-| payerId     | integer   | ref: users.id, not null     |
-| payeeId     | integer   | ref: users.id, not null     |
+| payer_id    | integer   | ref: users.id, not null     |
+| payee_id    | integer   | ref: users.id, not null     |
 | status      | varchar   | not null                    |
 | amount      | integer   | not null                    |
-| commentId   | integer   | ref: comments.id            |
-| createdAt  | datetime  |                             |
-| updatedAt  | datetime  |                             |
+| comment_id  | integer   | ref: comments.id            |
+| created_at  | datetime  |                             |
+| updated_at  | datetime  |                             |
 
 ### expenses
 
@@ -57,20 +58,20 @@ This document provides the schema for the `users`, `friends`, `comments`, `payme
 |-------------|-----------|-----------------------------|
 | id          | integer   | primary key                 |
 | description | varchar   |                             |
-| ownerId     | integer   | ref: users.id, not null     |
+| owner_id    | integer   | ref: users.id, not null     |
 | amount      | integer   | not null                    |
 | settled     | boolean   |                             |
-| createdAt  | datetime  |                             |
-| updatedAt  | datetime  |                             |
+| created_at  | datetime  |                             |
+| updated_at  | datetime  |                             |
 
 ### expense_shares
 
 | Column      | Type      | Details                     |
 |-------------|-----------|-----------------------------|
 | id          | integer   | primary key                 |
-| expenseId   | integer   | ref: expenses.id, not null  |
+| expense_id  | integer   | ref: expenses.id, not null  |
 | amount      | integer   |                             |
 | settled     | boolean   |                             |
-| userId      | integer   | ref: users.id, not null     |
-| createdAt  | datetime  |                             |
-| updatedAt  | datetime  |                             |
+| user_id     | integer   | ref: users.id, not null     |
+| created_at  | datetime  |                             |
+| updated_at  | datetime  |                             |

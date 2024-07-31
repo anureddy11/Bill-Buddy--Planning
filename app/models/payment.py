@@ -24,4 +24,4 @@ class Payment(db.Model):
     payee = db.relationship('User', foreign_keys=[payee_id], back_populates='payments_as_payee')
 
     # Define the relationship with Comment
-    comment = db.relationship('Comment', back_populates='payment')
+    comments = db.relationship('Comment', back_populates='payment')

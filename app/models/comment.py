@@ -4,9 +4,6 @@ from flask_login import UserMixin
 from datetime import datetime
 
 
-
-
-
 class Comment(db.Model):
     __tablename__ = "comments"
 
@@ -18,7 +15,7 @@ class Comment(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
 
     #Relationship for user
-    user = db.relationship('User', back_populates='comment')
+    user = db.relationship('User', back_populates='comments')
 
     # Relationship with Payment
-    payment = db.relationship('Payment', back_populates='comment')
+    payment = db.relationship('Payment', back_populates='comments')

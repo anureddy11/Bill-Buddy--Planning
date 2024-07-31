@@ -10,9 +10,10 @@ This document provides the schema for the `users`, `friends`, `comments`, `payme
 |-------------|-----------|-----------------------------|
 | id          | integer   | primary key                 |
 | username    | string    | not null                    |
-| firstName   | string    | not null                    |
-| lastName    | string    | not null                    |
+| first_name  | string    | not null                    |
+| last_name   | string    | not null                    |
 | email       | string    | not null, unique            |
+| hashed_password| string | not null                    |
 | created_at  | datetime  |                             |
 | updated_at  | datetime  |                             |
 
@@ -21,9 +22,9 @@ This document provides the schema for the `users`, `friends`, `comments`, `payme
 | Column      | Type      | Details                     |
 |-------------|-----------|-----------------------------|
 | id          | integer   | primary key                 |
-| sender      | integer   | ref: users.id, not null     |
-| receiver    | integer   | ref: users.id, not null     |
-| status      | string    |                             |
+| user1_id    | integer   | ref: users.id, not null     |
+| user2_id    | integer   | ref: users.id, not null     |
+| requester   | integer   | not null                    |
 | created_at  | datetime  |                             |
 | updated_at  | datetime  |                             |
 
@@ -33,8 +34,8 @@ This document provides the schema for the `users`, `friends`, `comments`, `payme
 |-------------|-----------|-----------------------------|
 | id          | integer   | primary key                 |
 | content     | string    | not null                    |
-| user_id      | integer   | ref: users.id, not null     |
-| expense_id   | integer   | ref: expenses.id, not null  |
+| user_id     | integer   | ref: users.id, not null     |
+| expense_id  | integer   | ref: expenses.id, not null  |
 | created_at  | datetime  | not null                    |
 | updated_at  | datetime  | not null                    |
 
@@ -43,11 +44,11 @@ This document provides the schema for the `users`, `friends`, `comments`, `payme
 | Column      | Type      | Details                     |
 |-------------|-----------|-----------------------------|
 | id          | integer   | primary key                 |
-| payer_id     | integer   | ref: users.id, not null     |
-| payee_id     | integer   | ref: users.id, not null     |
+| payer_id    | integer   | ref: users.id, not null     |
+| payee_id    | integer   | ref: users.id, not null     |
 | status      | varchar   | not null                    |
 | amount      | integer   | not null                    |
-| comment_id   | integer   | ref: comments.id            |
+| comment_id  | integer   | ref: comments.id            |
 | created_at  | datetime  |                             |
 | updated_at  | datetime  |                             |
 
@@ -57,7 +58,7 @@ This document provides the schema for the `users`, `friends`, `comments`, `payme
 |-------------|-----------|-----------------------------|
 | id          | integer   | primary key                 |
 | description | varchar   |                             |
-| ownerId     | integer   | ref: users.id, not null     |
+| owner_id    | integer   | ref: users.id, not null     |
 | amount      | integer   | not null                    |
 | settled     | boolean   |                             |
 | created_at  | datetime  |                             |
@@ -68,9 +69,9 @@ This document provides the schema for the `users`, `friends`, `comments`, `payme
 | Column      | Type      | Details                     |
 |-------------|-----------|-----------------------------|
 | id          | integer   | primary key                 |
-| expense_id   | integer   | ref: expenses.id, not null  |
+| expense_id  | integer   | ref: expenses.id, not null  |
 | amount      | integer   |                             |
 | settled     | boolean   |                             |
-| user_id      | integer   | ref: users.id, not null     |
+| user_id     | integer   | ref: users.id, not null     |
 | created_at  | datetime  |                             |
 | updated_at  | datetime  |                             |

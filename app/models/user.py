@@ -25,7 +25,7 @@ class User(db.Model, UserMixin):
     payments_as_payee = db.relationship('Payment', foreign_keys='Payment.payee_id', back_populates='payee')
 
     #Relationship for comment_id
-    comment = db.relationship('Comment', back_populates='user')
+    comments = db.relationship('Comment', back_populates='user')
 
   # Relationships for friends where the user is either uid1 or uid2
     friends_as_uid1 = db.relationship('Friend', foreign_keys='Friend.user1_id', back_populates='user1')

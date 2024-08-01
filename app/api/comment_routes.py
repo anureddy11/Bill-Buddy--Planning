@@ -7,3 +7,4 @@ comment_routes = Blueprint('comment', __name__)
 
 # Create a comment
 @comment_routes.route('/api/')
+@login_required

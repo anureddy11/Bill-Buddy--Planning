@@ -23,6 +23,7 @@ def seed():
         # Make sure to add all your other model's undo functions below
         undo_users()
     seed_users()
+    
     # Add other seed functions here
     seed_payments()
     seed_friends()

@@ -11,23 +11,19 @@ def get_all_friends():
     Returns the friends of the logged-in user.
     """
     friends = Friend.query.filter(
-        (Friend.user1_id == current_user.id) | (Friend.user2_id == current_user.id)
+         Friend.requester == current_user.id
     ).all()
 
     friends_list = []
     for friend in friends:
-        if friend.user1_id == current_user.id:
             user = User.query.get(friend.user2_id)
-        else:
-            user = User.query.get(friend.user1_id)
 
-        friends_list.append({
+            friends_list.append({
             "id": user.id,
-            "firstName": user.firstName,
-            "lastName": user.lastName,
-            "username": user.username,
+            "firstname": user.first_name,
+            "last_name": user.last_name,
             "email": user.email
-        })
+         })
 
     return jsonify({"friends": friends_list})
 

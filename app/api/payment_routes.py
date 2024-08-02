@@ -8,9 +8,9 @@ from ..forms.payments_form import PaymentForm
 payment_router = Blueprint('payments', __name__,  url_prefix='/payments')
 
 
-
+#get all payments along with all the commetns
 @payment_router.route("/all")
-@login_required
+# @login_required
 def all_payments():
 
     payments = Payment.query.filter_by(id=current_user.id).all()
@@ -20,10 +20,12 @@ def all_payments():
     return jsonify(payments_list)
 
 
-@payment_router.route("/create")
+# create a payment
+@payment_router.route("/create") # need to add method =[Post]
+@login_required
 def create_payment():
 
-    fake_data = {
+    fake_data = {  # remove this when going live and replace with request
         'amount': 123.45,
         'payee_id': 3,
         'status': 'pending'
@@ -36,7 +38,7 @@ def create_payment():
 
     form = PaymentForm(data = data)
     form['csrf_token'].data = request.cookies['csrf_token']
-    if form.validate():
+    if form.validate():# change to validate_on_submit with front_end
         # Create a new Payment object
         new_payment = Payment(
             amount=form.amount.data,
@@ -58,3 +60,58 @@ def create_payment():
 
 
     return jsonify({"errors": form.errors}), 400
+
+
+#update a payment
+@payment_router.route("/update/<int:payment_id>") # need to add method =[PUT]
+@login_required
+def update_payment(payment_id):
+    print(payment_id)
+    fake_data = {  # Remove this when going live and replace with request
+        'amount': 123.45,
+        'payee_id': 5,
+        'status': 'completed'
+    }
+
+    # Parse JSON data from the request
+    # data = request.get_json() or fake_data
+    data = fake_data  # Replace with: data = request.get_json()
+    form = PaymentForm(data=data)
+    print(form.data)
+    form['csrf_token'].data = request.cookies['csrf_token']
+
+
+    if form.validate():# change to validate_on_submit with front_end
+        # Fetch the payment record by ID
+        payment = Payment.query.get(payment_id)
+        if not payment:
+            return jsonify({"error": "Payment not found"}), 404
+
+        # Update the payment record with form data
+        payment.amount = form.amount.data
+        payment.payee_id = form.payee_id.data
+        payment.status = form.status.data
+
+        # Commit the changes to the database
+        db.session.commit()
+        return jsonify({"message": "Payment updated successfully", "payment": payment.to_dict()}), 200
+    else:
+        print("Form validation failed:", form.errors)
+        return jsonify({"errors": form.errors}), 400
+
+
+
+# Delete a payment
+@payment_router.route("/delete/<int:payment_id>") #add delete method with front end
+@login_required
+def delete_payment(payment_id):
+    # Fetch the payment record by ID
+    payment = Payment.query.get(payment_id)
+    if not payment:
+        return jsonify({"error": "Payment not found"}), 404
+
+    # Delete the payment record from the database
+    db.session.delete(payment)
+    db.session.commit()
+
+    return jsonify({"message": "Payment deleted successfully"}), 200

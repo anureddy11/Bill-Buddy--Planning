@@ -29,8 +29,8 @@ Creates and returns a new comment for an expense specified by expense ID.
     {
       "id": 1,
       "content": "Insert comment here",
-      "userId": 1,
-      "expenseId": 1,
+      "user_id": 1,
+      "expense_id": 1,
       "created_at": "2024-07-24 20:00:00",
       "updated_at": "2024-07-24 20:00:00"
     }
@@ -74,7 +74,7 @@ Returns all the comments belonging to a specific expense ID.
         {
           "id": 1,
           "content": "I'm not paying for your beer dude",
-          "userId": 1,
+          "user_id": 1,
           "created_at": "2024-07-24 20:00:00",
           "updated_at": "2024-07-24 20:00:00",
           "user": {
@@ -87,7 +87,7 @@ Returns all the comments belonging to a specific expense ID.
         {
           "id": 2,
           "content": "Another comment",
-          "userId": 2,
+          "user_id": 2,
           "created_at": "2024-07-24 21:00:00",
           "updated_at": "2024-07-24 21:00:00",
           "user": {

@@ -24,4 +24,20 @@ class Payment(db.Model):
     payee = db.relationship('User', foreign_keys=[payee_id], back_populates='payments_as_payee')
 
     # Define the relationship with Comment
-    comment = db.relationship('Comment', back_populates='payment')
+    comments = db.relationship('Comment', back_populates='payment')
+
+
+    def __repr__(self):
+        return f"<Payement: {self.id} Payer: {self.payer_id} Payee: {self.payee_id} Amount: {self.amount}>"
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "payer_id": self.payer_id,
+            "payee_id": self.payee_id,
+            "status": self.status,
+            "amount": self.amount,
+            # "comments": self.comments.to_dict() if self.comments else None,  # Include comment details if present
+            "created_at": self.created_at.isoformat() if self.created_at else None,
+            "updated_at": self.updated_at.isoformat() if self.updated_at else None
+        }

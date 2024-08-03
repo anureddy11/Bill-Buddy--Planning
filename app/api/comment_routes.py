@@ -5,7 +5,7 @@ from datetime import datetime, timezone
 
 comment_routes = Blueprint('comment', __name__)
 
-# Create a comment
+# Create a comment (CREATE)
 @comment_routes.route('/<int:expenseId>/comments', methods=['POST'])
 @login_required
 def create_comment(expenseId):
@@ -37,3 +37,8 @@ def create_comment(expenseId):
     db.session.commit()
     
     return jsonify(new_comment.to_dict()), 201
+
+# View All Comments on an Expense (READ)
+@comment_routes.route('</int:expenseId>/comments')
+@login_required
+def get-

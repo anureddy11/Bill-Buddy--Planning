@@ -11,6 +11,7 @@ class Friend(db.Model):
     user1_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     user2_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     requester = db.Column(db.Integer, nullable=False)
+    status = db.Column(db.String)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
 

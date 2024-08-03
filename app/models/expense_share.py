@@ -23,3 +23,12 @@ class ExpenseShare(db.Model):
 
     # Define the relationship with User
     user = db.relationship('User', back_populates='expense_shares')
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'user_id': self.user_id,
+            'expense_id': self.expense_id,
+            'settled': self.settled,
+            'amount': self.amount,
+        }

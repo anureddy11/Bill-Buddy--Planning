@@ -10,7 +10,7 @@ payment_router = Blueprint('payments', __name__,  url_prefix='/payments')
 
 #get all payments along with all the commetns
 @payment_router.route("/all")
-# @login_required
+@login_required
 def all_payments():
 
     payments = Payment.query.filter_by(id=current_user.id).all()
@@ -21,19 +21,19 @@ def all_payments():
 
 
 # create a payment
-@payment_router.route("/create") # need to add method =[Post]
+@payment_router.route("/create", methods=["POST"])# need to add method =[Post]
 @login_required
 def create_payment():
 
-    fake_data = {  # remove this when going live and replace with request
-        'amount': 123.45,
-        'payee_id': 3,
-        'status': 'pending'
-    }
+    # fake_data = {  # remove this when going live and replace with request
+    #     'amount': 123.45,
+    #     'payee_id': 3,
+    #     'status': 'pending'
+    # }
 
     # Parse JSON data from the request
-    # data = request.get_json() or fake_data
-    data = fake_data
+    data = request.get_json()
+    # data = fake_data
 
 
     form = PaymentForm(data = data)
@@ -63,19 +63,19 @@ def create_payment():
 
 
 #update a payment
-@payment_router.route("/update/<int:payment_id>") # need to add method =[PUT]
+@payment_router.route("/update/<int:payment_id>", methods=["PUT"]) # need to add method =[PUT]
 @login_required
 def update_payment(payment_id):
-    print(payment_id)
-    fake_data = {  # Remove this when going live and replace with request
-        'amount': 123.45,
-        'payee_id': 5,
-        'status': 'completed'
-    }
+    # print(payment_id)
+    # fake_data = {  # Remove this when going live and replace with request
+    #     'amount': 123.45,
+    #     'payee_id': 5,
+    #     'status': 'completed'
+    # }
 
     # Parse JSON data from the request
-    # data = request.get_json() or fake_data
-    data = fake_data  # Replace with: data = request.get_json()
+    data = request.get_json()
+    # data = fake_data  # Replace with: data = request.get_json()
     form = PaymentForm(data=data)
     print(form.data)
     form['csrf_token'].data = request.cookies['csrf_token']
@@ -102,7 +102,7 @@ def update_payment(payment_id):
 
 
 # Delete a payment
-@payment_router.route("/delete/<int:payment_id>") #add delete method with front end
+@payment_router.route("/delete/<int:payment_id>", method=["DELETE"])
 @login_required
 def delete_payment(payment_id):
     # Fetch the payment record by ID

@@ -102,7 +102,7 @@ def update_payment(payment_id):
 
 
 # Delete a payment
-@payment_router.route("/delete/<int:payment_id>", method=["DELETE"])
+@payment_router.route("/delete/<int:payment_id>", methods=["DELETE"])
 @login_required
 def delete_payment(payment_id):
     # Fetch the payment record by ID

@@ -7,12 +7,9 @@ from flask_login import LoginManager
 from .models import db, User, Payment, Expense, Friend, ExpenseShare, Comment
 from .api.user_routes import user_routes
 from .api.auth_routes import auth_routes
-<<<<<<< HEAD
 from .api.friend_routes import friend_routes
-=======
 from .api.payment_routes import payment_router
 from .api.comment_routes import comment_routes
->>>>>>> 40806d7ddc3f3267599f51deed441abddffd9782
 from .seeds import seed_commands
 from .config import Config
 
@@ -34,12 +31,9 @@ app.cli.add_command(seed_commands)
 app.config.from_object(Config)
 app.register_blueprint(user_routes, url_prefix='/api/users')
 app.register_blueprint(auth_routes, url_prefix='/api/auth')
-<<<<<<< HEAD
 app.register_blueprint(friend_routes, url_prefix='/api/friends')
-=======
 app.register_blueprint(payment_router, url_prefix='/api/payments')
 app.register_blueprint(comment_routes, url_prefix='/api/expenses')
->>>>>>> 40806d7ddc3f3267599f51deed441abddffd9782
 db.init_app(app)
 Migrate(app, db)
 

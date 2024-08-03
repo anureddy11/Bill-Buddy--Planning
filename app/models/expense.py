@@ -23,3 +23,6 @@ class Expense(db.Model):
 
     # Many-to-one relationship with User
     owner = db.relationship('User', back_populates='expenses')
+    
+    # One-to-many relationship with Comment
+    comments = db.relationship('Comment', back_populates='expense')

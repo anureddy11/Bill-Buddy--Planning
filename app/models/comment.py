@@ -24,6 +24,9 @@ class Comment(db.Model):
     # Relationship with Payment
     payment = db.relationship('Payment', back_populates='comments')
     
+    # Relationship with expense
+    expense = db.relationship('Expense', back_populates='comments')
+    
     def to_dict(self):
         return {
             'id': self.id,

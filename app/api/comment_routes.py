@@ -39,7 +39,7 @@ def create_comment(expenseId):
     return jsonify(new_comment.to_dict()), 201
 
 # View All Comments on an Expense (READ)
-@comment_routes.route('</int:expenseId>/comments', methods=['GET'])
+@comment_routes.route('/<int:expenseId>/comments', methods=['GET'])
 @login_required
 def get_comments(expenseId):
     """

@@ -11,7 +11,7 @@ def get_all_friends():
     Returns the friends of the logged-in user.
     """
     friends = Friend.query.filter(
-         Friend.requester == current_user.id
+         Friend.requester == current_user.id and Friend.status == 'accepted'
     ).all()
 
     friends_list = []

@@ -2,9 +2,9 @@ from app.models import db, User, environment, SCHEMA, Payment, Expense, ExpenseS
 from sqlalchemy.sql import text
 
 def seed_friends():
-    friend1 = Friend(user1_id=1, user2_id=2, requester=1)
-    friend2 = Friend(user1_id=2, user2_id=3, requester=2)
-    friend3 = Friend(user1_id=1, user2_id=3, requester=3)
+    friend1 = Friend(user1_id=1, user2_id=2, requester=1, status='accepted')
+    friend2 = Friend(user1_id=2, user2_id=3, requester=2, status='pending')
+    friend3 = Friend(user1_id=1, user2_id=3, requester=3, status='rejected')
 
     db.session.add(friend1)
     db.session.add(friend2)

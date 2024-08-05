@@ -25,6 +25,7 @@ This document provides the schema for the `users`, `friends`, `comments`, `payme
 | user1_id    | integer   | ref: users.id, not null     |
 | user2_id    | integer   | ref: users.id, not null     |
 | requester   | integer   | not null                    |
+| status      | string    |                             |
 | created_at  | datetime  |                             |
 | updated_at  | datetime  |                             |
 

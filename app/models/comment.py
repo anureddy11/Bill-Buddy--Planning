@@ -6,7 +6,7 @@ from datetime import datetime, timezone
 
 class Comment(db.Model):
     __tablename__ = "comments"
-    
+
     if environment == "production":
         __table_args__ = {'schema': SCHEMA}
 
@@ -23,10 +23,10 @@ class Comment(db.Model):
 
     # Relationship with Payment
     payment = db.relationship('Payment', back_populates='comments')
-    
+
     # Relationship with expense
-    expense = db.relationship('Expense', back_populates='comments')
-    
+    # expense = db.relationship('Expense', back_populates='comments')
+
     def to_dict(self):
         return {
             'id': self.id,

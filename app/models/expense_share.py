@@ -7,6 +7,7 @@ from datetime import datetime
 
 
 
+
 class ExpenseShare(db.Model):
     __tablename__ = "expense_shares"
 

@@ -93,13 +93,13 @@ Successful Response when the user is logged in.
 
 ```json
 {
-    "Expense": {
-        "id": 1,
+    "expense": {
+        "id": 20,
         "description": "Went to applebees for bachelor party",
         "amount": 100.00,
         "ownerId": 1
     },
-    "Expense Shares": [
+    "expense_shares": [
         {
             "userId": 1,
             "amount": 33.33,
@@ -131,9 +131,9 @@ Successful Response when the user is logged in.
         "description": "updated the description",
         "amount": 200,
         "split": [
-            {"userId": 1, "amount": 66.66, "settled": true},
-            {"userId": 2, "amount": 66.67, "settled": false},
-            {"userId": 3, "amount": 66.67, "settled": false}
+            {"userId": 1, "amount": 66.66, "settled": "no"},
+            {"userId": 2, "amount": 66.67, "settled": "no"},
+            {"userId": 3, "amount": 66.67, "settled": "no"}
         ]
     }
 
@@ -145,29 +145,35 @@ Successful response when user is logged in.
 * Body:
 ```json
     {
-        "Expense": {
+        "expense": {
             "id": 1,
             "description": "updated the description",
             "amount": 200.00,
             "groupId": 1,
             "ownerId": 1
         },
-        "Expense Shares": [
+        "expense_shares": [
             {
-                "userId": 1,
-                "amount": 66.66,
-                "settled": true,
-            },
-            {
-                "userId": 2,
-                "amount": 66.67,
-                "settled": false,
-            },
-            {
-                "userId": 2,
-                "amount": 66.67,
-                "settled": false,
-            }
+            "amount": 33.33,
+            "expense_id": 20,
+            "id": 31,
+            "settled": "no",
+            "user_id": 1
+        },
+        {
+            "amount": 33.33,
+            "expense_id": 20,
+            "id": 32,
+            "settled": "no",
+            "user_id": 2
+        },
+        {
+            "amount": 33.34,
+            "expense_id": 20,
+            "id": 33,
+            "settled": "no",
+            "user_id": 3
+        }
         ]
     }
 ```

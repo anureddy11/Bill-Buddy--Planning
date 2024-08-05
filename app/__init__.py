@@ -1,5 +1,6 @@
 import os
 from flask import Flask, render_template, request, session, redirect
+from flask.helpers import send_from_directory
 from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_wtf.csrf import CSRFProtect, generate_csrf
@@ -13,7 +14,9 @@ from .api.comment_routes import comment_routes
 from .seeds import seed_commands
 from .config import Config
 
-app = Flask(__name__, static_folder='../react-vite/dist', static_url_path='/')
+# app = Flask(__name__, static_folder='../react-vite/dist', static_url_path='/')
+app = Flask(__name__, static_folder='../frontend/build', static_url_path='/')
+
 
 # Setup login manager
 login = LoginManager(app)
@@ -95,7 +98,7 @@ def react_root(path):
     frontend_build_path = '../frontend/build'
 
     if path == 'favicon.ico':
-        return send_from_directory(f'{frontend_build_path}/public', 'favicon.ico')
+        return send_from_directory(os.path.join(frontend_build_path, 'public'), 'favicon.ico')
 
     return send_from_directory(frontend_build_path, 'index.html')
 

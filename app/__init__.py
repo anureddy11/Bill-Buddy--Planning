@@ -87,11 +87,23 @@ def react_root(path):
     react builds in the production environment for favicon
     or index.html requests
     """
+    # if path == 'favicon.ico':
+    #     return app.send_from_directory('public', 'favicon.ico')
+    # return app.send_static_file('index.html')
+
+      # Adjust the path to your frontend build folder
+    frontend_build_path = '../frontend/build'
+
     if path == 'favicon.ico':
-        return app.send_from_directory('public', 'favicon.ico')
-    return app.send_static_file('index.html')
+        return send_from_directory(f'{frontend_build_path}/public', 'favicon.ico')
+
+    return send_from_directory(frontend_build_path, 'index.html')
 
 
 @app.errorhandler(404)
 def not_found(e):
-    return app.send_static_file('index.html')
+    # return app.send_static_file('index.html')
+
+# Serve the React app's index.html for any 404 errors
+    frontend_build_path = '../frontend/build'
+    return send_from_directory(frontend_build_path, 'index.html')

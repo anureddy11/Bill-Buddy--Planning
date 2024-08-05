@@ -1,7 +1,7 @@
 """Create all tables
 
 Revision ID: bb324186c8bb
-Revises: 
+Revises:
 Create Date: 2024-07-30 20:06:11.046289
 
 """
@@ -57,6 +57,7 @@ def upgrade():
     sa.Column('user1_id', sa.Integer(), nullable=False),
     sa.Column('user2_id', sa.Integer(), nullable=False),
     sa.Column('requester', sa.Integer(), nullable=False),
+    sa.Column('status', sa.String()),
     sa.Column('created_at', sa.DateTime(), nullable=False),
     sa.Column('updated_at', sa.DateTime(), nullable=False),
     sa.ForeignKeyConstraint(['user1_id'], ['users.id'], ),

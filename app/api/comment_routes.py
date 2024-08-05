@@ -50,7 +50,7 @@ def get_comments(expenseId):
 # Update a comment (UPDATE)
 @comment_routes.route('/<int:expenseId>/comments/<int:commentId>', methods=['PUT'])
 @login_required
-def update_comments(expenseId, commentId):
+def update_comment(expenseId, commentId):
     """
     Updates and returns an existing comment based on commentId
     """
@@ -90,5 +90,30 @@ def update_comments(expenseId, commentId):
     
     return jsonify(comment.to_dict()), 200
     
-
+# Delete a comment (DELETE)
+@comment_routes.route('/<int:expenseId>/comments/<int:commentId>', methods=['DELETE'])
+@login_required
+def delete_comment(expenseId, commentId):
+    """
+    Deletes an existing comment based on expense and comment id
+    """
+    comment = Comment.query.get(commentId)
+    
+    if not comment or comment.expense_id != expenseId:
+        return jsonify({
+            "message": "Comment could not be found"
+        }), 404
+    
+    if comment.user_id != current_user.id:
+        return jsonify({
+            "message": "Forbidden"
+        }), 403
+    
+    db.session.delete(comment)
+    db.session.commit()
+    
+    return jsonify({
+        "message": "Successfully deleted comment"
+    })
+    
     

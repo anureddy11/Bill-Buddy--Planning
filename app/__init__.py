@@ -1,6 +1,5 @@
 import os
-from flask import Flask, render_template, request, session, redirect
-from flask.helpers import send_from_directory
+from flask import Flask, render_template, request, session, redirect, send_from_directory
 from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_wtf.csrf import CSRFProtect, generate_csrf
@@ -16,7 +15,6 @@ from .config import Config
 
 # app = Flask(__name__, static_folder='../react-vite/dist', static_url_path='/')
 app = Flask(__name__, static_folder='../frontend/build', static_url_path='/')
-
 
 # Setup login manager
 login = LoginManager(app)
@@ -94,11 +92,12 @@ def react_root(path):
     #     return app.send_from_directory('public', 'favicon.ico')
     # return app.send_static_file('index.html')
 
-      # Adjust the path to your frontend build folder
-    frontend_build_path = '../frontend/build'
+    # Adjust the path to your frontend build folder
+    frontend_build_path = os.path.abspath(os.path.join(app.static_folder, 'public'))
 
     if path == 'favicon.ico':
-        return send_from_directory(os.path.join(frontend_build_path, 'public'), 'favicon.ico')
+
+        return send_from_directory(frontend_build_path, 'favicon.ico')
 
     return send_from_directory(frontend_build_path, 'index.html')
 
@@ -108,5 +107,5 @@ def not_found(e):
     # return app.send_static_file('index.html')
 
 # Serve the React app's index.html for any 404 errors
-    frontend_build_path = '../frontend/build'
-    return send_from_directory(frontend_build_path, 'index.html')
+
+    return send_from_directory(app.static_folder, 'index.html')

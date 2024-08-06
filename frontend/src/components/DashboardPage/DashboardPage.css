@@ -1,0 +1,71 @@
+/* DashboardPage.css */
+
+.dashboard-container {
+    display: flex;
+    height: 100vh;
+}
+
+.main-content {
+    display: flex;
+    flex-grow: 1;
+}
+
+.sidebar {
+    width: 200px;
+    background-color: #f1f3f5;
+    border-right: 1px solid #dee2e6;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar ul li {
+    padding: 10px;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: #007BFF;
+}
+
+.sidebar ul li a:hover,
+.sidebar ul li a.active {
+    color: #0056b3;
+    font-weight: bold;
+    /* Highlight the active link */
+}
+
+.dashboard {
+    flex-grow: 1;
+    padding: 20px;
+    background-color: #e9ecef;
+}
+
+.dashboard h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.add-expense-button,
+.settle-up-button {
+    padding: 10px 20px;
+    margin-right: 10px;
+    background-color: #007BFF;
+    color: white;
+
+    ​⬤ .sidebar ul li a {
+        text-decoration: none;
+        color: #007BFF;
+    }
+
+    .sidebar ul li a:hover,
+    .sidebar ul li a.active {
+        color: #0056b3;
+        /* Changes the color to indicate active state */
+        font-weight: bold;
+        /* Makes the text bold to further highlight the active state */
+    }
+}

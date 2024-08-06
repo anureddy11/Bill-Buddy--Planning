@@ -3,6 +3,7 @@ import LoginFormPage from '../components/LoginFormPage';
 import SignupFormPage from '../components/SignupFormPage';
 import Layout from './Layout';
 import LandingPage from '../components/LandingPage';
+import DashboardPage from '../components/DashboardPage';
 
 export const router = createBrowserRouter([
   {

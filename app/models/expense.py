@@ -26,6 +26,9 @@ class Expense(db.Model):
     # Many-to-one relationship with User
     owner = db.relationship('User', back_populates='expenses')
 
+    # One-to-many relationship with comments
+    comments = db.relationship('Comment', back_populates='expense', cascade='all, delete-orphan')
+
     def to_dict(self):
         return {
             'id': self.id,

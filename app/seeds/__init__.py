@@ -1,9 +1,9 @@
 from flask.cli import AppGroup
 from .users import seed_users, undo_users
-from .payements import seed_payments, undo_payments
+from .payments import seed_payments, undo_payments
 from .friends import seed_friends, undo_friends
 from .expenses import seed_expenses, undo_expenses
-from .exepenseShares import seed_expense_shares, undo_expense_shares
+from .expenseShares import seed_expense_shares, undo_expense_shares
 from .comments import seed_comments, undo_comments
 
 from app.models.db import db, environment, SCHEMA
@@ -23,7 +23,7 @@ def seed():
         # Make sure to add all your other model's undo functions below
         undo_users()
     seed_users()
-    
+
     # Add other seed functions here
     seed_payments()
     seed_friends()

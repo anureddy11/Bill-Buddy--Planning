@@ -6,9 +6,11 @@ import {
 } from "redux";
 import thunk from "redux-thunk";
 import sessionReducer from "./session";
+import friendsReducer from './friends'; // Import the friends reducer
 
 const rootReducer = combineReducers({
   session: sessionReducer,
+  friends: friendsReducer,
 });
 
 let enhancer;

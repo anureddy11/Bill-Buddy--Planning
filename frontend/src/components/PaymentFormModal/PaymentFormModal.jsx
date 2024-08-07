@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { thunkLogin } from "../../redux/session";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import { useSelector } from 'react-redux';
-
-
+import "./PaymentFormModal.css"
+import { fetchFriends } from '../../redux/friends';
 
 
 const PaymentFormModal = () => {
@@ -13,7 +13,15 @@ const PaymentFormModal = () => {
     const [amount, setAmount] = useState('');
     const { closeModal } = useModal();
 
+    const dispatch = useDispatch();
     const currentUser = useSelector(state =>state.session.user)
+    const friends = useSelector(state => state.friends.friends);
+
+    useEffect(() => {
+        dispatch(fetchFriends()); // Fetch friends when the component mounts
+    }, [dispatch]);
+
+    console.log(friends);
 
 
     const handleSubmit = (e) => {
@@ -33,7 +41,7 @@ const PaymentFormModal = () => {
         <div className="container">
             <h2>Payment Form</h2>
             <form onSubmit={handleSubmit}>
-                <div className="form-group">
+
                     <label htmlFor="payeeid">Payee ID</label>
                     <input
                         type="text"
@@ -42,8 +50,7 @@ const PaymentFormModal = () => {
                         onChange={(e) => setPayeeid(e.target.value)}
                         required
                     />
-                </div>
-                <div className="form-group">
+
                     <label htmlFor="status">Status</label>
                     <input
                         type="text"
@@ -52,8 +59,8 @@ const PaymentFormModal = () => {
                         onChange={(e) => setStatus(e.target.value)}
                         required
                     />
-                </div>
-                <div className="form-group">
+
+
                     <label htmlFor="amount">Amount</label>
                     <input
                         type="number"
@@ -63,7 +70,7 @@ const PaymentFormModal = () => {
                         onChange={(e) => setAmount(e.target.value)}
                         required
                     />
-                </div>
+
                 <div className="form-group">
                     <button type="submit">Submit Payment</button>
                 </div>

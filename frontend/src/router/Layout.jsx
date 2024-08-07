@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { ModalProvider, Modal } from "../context/Modal";
 import { thunkAuthenticate } from "../redux/session";
+import SideNavigation from "../components/SideNavigation";
 import Navigation from "../components/Navigation/Navigation";
 
 export default function Layout() {
@@ -16,6 +17,7 @@ export default function Layout() {
     <>
       <ModalProvider>
         <Navigation />
+        <SideNavigation />
         {isLoaded && <Outlet />}
         <Modal />
       </ModalProvider>

@@ -1,0 +1,43 @@
+.sidebar {
+    width: 200px;
+    background-color: #f1f3f5;
+    border-right: 1px solid #dee2e6;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar ul li {
+    padding: 10px;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: #007BFF;
+}
+
+.sidebar ul li a:hover,
+.sidebar ul li a.active {
+    color: #0056b3;
+    font-weight: bold;
+    /* Highlight the active link */
+}
+
+
+
+
+​.sidebar ul li a {
+    text-decoration: none;
+    color: #007BFF;
+}
+
+.sidebar ul li a:hover,
+.sidebar ul li a.active {
+    color: #0056b3;
+    /* Changes the color to indicate active state */
+    font-weight: bold;
+    /* Makes the text bold to further highlight the active state */
+}

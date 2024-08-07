@@ -4,6 +4,7 @@ import SignupFormPage from '../components/SignupFormPage';
 import Layout from './Layout';
 import LandingPage from '../components/LandingPage';
 import DashboardPage from '../components/DashboardPage';
+import PaymentFormModal from '../components/PaymentFormModal';
 
 export const router = createBrowserRouter([
   {
@@ -25,6 +26,11 @@ export const router = createBrowserRouter([
       {
         path: "/dashboard",
         element: <DashboardPage />
+      },
+      ,
+      {
+        path: "/payment",
+        element: <PaymentFormModal />
       }
 
     ],

@@ -5,11 +5,7 @@
     height: 100vh;
 }
 
-.main-content {
-    display: flex;
-    flex-grow: 1;
-}
-
+/* Sidebar styling */
 .sidebar {
     width: 200px;
     background-color: #f1f3f5;
@@ -34,8 +30,13 @@
 .sidebar ul li a:hover,
 .sidebar ul li a.active {
     color: #0056b3;
-    font-weight: bold;
-    /* Highlight the active link */
+    font-weight: bold; /* Highlight the active link */
+}
+
+/* Main content styling */
+.main-content {
+    display: flex;
+    flex-grow: 1;
 }
 
 .dashboard {
@@ -49,23 +50,32 @@
     margin-bottom: 20px;
 }
 
+/* Button styling */
 .add-expense-button,
 .settle-up-button {
     padding: 10px 20px;
     margin-right: 10px;
     background-color: #007BFF;
     color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
 
-    ​⬤ .sidebar ul li a {
-        text-decoration: none;
-        color: #007BFF;
-    }
+.add-expense-button:hover,
+.settle-up-button:hover {
+    background-color: #0056b3;
+}
 
-    .sidebar ul li a:hover,
-    .sidebar ul li a.active {
-        color: #0056b3;
-        /* Changes the color to indicate active state */
-        font-weight: bold;
-        /* Makes the text bold to further highlight the active state */
-    }
+/* Ensure the last button has no right margin */
+.button-group > .settle-up-button:last-child {
+    margin-right: 0;
+}
+
+/* Optional: if you need to center buttons or create space */
+.button-group {
+    display: flex;
+    gap: 10px; /* Space between buttons */
+    justify-content: flex-start; /* Align buttons to the left */
 }

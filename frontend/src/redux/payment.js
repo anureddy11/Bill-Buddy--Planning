@@ -5,9 +5,22 @@ const UPDATE_PAYMENT_SUCCESS = 'payments/UPDATE_PAYMENT_SUCCESS';
 const UPDATE_PAYMENT_FAILURE = 'payments/UPDATE_PAYMENT_FAILURE';
 const DELETE_PAYMENT_SUCCESS = 'payments/DELETE_PAYMENT_SUCCESS';
 const DELETE_PAYMENT_FAILURE = 'payments/DELETE_PAYMENT_FAILURE';
+const FETCH_PAYMENTS_SUCCESS = 'payments/FETCH_PAYMENTS_SUCCESS';
+const FETCH_PAYMENTS_FAILURE = 'payments/FETCH_PAYMENTS_FAILURE';
 
 
 // Action Creators
+
+const fetchPaymentsSuccess = (payments) => ({
+    type: FETCH_PAYMENTS_SUCCESS,
+    payload: payments,
+});
+
+const fetchPaymentsFailure = (error) => ({
+    type: FETCH_PAYMENTS_FAILURE,
+    payload: error,
+});
+
 const addPaymentSuccess = (payment) => ({
     type: ADD_PAYMENT_SUCCESS,
     payload: payment,
@@ -20,7 +33,7 @@ const addPaymentFailure = (error) => ({
 
 const updatePaymentSuccess = (payment) => ({
     type: UPDATE_PAYMENT_SUCCESS,
-    payload: payment,
+    payload: payment.payment,
 });
 
 const updatePaymentFailure = (error) => ({
@@ -37,6 +50,24 @@ const deletePaymentFailure = (error) => ({
     type: DELETE_PAYMENT_FAILURE,
     payload: error,
 });
+
+// Thunk Action to Fetch All Payments
+export const fetchPayments = () => async (dispatch) => {
+    try {
+        const response = await fetch('/api/payments/all'); // Adjust the endpoint as needed
+        if (!response.ok) {
+            throw new Error('Failed to fetch payments');
+        }
+
+        const payments = await response.json();
+        console.log(payments)
+        dispatch(fetchPaymentsSuccess(payments));
+    } catch (error) {
+        dispatch(fetchPaymentsFailure(error.toString()));
+    }
+};
+
+
 
 // Thunk Action to Add Payment
 export const addPayment = (payee_id, status, amount) => async (dispatch) => {
@@ -61,14 +92,14 @@ export const addPayment = (payee_id, status, amount) => async (dispatch) => {
 };
 
 // Thunk Action to Update Payment
-export const updatePayment = (id, payeeId, status, amount) => async (dispatch) => {
+export const updatePayment = (id, payee_id, amount, status) => async (dispatch) => {
     try {
         const response = await fetch(`/api/payments/update/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ payeeId, status, amount }),
+            body: JSON.stringify({ payee_id, amount, status }),
         });
 
         if (!response.ok) {
@@ -76,11 +107,13 @@ export const updatePayment = (id, payeeId, status, amount) => async (dispatch) =
         }
 
         const payment = await response.json();
+        console.log(payment)
         dispatch(updatePaymentSuccess(payment));
     } catch (error) {
         dispatch(updatePaymentFailure(error.toString()));
     }
 };
+
 
 // Thunk Action to Delete Payment
 export const deletePayment = (id) => async (dispatch) => {
@@ -114,8 +147,6 @@ const paymentsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 payments: [...state.payments, action.payload],
-                message: 'Payment added successfully',
-                error: null,
             };
         case ADD_PAYMENT_FAILURE:
             return {
@@ -146,6 +177,21 @@ const paymentsReducer = (state = initialState, action) => {
                 error: null,
             };
         case DELETE_PAYMENT_FAILURE:
+            return {
+                ...state,
+                message: '',
+                error: action.payload,
+            };
+
+        case FETCH_PAYMENTS_SUCCESS:
+            return {
+                ...state,
+                payments: action.payload,
+                message: 'Payments fetched successfully',
+                error: null,
+            };
+
+        case FETCH_PAYMENTS_FAILURE:
             return {
                 ...state,
                 message: '',

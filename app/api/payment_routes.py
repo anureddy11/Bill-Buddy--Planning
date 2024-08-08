@@ -21,7 +21,7 @@ def all_payments():
 
 
 # create a payment
-@payment_router.route("/create", methods=["POST"])# need to add method =[Post]
+@payment_router.route("/create/", methods=["POST"])# need to add method =[Post]
 @login_required
 def create_payment():
 

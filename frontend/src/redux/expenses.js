@@ -3,7 +3,7 @@ import { csrfFetch } from "./csrf"
 
 const LOAD_EXPENSES = "expenses/LOAD_EXPENSES"
 
-const load = (data, type, id) => ({
+const loadExpense = (data, type, id) => ({
     data,
     type,
     id
@@ -15,7 +15,7 @@ const initialState = {}
 export const getExpenses = () => async dispatch => {
     const response = await csrfFetch('/api/expenses')
     const data = await response.json()
-    dispatch(load(data, LOAD_EXPENSES))
+    dispatch(loadExpense(data, LOAD_EXPENSES))
     return data
 }
 
@@ -32,6 +32,8 @@ const expensesReducer = (state = initialState, action) => {
                 ...newExpenses
             }
         }
+        default:
+            return state;
     }
 }
 

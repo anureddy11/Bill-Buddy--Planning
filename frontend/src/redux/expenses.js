@@ -1,4 +1,4 @@
-import  { csrfFetch }   from "./csrf"
+import { csrfFetch } from "./csrf"
 
 
 const LOAD_EXPENSES = "expenses/LOAD_EXPENSES"
@@ -10,9 +10,9 @@ const load = (data, type, id) => ({
 })
 
 
-const inititialState = {}
+const initialState = {}
 
-export const getExpenses = ()=> async dispatch => {
+export const getExpenses = () => async dispatch => {
     const response = await csrfFetch('/api/expenses')
     const data = await response.json()
     dispatch(load(data, LOAD_EXPENSES))
@@ -21,7 +21,7 @@ export const getExpenses = ()=> async dispatch => {
 
 
 const expensesReducer = (state = initialState, action) => {
-    switch(action.type) {
+    switch (action.type) {
         case LOAD_EXPENSES: {
             const newExpenses = {}
             action.data.Expenses.forEach(expense => {

@@ -5,35 +5,6 @@
     height: 100vh;
 }
 
-/* Sidebar styling */
-.sidebar {
-    width: 200px;
-    background-color: #f1f3f5;
-    border-right: 1px solid #dee2e6;
-}
-
-.sidebar ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.sidebar ul li {
-    padding: 10px;
-}
-
-.sidebar ul li a {
-    text-decoration: none;
-    color: #007BFF;
-}
-
-.sidebar ul li a:hover,
-.sidebar ul li a.active {
-    color: #0056b3;
-    font-weight: bold; /* Highlight the active link */
-}
-
-/* Main content styling */
 .main-content {
     display: flex;
     flex-grow: 1;

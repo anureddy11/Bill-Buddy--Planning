@@ -5,12 +5,14 @@ import {
   combineReducers,
 } from "redux";
 import thunk from "redux-thunk";
-import sessionReducer from "./session";
+import sessionReducer from "./session"
+import expensesReducer from "./expenses"
 import friendsReducer from './friends';
-import paymentsReducer from "./payment";
+import paymentsReducer from "./payment"
 
 const rootReducer = combineReducers({
   session: sessionReducer,
+  expense: expensesReducer,
   friends: friendsReducer,
   payments: paymentsReducer,
 });

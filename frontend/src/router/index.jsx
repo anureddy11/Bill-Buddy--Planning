@@ -1,9 +1,9 @@
 import { createBrowserRouter } from 'react-router-dom';
-import LoginFormPage from '../components/LoginFormPage';
-import SignupFormPage from '../components/SignupFormPage';
 import Layout from './Layout';
 import LandingPage from '../components/LandingPage';
 import DashboardPage from '../components/DashboardPage';
+import AllExpensesPage from '../components/AllExpensesPage';
+import RecentActivityPage from '../components/RecentActivityPage';
 import PaymentFormModal from '../components/PaymentFormModal';
 
 export const router = createBrowserRouter([
@@ -14,20 +14,22 @@ export const router = createBrowserRouter([
         path: "/",
         element: <LandingPage />,
       },
-      // we might not need these /login and /signup routes because they're already modals
       {
-        path: "/login",
-        element: <LoginFormPage />,
+        path: "/dashboard",
+        element: <DashboardPage />
       },
       {
-        path: "/signup",
-        element: <SignupFormPage />,
+        path: "/recent-activity",
+        element: <RecentActivityPage />
+      },
+      {
+        path: "/all-expenses",
+        element: <AllExpensesPage />
       },
       {
         path: "/dashboard",
         element: <DashboardPage />
       },
-      ,
       {
         path: "/payment",
         element: <PaymentFormModal />

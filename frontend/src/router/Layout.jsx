@@ -5,6 +5,7 @@ import { ModalProvider, Modal } from "../context/Modal";
 import { thunkAuthenticate } from "../redux/session";
 import SideNavigation from "../components/SideNavigation";
 import Navigation from "../components/Navigation/Navigation";
+import "./Layout.css"; // Import the CSS file
 
 export default function Layout() {
   const dispatch = useDispatch();
@@ -17,8 +18,12 @@ export default function Layout() {
     <>
       <ModalProvider>
         <Navigation />
-        <SideNavigation />
-        {isLoaded && <Outlet />}
+        <div className="layout-container">
+          <SideNavigation />
+          <main className="main-content">
+            {isLoaded && <Outlet />}
+          </main>
+        </div>
         <Modal />
       </ModalProvider>
     </>

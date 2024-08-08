@@ -10,10 +10,9 @@ export const setFriends = (friends) => ({
 // Thunk action to fetch friends
 export const fetchFriends = () => async (dispatch) => {
     try {
-        const response = await fetch(`/api/friends`); // Adjust the endpoint as needed
+        const response = await fetch(`/api/friends/`); // Adjust the endpoint as needed
         const friendsData = await response.json();
 
-        console.log(response)
         // Dispatch the action to set friends in the store
         dispatch(setFriends(friendsData));
     } catch (error) {
@@ -34,7 +33,7 @@ const friendsReducer = (state = initialState, action) => {
         case SET_FRIENDS:
             return {
                 ...state,
-                friends: action.payload,
+                ...action.payload,
             };
         // Handle other friend-related actions
         default:

@@ -1,7 +1,17 @@
 import './SideNavigation.css'
 import { NavLink } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { thunkGetFriends } from '../../redux/friends'
+import { useEffect } from 'react'
 
 function SideNavigation() {
+    const dispatch = useDispatch()
+    const friends = useSelector((state) => state.friend.friends)
+
+    useEffect(() => {
+        dispatch(thunkGetFriends())
+    })
+
     return (
         <nav className="sidebar">
             <ul>

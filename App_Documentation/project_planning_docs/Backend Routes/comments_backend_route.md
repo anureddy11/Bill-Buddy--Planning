@@ -80,8 +80,8 @@ Returns all the comments belonging to a specific expense ID.
           "user": {
             "id": 1,
             "username": "dereklin",
-            "firstName": "Derek",
-            "lastName": "Lin"
+            "first_name": "Derek",
+            "last_name": "Lin"
           }
         },
         {
@@ -93,8 +93,8 @@ Returns all the comments belonging to a specific expense ID.
           "user": {
             "id": 2,
             "username": "janedoe",
-            "firstName": "Jane",
-            "lastName": "Doe"
+            "first_name": "Jane",
+            "last_name": "Doe"
           }
         }
       ]

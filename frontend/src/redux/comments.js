@@ -61,7 +61,7 @@ export const thunkGetComments = (expenseId) => async (dispatch) => {
     };
 }
 
-export const thunkCreateComment = (expenseId, content) => async (dispatch, getState) => {
+export const thunkCreateComment = (expenseId, content) => async (dispatch) => {
     const response = await csrfFetch(`/api/expenses/${expenseId}/comments`, {
         method: 'POST',
         headers: {
@@ -72,11 +72,8 @@ export const thunkCreateComment = (expenseId, content) => async (dispatch, getSt
 
     if (response.ok) {
         const data = await response.json();
-        const state = getState();
-        const user = state.session.user;
-        const payload = { ...data, user: { id: user.id, first_name: user.first_name, last_name: user.last_name } }
-        dispatch(createComment(payload));
-        return payload;
+        dispatch(createComment(data));
+        return data;
     }
 
 }
@@ -104,3 +101,5 @@ const commentsReducer = (state = initialState, action) => {
     }
 
 }
+
+export default commentsReducer;

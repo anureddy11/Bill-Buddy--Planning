@@ -1,4 +1,4 @@
-import { csrfFetch } from "./csrf";
+// redux/comments.js
 
 // Action types
 const GET_COMMENTS = 'comments/getComments'
@@ -53,7 +53,7 @@ export const thunkGetComments = (expenseId) => async (dispatch) => {
     dispatch(clearComments());
 
     // Fetch new comments for the specified expenseId
-    const response = await csrfFetch(`/api/expenses/${expenseId}/comments`)
+    const response = await fetch(`/api/expenses/${expenseId}/comments/`)
 
     if (response.ok) {
         const data = await response.json();
@@ -62,7 +62,7 @@ export const thunkGetComments = (expenseId) => async (dispatch) => {
 }
 
 export const thunkCreateComment = (expenseId, content) => async (dispatch) => {
-    const response = await csrfFetch(`/api/expenses/${expenseId}/comments`, {
+    const response = await csrfFetch(`/api/expenses/${expenseId}/comments/`, {
         method: 'POST',
         headers: {
             "Content-Type": "application/json"
@@ -78,6 +78,32 @@ export const thunkCreateComment = (expenseId, content) => async (dispatch) => {
 
 }
 
+export const thunkUpdateComment = (expenseId, commentId, content) => async (dispatch) => {
+    const response = await fetch(`/api/expenses/${expenseId}/comments/${commentId}/`, {
+        method: 'PUT',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(content)
+    });
+
+    if (response.ok) {
+        const data = await response.json();
+        dispatch(updateComment(data));
+        return data;
+    }
+}
+
+export const thunkDeleteComment = (expenseId, commentId) => async (dispatch) => {
+    const response = await fetch(`/api/expenses/${expenseId}/comments/${commentId}`, {
+        method: 'DELETE',
+    })
+
+    if (response.ok) {
+        dispatch(deleteComment(commentId));
+        return commentId;
+    }
+}
 // Reducer
 const initialState = { comments: {} }
 
@@ -93,8 +119,21 @@ const commentsReducer = (state = initialState, action) => {
         case CLEAR_COMMENTS: {
             return { ...state, comments: {} }
         }
-
-
+        case CREATE_COMMENT: {
+            const newState = { ...state }
+            newState.comments[action.payload.id] = action.payload;
+            return newState;
+        }
+        case UPDATE_COMMENT: {
+            const newState = { ...state }
+            newState.comments[action.payload.id] = action.payload;
+            return newState;
+        }
+        case DELETE_COMMENT: {
+            const newState = { ...state }
+            delete newState.comments[action.payload];
+            return newState;
+        }
         default: {
             return state;
         }

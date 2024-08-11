@@ -4,6 +4,7 @@ import SignupFormPage from '../components/SignupFormPage';
 import Layout from './Layout';
 import LandingPage from '../components/LandingPage';
 import DashboardPage from '../components/DashboardPage';
+import AllExpenses from '../components/AllExpensesPage';
 
 export const router = createBrowserRouter([
   {
@@ -17,6 +18,10 @@ export const router = createBrowserRouter([
       {
         path: "/dashboard",
         element: <DashboardPage />
+      },
+      {
+        path: "/all-expenses",
+        element: <AllExpenses/>
       }
 
     ],

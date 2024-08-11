@@ -1,0 +1,36 @@
+.expense-content {
+    margin:auto;
+    width: 50%;
+    margin-top: 0px;
+}
+
+.expenses-list {
+    text-align: center;
+}
+
+.shares-list {
+    text-align: center;
+}
+
+.expense-items {
+    margin-bottom: 50px;
+    text-align: left;
+    margin-left: 50px;
+    border-style: solid;
+    height: fit-content;
+}
+
+.expense-shares {
+    margin-left: 20px;
+    border-style: solid;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    border-width: 1px;
+    margin-bottom: 10px;
+    margin-right: 20px;
+}
+
+.expense-shares.hidden {
+    display: none;
+}

@@ -7,10 +7,13 @@ import {
 import thunk from "redux-thunk";
 import sessionReducer from "./session";
 import expensesReducer from "./expenses"
+import commentsReducer from "./comments";
+
 
 const rootReducer = combineReducers({
   session: sessionReducer,
-  expense: expensesReducer
+  expense: expensesReducer,
+  comments: commentsReducer
 });
 
 let enhancer;

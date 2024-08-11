@@ -27,27 +27,27 @@
 
 .nav-link {
   text-decoration: none;
-  color: #007BFF;
+  color: #265486;
   font-weight: bold;
 }
 
 .nav-link:hover {
-  color: #0056b3;
+  color: #121921;
 }
 
 
 .profile-button {
   margin-left: auto;
   position: relative;
-  /* Ensure relative positioning to position the dropdown */
   display: flex;
   align-items: center;
   cursor: pointer;
-  /* Change cursor to pointer on hover */
-  padding: 10px;
-  /* Add padding to make the button larger */
-  font-size: 1.5em;
-  /* Increase font size to make the icon larger */
+  padding: 12px;
+  font-size: 1.4em;
+  /* Increase the icon size */
+  color: #265486;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 
@@ -65,6 +65,35 @@
 
 }
 
-.profile-button.active .profile-dropdown {
-  display: block;
+/* Profile Dropdown */
+.profile-dropdown {
+  position: absolute;
+  right: 0;
+  background-color: white;
+  border: 1px solid #dee2e6;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  width: 180px;
+  z-index: 1000;
+  padding: 10px 0;
+  /* Space inside the dropdown */
+  list-style: none;
+  /* Remove bullet points */
+  margin: 0;
+  /* Remove default margin */
+  padding: 0;
+  /* Remove default padding */
+}
+
+.profile-dropdown li {
+  padding: 10px 20px;
+  list-style: none;
+  /* Ensure no bullet points */
+  color: #2c3e50;
+  transition: background-color 0.3s ease;
+}
+
+.profile-dropdown li:hover {
+  background-color: #f1f3f5;
+  /* Light hover effect */
 }

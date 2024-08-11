@@ -1,14 +1,17 @@
 .layout-container {
-    display: flex;
-    height: 100vh; /* Ensure it takes the full height of the viewport */
-  }
+  display: flex;
+  height: 100vh;
+  /* Full height of the viewport */
+}
 
-  .SideNavigation {
-    flex: 0 0 250px; /* Adjust the width as needed */
-    height: 100%; /* Ensure it takes the full height */
-  }
-
-  .main-content {
-    flex: 1;
-    overflow-y: auto; /* Enable scrolling if the content is too tall */
-  }
+.main-content {
+  flex: 1;
+  display: flex;
+  /* Add Flexbox */
+  justify-content: center;
+  /* Centers child horizontally */
+  overflow-y: auto;
+  /* Enable scrolling if the content is too tall */
+  padding: 20px;
+  /* Optional: Add some padding */
+}

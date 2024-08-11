@@ -1,3 +1,3 @@
-import AllExpenses from './AllExpenses';
+import AllExpensesPage from "./AllExpensesPage";
 
-export default AllExpenses
+export default AllExpensesPage;

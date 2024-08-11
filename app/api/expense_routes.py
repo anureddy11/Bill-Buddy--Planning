@@ -1,9 +1,22 @@
 from flask import Flask, render_template, redirect, Blueprint, jsonify, request
 from flask_login import current_user, login_required
-from app.models import Expense, ExpenseShare, db
+from app.models import Expense, ExpenseShare, db, User
 
 
 expense_routes = Blueprint('expenses', __name__)
+
+def get_expense_by_id(expense_id):
+    """
+    get expense by id
+    """
+
+    expense = Expense.query.filter(Expense.id == expense_id)
+
+    if not expense:
+        return {
+            "error": "expense does not exist"
+        }
+    return expense[0].to_dict()
 
 
 @expense_routes.route('/')
@@ -17,7 +30,10 @@ def expenses():
     user_shares_list = []
 
     for a in user_shares:
-        user_shares_list.append(a.to_dict())
+        expense_share_dict = a.to_dict()
+        owner_expense = get_expense_by_id(expense_share_dict['expense_id'])
+        expense_share_dict['description'] = owner_expense['description']
+        user_shares_list.append(expense_share_dict)
 
 
     arr = [expense.to_dict() for expense in expenses]
@@ -27,7 +43,9 @@ def expenses():
         shares = ExpenseShare.query.filter(ExpenseShare.expense_id == i.id).all()
         i.expenseShares = []
         for j in shares:
-            i.expenseShares.append({'user_id': j.user_id, "amount": j.amount, "settled": j.settled})
+            user_info = User.query.filter(j.user_id == User.id).first()
+            user_dict = user_info.to_dict()
+            i.expenseShares.append({'user_id': j.user_id, "amount": j.amount, "settled": j.settled, "username": user_dict["username"]})
         arr[y]['expenseShares'] = i.expenseShares
         y += 1
 
@@ -35,9 +53,10 @@ def expenses():
         'expenses': arr,
         'shares': user_shares_list
     }
-
-    print(return_obj)
     return jsonify(return_obj), 200
+
+
+
 
 @expense_routes.route('/', methods=['POST'])
 @login_required

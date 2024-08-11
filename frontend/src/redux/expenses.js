@@ -21,7 +21,7 @@ export const getExpenses = ()=> async dispatch => {
 
 
 const expensesReducer = (state = initialState, action) => {
-    switch(action.type) {
+    switch (action.type) {
         case LOAD_EXPENSES: {
             const newExpenses = {'expenses': {}, 'shares': {}}
             action.data.expenses.forEach(expense => {

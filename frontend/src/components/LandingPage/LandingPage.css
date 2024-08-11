@@ -1,8 +1,48 @@
-.landingpage-header {
-    flex-grow: 1;
+.landingpage-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    /* Centers content horizontally */
+    height: 100%;
+    /* Ensure it takes the full height of the parent */
     text-align: center;
+    /* Center-align the text */
+    padding: 20px;
+    /* Add some padding for spacing */
+    font-family: 'Arial', sans-serif;
+    /* Use this font for all other fonts! */
+}
+
+.landingpage-header {
+    max-width: 800px;
+    /* Limit the width for better readability */
+}
+
+.landingpage-header h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    /* Add some space below the title */
+    color: #2c3e50;
+}
+
+.landingpage-header h2 {
+    font-size: 1.5rem;
+    font-weight: 300;
+    color: #34495e;
+    margin-top: 0;
+    line-height: 1.4;
+}
+
+
+@media (max-width: 768px) {
+    .landingpage-header h1 {
+        font-size: 2.5rem;
+        /* Slightly smaller on smaller screens */
+    }
+
+    .landingpage-header h2 {
+        font-size: 1.25rem;
+        /* Adjust subtitle size for smaller screens */
+    }
 }

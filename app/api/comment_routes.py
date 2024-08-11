@@ -35,7 +35,24 @@ def create_comment(expenseId):
     db.session.add(new_comment)
     db.session.commit()
     
-    return jsonify(new_comment.to_dict()), 201
+    # Get the user details too
+    user = User.query.get(current_user.id)
+    
+    # Format the user details in response
+    
+    return jsonify({
+        "id": new_comment.id,
+        "content": new_comment.content,
+        "user": {
+            "id": user.id,
+            "first_name": user.first_name,
+            "last_name": user.last_name,
+            "username": user.username,
+        },
+        "expense_id": new_comment.expense_id,
+        "created_at": new_comment.created_at,
+        "updated_at": new_comment.updated_at
+    }), 201
 
 # View All Comments on an Expense (READ)
 @comment_routes.route('/<int:expenseId>/comments', methods=['GET'])

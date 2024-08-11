@@ -2,16 +2,47 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* Center horizontally */
-    margin-left: 200px;
-    /* Add space equal to the width of the sidebar */
-    height: 100vh;
-    /* Full height of the viewport */
+    /* Centers content horizontally */
+    height: 100%;
+    /* Ensure it takes the full height of the parent */
+    text-align: center;
+    /* Center-align the text */
+    padding: 20px;
+    /* Add some padding for spacing */
+    font-family: 'Arial', sans-serif;
+    /* Use this font for all other fonts! */
 }
 
 .landingpage-header {
-    text-align: center;
-    padding: 20px;
     max-width: 800px;
-    /* Optional: limit the width for better text presentation */
+    /* Limit the width for better readability */
+}
+
+.landingpage-header h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    /* Add some space below the title */
+    color: #2c3e50;
+}
+
+.landingpage-header h2 {
+    font-size: 1.5rem;
+    font-weight: 300;
+    color: #34495e;
+    margin-top: 0;
+    line-height: 1.4;
+}
+
+
+@media (max-width: 768px) {
+    .landingpage-header h1 {
+        font-size: 2.5rem;
+        /* Slightly smaller on smaller screens */
+    }
+
+    .landingpage-header h2 {
+        font-size: 1.25rem;
+        /* Adjust subtitle size for smaller screens */
+    }
 }

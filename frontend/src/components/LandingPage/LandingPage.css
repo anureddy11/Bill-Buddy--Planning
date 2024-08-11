@@ -1,8 +1,17 @@
-.landingpage-header {
-    flex-grow: 1;
+.landingpage-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    /* Center horizontally */
+    margin-left: 200px;
+    /* Add space equal to the width of the sidebar */
+    height: 100vh;
+    /* Full height of the viewport */
+}
+
+.landingpage-header {
     text-align: center;
+    padding: 20px;
+    max-width: 800px;
+    /* Optional: limit the width for better text presentation */
 }

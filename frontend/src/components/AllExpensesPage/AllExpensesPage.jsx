@@ -2,7 +2,7 @@ import { useParams, Link, useNavigate } from "react-router-dom"
 import { useEffect, useState} from "react"
 import { useSelector, useDispatch } from 'react-redux';
 import { getExpenses } from "../../redux/expenses";
-import './AllExpenses.css';
+import './AllExpensesPage.css';
 
 const Expenses = () =>{
     const dispatch = useDispatch()
@@ -15,13 +15,6 @@ const Expenses = () =>{
     const expensesState = useSelector((state) => {
         return Object.values(state.expense)
     })
-
-    const hiddenClass = () => {
-        if (isHidden === true) {
-            return 'expense-shares hidden'
-        }
-        return 'expense-shares'
-    }
 
     if (expensesState[0]) {
         const expenses = Object.values(expensesState[0])

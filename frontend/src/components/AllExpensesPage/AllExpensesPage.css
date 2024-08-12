@@ -18,6 +18,9 @@
     margin-left: 50px;
     border-style: solid;
     height: fit-content;
+}
+
+.hover {
     cursor: pointer;
 }
 

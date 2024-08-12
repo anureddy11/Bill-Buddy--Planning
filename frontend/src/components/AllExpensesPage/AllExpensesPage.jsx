@@ -2,11 +2,15 @@ import { useParams, Link, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
 import { useSelector, useDispatch } from 'react-redux';
 import { getExpenses } from "../../redux/expenses";
+import { thunkCreateComment } from "../../redux/comments"
 import './AllExpensesPage.css';
 
 const Expenses = () => {
     const dispatch = useDispatch()
     const [activeId, setActiveId] = useState(null)
+    const [commentContent, setCommentContent] = useState("");
+    const [selectedExpenseId, setSelectedExpenseId] = useState(null); // Tracking the currently selected expense or share
+
 
     useEffect(() => {
         dispatch(getExpenses())
@@ -15,6 +19,26 @@ const Expenses = () => {
     const expensesState = useSelector((state) => {
         return Object.values(state.expense)
     })
+
+    // Handle the comment change in state
+    const handleCommentChange = (e) => {
+        setCommentContent(e.target.value)
+    }
+
+    const handleCommentSubmit = (expenseId, shareId = null) => {
+        // Prepare the data payload based on whether it's for an expense or a specific share
+        const payload = {
+            expense_id: expenseId,
+            content: commentContent,
+        };
+        if (shareId) {
+            payload.share_id = shareId;
+        }
+
+        // Dispatch the create comment action
+        dispatch(thunkCreateComment(expenseId, payload));
+        setCommentContent(""); // Clear the textarea after submission
+    };
 
     if (expensesState[0]) {
         const expenses = Object.values(expensesState[0])
@@ -37,9 +61,18 @@ const Expenses = () => {
                                                 <p>user: {share.username}</p>
                                                 <p>amount: {share.amount}</p>
                                                 <p>settled: {share.settled}</p>
+                                                <textarea
+                                                    value={commentContent}
+                                                    onChange={handleCommentChange}
+                                                    placeholder="Add a comment..."
+                                                />
+                                                <button onClick={() => handleCommentSubmit(expense.id, share.id)}>
+                                                    POST
+                                                </button>
                                             </div>
                                         )
                                     })}
+
                                 </div>
                             )
                         })}
@@ -52,6 +85,14 @@ const Expenses = () => {
                                     <p> Amount: ${share.amount} </p>
                                     <p> Description: {share.description}</p>
                                     <p> Settled: {share.settled}</p>
+                                    <textarea
+                                        value={commentContent}
+                                        onChange={handleCommentChange}
+                                        placeholder="Add a comment..."
+                                    />
+                                    <button onClick={() => handleCommentSubmit(share.expense_id, share.id)}>
+                                        POST
+                                    </button>
                                 </div>
                             )
                         })}
@@ -62,7 +103,7 @@ const Expenses = () => {
     }
 
     return (
-        <h1>loading</h1>
+        <h1>Loading...</h1>
     )
 }
 

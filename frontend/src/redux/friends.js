@@ -5,10 +5,10 @@ const REJECT_FRIEND = 'REJECT_FRIEND';
 const REMOVE_FRIEND = 'REMOVE_FRIEND';
 const FRIEND_ERROR = 'FRIEND_ERROR';
 
-const getFriends = (friends) => ({
+const getFriends = (friendsData) => ({
     type: GET_FRIENDS,
-    payload: friends,
-});
+    payload: friendsData,
+})
 
 const addFriend = (friend) => ({
     type: ADD_FRIEND,
@@ -40,7 +40,7 @@ export const thunkGetFriends = () => async (dispatch) => {
         const response = await fetch('/api/friends/');
         const data = await response.json();
         if (response.ok) {
-            dispatch(getFriends(data.friends));
+            dispatch(getFriends({ friends: data.friends, pending: data.pending_requests }));
         } else {
             dispatch(friendError(data.message));
         }
@@ -112,21 +112,34 @@ export const thunkRemoveFriend = (friendId) => async (dispatch) => {
 const initialState = {
     byId: {},
     allIds: [],
+    pendingById: {},
+    pendingIds: [],
     error: null,
 };
 
 const friendsReducer = (state = initialState, action) => {
     switch (action.type) {
         case GET_FRIENDS:
-            const normalizedFriends = action.payload.reduce((acc, friend) => {
+            const { friends, pending } = action.payload;
+
+            const normalizedFriends = friends.reduce((acc, friend) => {
                 acc.byId[friend.id] = friend;
                 acc.allIds.push(friend.id);
                 return acc;
             }, { byId: {}, allIds: [] });
+
+            const normalizedPending = pending.reduce((acc, request) => {
+                acc.pendingById[request.id] = request;
+                acc.pendingIds.push(request.id);
+                return acc;
+            }, { pendingById: {}, pendingIds: [] });
+
             return {
                 ...state,
                 byId: normalizedFriends.byId,
                 allIds: normalizedFriends.allIds,
+                pendingById: normalizedPending.pendingById,
+                pendingIds: normalizedPending.pendingIds,
                 error: null,
             };
         case ADD_FRIEND:

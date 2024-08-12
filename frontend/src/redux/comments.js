@@ -1,5 +1,3 @@
-// redux/comments.js
-
 // Action types
 const GET_COMMENTS = 'comments/getComments'
 

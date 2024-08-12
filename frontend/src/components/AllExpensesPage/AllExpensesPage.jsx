@@ -13,9 +13,13 @@ const Expenses = () => {
         dispatch(getExpenses());
     }, [dispatch]);
 
+    // Grabbing states
     const expensesState = useSelector((state) => {
         return Object.values(state.expense);
     });
+    const commentsState = useSelector((state) => {
+        return Object.values(state.comments.comments)
+    })
 
     // Handle the comment change in state 
     const handleCommentChange = (shareId, content) => {
@@ -39,6 +43,11 @@ const Expenses = () => {
         dispatch(thunkCreateComment(expenseId, payload));
         setCommentContent({ ...commentContent, [shareId]: "" }); // Clear the specific textarea after submission
     };
+
+    // Filter comments based on expenseId
+    const getCommentsForExpense = (expenseId) => {
+        return Object.values(commentsState).filter(comment => comment.expense_id === expenseId)
+    }
 
     if (expensesState[0]) {
         const expenses = Object.values(expensesState[0]);
@@ -69,6 +78,13 @@ const Expenses = () => {
                                                 <button onClick={() => handleCommentSubmit(expense.id, share.id)}>
                                                     POST
                                                 </button>
+                                                <div className="comments-list">
+                                                    {getCommentsForExpense(expense.id).map(comment => (
+                                                        <div key={comment.id} className="comment-item">
+                                                            <p><strong>{comment.user.first_name} {comment.user.last_name}</strong>: {comment.content}</p>
+                                                        </div>
+                                                    ))}
+                                                </div>
                                             </div>
                                         );
                                     })}
@@ -92,6 +108,13 @@ const Expenses = () => {
                                     <button onClick={() => handleCommentSubmit(share.expense_id, share.id)}>
                                         POST
                                     </button>
+                                    <div className="comments-list">
+                                        {getCommentsForExpense(share.expense_id).map(comment => (
+                                            <div key={comment.id} className="comment-item">
+                                                <p><strong>{comment.user.first_name} {comment.user.last_name}</strong>: {comment.content}</p>
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
                             );
                         })}

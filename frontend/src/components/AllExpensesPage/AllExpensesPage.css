@@ -38,3 +38,46 @@
 .expense-shares.hidden {
     display: none;
 }
+
+
+.comments-list {
+    margin-top: 10px;
+    padding-left: 20px;
+}
+
+.comment-item {
+    margin-bottom: 10px;
+    padding: 10px 15px;
+    background-color: #265486;
+    /* Set the bubble color */
+    color: white;
+    /* Ensure text is visible against the dark background */
+    border-radius: 20px;
+    max-width: 60%;
+    position: relative;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    font-size: 14px;
+}
+
+.comment-item:before {
+    content: "";
+    position: absolute;
+    top: 10px;
+    left: -10px;
+    border-width: 10px;
+    border-style: solid;
+    border-color: transparent #265486 transparent transparent;
+    /* Match the arrow color with the bubble */
+}
+
+.comment-item p {
+    margin: 0;
+    padding: 0;
+}
+
+.comment-item strong {
+    font-weight: bold;
+    color: #fff;
+    /* Keep the username bold and white for visibility */
+    margin-right: 5px;
+}

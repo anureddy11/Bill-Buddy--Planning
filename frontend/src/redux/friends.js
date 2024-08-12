@@ -49,17 +49,21 @@ export const thunkGetFriends = () => async (dispatch) => {
     }
 };
 
-export const thunkRequestFriend = (friendId) => async (dispatch) => {
+export const thunkRequestFriend = (username) => async (dispatch) => {
     try {
-        const response = await fetch(`/api/friends/${friendId}/request`, { method: 'POST' });
+        const response = await fetch(`/api/friends/${username}/request`, { method: 'POST' });
         const data = await response.json();
+
         if (response.ok) {
             dispatch(addFriend(data));
+            return { success: true, data }; // Return success response
         } else {
             dispatch(friendError(data.message));
+            return { success: false, message: data.message }; // Return error response
         }
     } catch (error) {
         dispatch(friendError(error.toString()));
+        return { success: false, message: error.toString() }; // Return error response
     }
 };
 

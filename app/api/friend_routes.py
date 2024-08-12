@@ -30,12 +30,20 @@ def get_all_friends():
     return jsonify({"friends": friends_list})
 
 # ROUTE TO REQUEST A NEW FRIEND
-@friend_routes.route('/<int:friendId>/request', methods=['POST'])
+@friend_routes.route('/<username>/request', methods=['POST'])
 @login_required
-def request_friend(friendId):
+def request_friend(username):
     """
-    Request a new friendship via friend ID.
+    Request a new friendship via username.
     """
+    # Find the user by username
+    user = User.query.filter_by(username=username).first()
+
+    if not user:
+        return jsonify({"message": "User with the specified username couldn't be found"}), 404
+
+    friendId = user.id
+
     # Check if the friend relationship already exists or is pending
     existing_friend = Friend.query.filter(
         or_(
@@ -46,10 +54,6 @@ def request_friend(friendId):
 
     if existing_friend:
         return jsonify({"message": "User is already a friend or request is pending"}), 400
-
-    user = User.query.get(friendId)
-    if not user:
-        return jsonify({"message": "User with the specified ID couldn't be found"}), 404
 
     friend_request = Friend(
         user1_id=current_user.id,

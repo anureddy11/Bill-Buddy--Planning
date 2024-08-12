@@ -5,6 +5,7 @@ from flask_migrate import Migrate
 from flask_wtf.csrf import CSRFProtect, generate_csrf
 from flask_login import LoginManager
 from .models import db, User, Payment, Expense, Friend, ExpenseShare, Comment
+from .api.friend_routes import friend_routes
 from .api.user_routes import user_routes
 from .api.auth_routes import auth_routes
 from .api.expense_routes import expense_routes
@@ -30,6 +31,7 @@ app.cli.add_command(seed_commands)
 
 app.config.from_object(Config)
 app.register_blueprint(user_routes, url_prefix='/api/users')
+app.register_blueprint(friend_routes, url_prefix='/api/friends')
 app.register_blueprint(auth_routes, url_prefix='/api/auth')
 app.register_blueprint(expense_routes, url_prefix='/api/expenses')
 app.register_blueprint(comment_routes, url_prefix='/api/expenses')

@@ -1,35 +1,35 @@
-import { useParams, Link, useNavigate } from "react-router-dom"
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { getExpenses } from "../../redux/expenses";
-import { thunkCreateComment } from "../../redux/comments"
+import { thunkCreateComment } from "../../redux/comments";
 import './AllExpensesPage.css';
 
 const Expenses = () => {
-    const dispatch = useDispatch()
-    const [activeId, setActiveId] = useState(null)
-    const [commentContent, setCommentContent] = useState("");
-    const [selectedExpenseId, setSelectedExpenseId] = useState(null); // Tracking the currently selected expense or share
-
+    const dispatch = useDispatch();
+    const [activeId, setActiveId] = useState(null);
+    const [commentContent, setCommentContent] = useState({}); // Store content of comments by shareId
 
     useEffect(() => {
-        dispatch(getExpenses())
-    }, [])
+        dispatch(getExpenses());
+    }, [dispatch]);
 
     const expensesState = useSelector((state) => {
-        return Object.values(state.expense)
-    })
+        return Object.values(state.expense);
+    });
 
-    // Handle the comment change in state
-    const handleCommentChange = (e) => {
-        setCommentContent(e.target.value)
-    }
+    // Handle the comment change in state 
+    const handleCommentChange = (shareId, content) => {
+        setCommentContent({
+            ...commentContent,
+            [shareId]: content, // Store comment content specific to each share
+        });
+    };
 
     const handleCommentSubmit = (expenseId, shareId = null) => {
         // Prepare the data payload based on whether it's for an expense or a specific share
         const payload = {
             expense_id: expenseId,
-            content: commentContent,
+            content: commentContent[shareId] || "", // Retrieve content for the specific share
         };
         if (shareId) {
             payload.share_id = shareId;
@@ -37,12 +37,12 @@ const Expenses = () => {
 
         // Dispatch the create comment action
         dispatch(thunkCreateComment(expenseId, payload));
-        setCommentContent(""); // Clear the textarea after submission
+        setCommentContent({ ...commentContent, [shareId]: "" }); // Clear the specific textarea after submission
     };
 
     if (expensesState[0]) {
-        const expenses = Object.values(expensesState[0])
-        const shares = Object.values(expensesState[1])
+        const expenses = Object.values(expensesState[0]);
+        const shares = Object.values(expensesState[1]);
         return (
             <>
                 <div className="expense-content">
@@ -58,23 +58,22 @@ const Expenses = () => {
                                     {expense.expenseShares.map(share => {
                                         return (
                                             <div key={share.id} className={expense.id === activeId ? 'expense-shares' : 'expense-shares hidden'}>
-                                                <p>user: {share.username}</p>
-                                                <p>amount: {share.amount}</p>
-                                                <p>settled: {share.settled}</p>
+                                                <p>User: {share.username}</p>
+                                                <p>Amount: {share.amount}</p>
+                                                <p>Settled: {share.settled}</p>
                                                 <textarea
-                                                    value={commentContent}
-                                                    onChange={handleCommentChange}
+                                                    value={commentContent[share.id] || ""} // Bind the specific comment content to the textarea
+                                                    onChange={(e) => handleCommentChange(share.id, e.target.value)} // Update the comment content
                                                     placeholder="Add a comment..."
                                                 />
                                                 <button onClick={() => handleCommentSubmit(expense.id, share.id)}>
                                                     POST
                                                 </button>
                                             </div>
-                                        )
+                                        );
                                     })}
-
                                 </div>
-                            )
+                            );
                         })}
                     </div>
                     <div className="shares-list">
@@ -86,26 +85,25 @@ const Expenses = () => {
                                     <p> Description: {share.description}</p>
                                     <p> Settled: {share.settled}</p>
                                     <textarea
-                                        value={commentContent}
-                                        onChange={handleCommentChange}
+                                        value={commentContent[share.id] || ""} // Bind the specific comment content to the textarea
+                                        onChange={(e) => handleCommentChange(share.id, e.target.value)} // Update the comment content
                                         placeholder="Add a comment..."
                                     />
                                     <button onClick={() => handleCommentSubmit(share.expense_id, share.id)}>
                                         POST
                                     </button>
                                 </div>
-                            )
+                            );
                         })}
                     </div>
                 </div>
             </>
-        )
+        );
     }
 
     return (
         <h1>Loading...</h1>
-    )
-}
+    );
+};
 
-
-export default Expenses
+export default Expenses;

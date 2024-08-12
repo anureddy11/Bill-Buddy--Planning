@@ -51,7 +51,7 @@ export const thunkGetComments = (expenseId) => async (dispatch) => {
     dispatch(clearComments());
 
     // Fetch new comments for the specified expenseId
-    const response = await fetch(`/api/expenses/${expenseId}/comments/`)
+    const response = await fetch(`/api/expenses/${expenseId}/comments`)
 
     if (response.ok) {
         const data = await response.json();
@@ -60,7 +60,7 @@ export const thunkGetComments = (expenseId) => async (dispatch) => {
 }
 
 export const thunkCreateComment = (expenseId, content) => async (dispatch) => {
-    const response = await csrfFetch(`/api/expenses/${expenseId}/comments/`, {
+    const response = await fetch(`/api/expenses/${expenseId}/comments`, {
         method: 'POST',
         headers: {
             "Content-Type": "application/json"
@@ -77,7 +77,7 @@ export const thunkCreateComment = (expenseId, content) => async (dispatch) => {
 }
 
 export const thunkUpdateComment = (expenseId, commentId, content) => async (dispatch) => {
-    const response = await fetch(`/api/expenses/${expenseId}/comments/${commentId}/`, {
+    const response = await fetch(`/api/expenses/${expenseId}/comments/${commentId}`, {
         method: 'PUT',
         headers: {
             "Content-Type": "application/json"

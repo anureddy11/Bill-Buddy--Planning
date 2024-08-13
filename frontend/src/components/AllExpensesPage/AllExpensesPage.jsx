@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { getExpenses } from "../../redux/expenses";
-import { thunkCreateComment } from "../../redux/comments";
+import { thunkCreateComment, thunkGetComments } from "../../redux/comments";
+
 import './AllExpensesPage.css';
 
 const Expenses = () => {
@@ -11,6 +12,7 @@ const Expenses = () => {
 
     useEffect(() => {
         dispatch(getExpenses());
+        dispatch(thunkGetComments())
     }, [dispatch]);
 
     // Grabbing states

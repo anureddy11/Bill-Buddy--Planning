@@ -1,4 +1,4 @@
-from app.models import db, User, environment, SCHEMA, Payment, Expense, ExpenseShare, Friend, Comment
+from app.models import db, User, environment, SCHEMA, ExpenseShare
 from sqlalchemy.sql import text
 
 
@@ -12,7 +12,7 @@ def seed_expense_shares():
 
     shares = []
     for expense in expenses:
-        amount_per_user = expense['total_amount'] / 3
+        amount_per_user = round(expense['total_amount'] / 3, 2)  # Round to 2 decimal places
         for user_id in range(1, 4):
             share = ExpenseShare(
                 user_id=user_id,

@@ -2,6 +2,7 @@ from .db import db, environment, SCHEMA, add_prefix_for_prod
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from datetime import datetime, timezone
+from sqlalchemy import Numeric
 
 
 
@@ -16,7 +17,7 @@ class Expense(db.Model):
     owner_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id')), nullable=False)
     description = db.Column(db.String(500))
     settled = db.Column(db.String(50), nullable=False)
-    amount = db.Column(db.Float, nullable=False)
+    amount = db.Column(Numeric(precision=10, scale=2), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.now(timezone.utc), nullable=False)
     updated_at = db.Column(db.DateTime, default=datetime.now(timezone.utc), onupdate=datetime.utcnow, nullable=False)
 

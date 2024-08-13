@@ -2,9 +2,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* Centers content horizontally */
     height: 100%;
-    /* Ensure it takes the full height of the parent */
     text-align: center;
     /* Center-align the text */
     padding: 20px;

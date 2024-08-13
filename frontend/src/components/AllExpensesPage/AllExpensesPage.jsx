@@ -22,8 +22,9 @@ const AllExpensesPage = () => {
     const error = useSelector((state) => state.expense.error);
 
     const [newComment, setNewComment] = useState({});
-
     const [expandedExpense, setExpandedExpense] = useState(null);
+    const [editCommentId, setEditCommentId] = useState(null)
+    const [editCommentContent, setEditCommentContent] = useState('')
 
     useEffect(() => {
         dispatch(thunkGetExpenses());
@@ -67,6 +68,17 @@ const AllExpensesPage = () => {
         dispatch(thunkDeleteComment(expenseId, commentId));
         dispatch(thunkGetComments(expenseId));
     }
+
+    const handleUpdateComment = async (expenseId, commentId) => {
+        if (editCommentContent.trim()) {
+            const updatedComment = await dispatch(thunkUpdateComment(expenseId, commentId, { content: editCommentContent }));
+            if (updatedComment) {
+                setEditCommentId(null); // Exit edit mode
+                setEditCommentContent(''); // Clear the input
+                dispatch(thunkGetComments(expenseId)); // Refresh comments
+            }
+        }
+    };
 
     const toggleExpense = (expenseId) => {
         if (expandedExpense === expenseId) {
@@ -131,7 +143,7 @@ const AllExpensesPage = () => {
                                                     <p><strong>{comment.user.firstName} {comment.user.lastName}</strong>: {comment.content}</p>
                                                     {
                                                         comment.userId === currentUserId && (
-                                                            <button id='delete-comments-button' onClick={() => handleDeleteComment(comment.expenseId, comment.id)}>Delete</button>
+                                                            <button id='AllExpenses-delete-button' onClick={() => handleDeleteComment(comment.expenseId, comment.id)}>Delete</button>
                                                         )
                                                     }
                                                 </div>
@@ -149,7 +161,7 @@ const AllExpensesPage = () => {
                         </div>
                     ))
                 ) : (
-                    <p>No expenses to show.</p>
+                    <h2 id="no-expenses-message">No expenses to show.</h2>
                 )}
             </div>
         </div>

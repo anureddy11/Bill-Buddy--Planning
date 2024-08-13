@@ -115,6 +115,7 @@ const UpdateExpense = () => {
         const friendObj = friends.filter(f =>
             f["first_name"].includes(friend.split(' ')[0]) && f["last_name"].includes(friend.split(' ')[1])
         )
+        friendObj[0].user_id = friendObj[0].id
         setFriendArr([...friendArr, ...friendObj])
         setAmountElements([...amountElements, {id: amountElements.length, amount: 0}])
         setFriend('');
@@ -169,6 +170,8 @@ const UpdateExpense = () => {
 
         navigate('/all-expenses')
     }
+
+    console.log(friendArr)
 
     const handleClickOutside = (event) => {
         if (!event.target.closest('.autocomplete-container')) {

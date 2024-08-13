@@ -7,6 +7,7 @@ Create Date: 2024-07-30 20:06:11.046289
 """
 from alembic import op
 import sqlalchemy as sa
+from sqlalchemy import Numeric
 
 
 # revision identifiers, used by Alembic.
@@ -46,7 +47,7 @@ def upgrade():
     sa.Column('owner_id', sa.Integer(), nullable=False),
     sa.Column('description', sa.String(length=500), nullable=True),
     sa.Column('settled', sa.String(length=50), nullable=False),
-    sa.Column('amount', sa.Float(), nullable=False),
+    sa.Column('amount', sa.Numeric(precision=10, scale=2), nullable=False),
     sa.Column('created_at', sa.DateTime(), nullable=False),
     sa.Column('updated_at', sa.DateTime(), nullable=False),
     sa.ForeignKeyConstraint(['owner_id'], ['users.id'], ),
@@ -69,7 +70,7 @@ def upgrade():
     sa.Column('user_id', sa.Integer(), nullable=False),
     sa.Column('expense_id', sa.Integer(), nullable=False),
     sa.Column('settled', sa.String(length=50), nullable=False),
-    sa.Column('amount', sa.Float(), nullable=False),
+    sa.Column('amount', sa.Numeric(precision=10, scale=2), nullable=False),
     sa.Column('created_at', sa.DateTime(), nullable=False),
     sa.Column('updated_at', sa.DateTime(), nullable=False),
     sa.ForeignKeyConstraint(['expense_id'], ['expenses.id'], ),

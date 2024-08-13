@@ -13,7 +13,10 @@ payment_router = Blueprint('payments', __name__,  url_prefix='/payments')
 @login_required
 def all_payments():
 
-    payments = Payment.query.filter_by(payer_id=current_user.id).all()
+    # payments = Payment.query.filter_by((Payment.payer_id==current_user.id) | (Payment.payee_id==current_user.id) ).all()
+    payments = Payment.query.filter(
+        (Payment.payer_id == current_user.id) | (Payment.payee_id == current_user.id)
+    ).all()
 
     payments_list = [payment.to_dict() for payment in payments]
 

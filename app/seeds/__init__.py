@@ -24,21 +24,21 @@ def seed():
         undo_users()
     seed_users()
 
-    # Add other seed functions here
-    seed_payments()
-    seed_friends()
-    seed_expenses()
-    seed_expense_shares()
-    seed_comments()
+
+    seed_friends()  # Assuming friends don't depend on other seeded data
+    seed_expenses()  # Expenses should be seeded before expense shares
+    seed_expense_shares()  # Expense shares depend on expenses
+    seed_comments()  # Comments depend on users and expenses
+    seed_payments()  # Payments should be last as they depend on comments, users, and possibly other data
 
 
 # Creates the `flask seed undo` command
 @seed_commands.command('undo')
 def undo():
-    undo_users()
     undo_payments()
-    undo_friends()
-    undo_expenses()
-    undo_expense_shares()
     undo_comments()
+    undo_expense_shares()
+    undo_expenses()
+    undo_friends()
+    undo_users()
     # Add other undo functions here

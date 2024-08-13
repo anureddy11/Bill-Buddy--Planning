@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { thunkGetExpenses } from '../../redux/expenses';
-import { thunkGetComments, thunkCreateComment } from '../../redux/comments';
+import { thunkGetComments, thunkCreateComment, thunkDeleteComment } from '../../redux/comments';
 import './AllExpensesPage.css';
+
 
 const AllExpensesPage = () => {
     const dispatch = useDispatch();
@@ -12,6 +13,8 @@ const AllExpensesPage = () => {
     );
 
     const comments = useSelector((state) => state.comments.comments);
+
+    const currentUserId = useSelector((state) => state.session.user?.id); // Get the current user's ID
 
     const error = useSelector((state) => state.expense.error);
 
@@ -37,6 +40,11 @@ const AllExpensesPage = () => {
             dispatch(thunkGetComments(expenseId));
         }
     };
+
+    const handleDeleteComment = async (expenseId, commentId) => {
+        dispatch(thunkDeleteComment(expenseId, commentId));
+        dispatch(thunkGetComments(expenseId));
+    }
 
     const toggleExpense = (expenseId) => {
         if (expandedExpense === expenseId) {
@@ -81,6 +89,11 @@ const AllExpensesPage = () => {
                                             {Object.values(comments).filter(comment => comment.expenseId === expense.id).map(comment => (
                                                 <div key={comment.id} className="comment-item">
                                                     <p><strong>{comment.user.firstName} {comment.user.lastName}</strong>: {comment.content}</p>
+                                                    {
+                                                        comment.userId === currentUserId && (
+                                                            <button id='delete-comments-button' onClick={() => handleDeleteComment(comment.expenseId, comment.id)}>Delete</button>
+                                                        )
+                                                    }
                                                 </div>
                                             ))}
                                         </div>

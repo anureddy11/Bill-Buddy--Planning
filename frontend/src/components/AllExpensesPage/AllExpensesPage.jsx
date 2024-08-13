@@ -149,7 +149,7 @@ const AllExpensesPage = () => {
                         </div>
                     ))
                 ) : (
-                    <p>No expenses to show.</p>
+                    <h2 id="no-expenses-message">No expenses to show.</h2>
                 )}
             </div>
         </div>

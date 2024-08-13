@@ -1,4 +1,5 @@
 .all-expenses-page {
+    font-family: 'Arial', sans-serif;
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
@@ -17,6 +18,7 @@ h1 {
 .expenses-list {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 15px;
 }
 
@@ -49,7 +51,8 @@ h1 {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 10px;
-    position: relative; /* Ensure arrow positioning relative to header */
+    position: relative;
+    /* Ensure arrow positioning relative to header */
 }
 
 .expense-header h2 {
@@ -155,7 +158,8 @@ button {
     align-items: center;
     justify-content: center;
     height: 1.75rem;
-    margin-left: .5rem; /* Reduces space between the buttons */
+    margin-left: .5rem;
+    /* Reduces space between the buttons */
 }
 
 button:hover {
@@ -173,4 +177,10 @@ p {
 
 .hidden {
     display: none;
+}
+
+#no-expenses-message {
+    font-family: 'Arial', sans-serif;
+    font-size: 18px;
+    color: #535562;
 }

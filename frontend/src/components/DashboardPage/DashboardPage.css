@@ -17,8 +17,8 @@
 }
 
 .dashboard h1 {
-    font-size: 24px;
     margin-bottom: 20px;
+    font-family: 'Arial', sans-serif;
 }
 
 .add-expense-button,

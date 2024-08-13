@@ -97,19 +97,3 @@
     text-align: left;
 
 }
-
-/* Responsive design adjustments */
-@media (max-width: 500px) {
-    .login-modal-content {
-        padding: 20px;
-    }
-
-    .login-modal-title {
-        font-size: 22px;
-    }
-
-    .login-button {
-        font-size: 14px;
-        padding: 10px;
-    }
-}

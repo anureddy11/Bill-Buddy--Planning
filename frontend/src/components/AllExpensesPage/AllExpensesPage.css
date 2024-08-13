@@ -49,12 +49,27 @@ h1 {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 10px;
+    position: relative; /* Ensure arrow positioning relative to header */
 }
 
 .expense-header h2 {
     margin-right: 2rem;
     font-size: 1.2rem;
     color: #007bff;
+}
+
+.chevron-icon {
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.25rem;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.expense-header .chevron-icon:hover {
+    transform: translateX(-50%) scale(1.2);
 }
 
 .settled-status {

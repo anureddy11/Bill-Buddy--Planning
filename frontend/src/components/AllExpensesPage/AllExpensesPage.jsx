@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { thunkGetExpenses } from '../../redux/expenses';
 import { thunkGetComments, thunkCreateComment, thunkDeleteComment } from '../../redux/comments';
+import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import './AllExpensesPage.css';
 
@@ -87,10 +88,12 @@ const AllExpensesPage = () => {
                             <div className="expense-header" onClick={() => toggleExpense(expense.id)}>
                                 <h2>{expense.description}</h2>
                                 <p><strong>Amount:</strong> ${parseFloat(expense.amount).toFixed(2)}</p>
-
                                 <p className={`settled-status ${expense.settled === 'yes' ? 'settled' : 'unsettled'}`}>
                                     {expense.settled === 'yes' ? 'Settled' : 'Unsettled'}
                                 </p>
+                                <span className="chevron-icon">
+                                    {expandedExpense === expense.id ? <FaChevronUp /> : <FaChevronDown />}
+                                </span>
                             </div>
                             {expandedExpense === expense.id && (
                                 <>

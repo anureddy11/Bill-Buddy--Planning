@@ -92,12 +92,16 @@ function SideNavigation() {
                             <ul>
                                 {Object.values(pendingRequests).map(request => (
                                     <li key={request.id}>
-                                        <span>{request.first_name} {request.last_name}</span>
+                                        <div>
+                                            <span>{request.first_name} {request.last_name}</span>
+                                            <div className="request-buttons">
+                                                <button onClick={() => handleAccept(request.id)} className="accept-button">Accept</button>
+                                                <button onClick={() => handleReject(request.id)} className="reject-button">Reject</button>
+                                            </div>
+                                        </div>
                                     </li>
                                 ))}
                             </ul>
-                            <button onClick={() => handleAccept(request.id)} className="accept-button">Accept</button>
-                            <button onClick={() => handleReject(request.id)} className="reject-button">Reject</button>
                         </div>
                     )}
                 </ul>

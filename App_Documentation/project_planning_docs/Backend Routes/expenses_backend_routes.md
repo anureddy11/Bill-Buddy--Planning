@@ -75,7 +75,6 @@ Successful Response when the user is logged in.
 {
     "description": "Went to applebees for bachelor party",
     "ownerId": 1,
-    "groupId": 1,
     "amount": 100,
     "split": [
         {"userId": 1, "amount": 33.33, "settled": true},

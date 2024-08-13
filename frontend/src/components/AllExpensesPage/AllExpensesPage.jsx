@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { thunkGetExpenses } from '../../redux/expenses';
 import { thunkGetComments, thunkCreateComment, thunkDeleteComment } from '../../redux/comments';
+import { useNavigate } from 'react-router-dom';
 import './AllExpensesPage.css';
 
 
 const AllExpensesPage = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate()
 
     const expenses = useSelector((state) =>
         state.expense.allIds.map(id => state.expense.byId[id])
@@ -15,7 +17,7 @@ const AllExpensesPage = () => {
     const comments = useSelector((state) => state.comments.comments);
 
     const currentUserId = useSelector((state) => state.session.user?.id); // Get the current user's ID
-
+    const currentUserName = useSelector((state) => state.session.user?.username)
     const error = useSelector((state) => state.expense.error);
 
     const [newComment, setNewComment] = useState({});
@@ -25,6 +27,25 @@ const AllExpensesPage = () => {
     useEffect(() => {
         dispatch(thunkGetExpenses());
     }, [dispatch]);
+
+    const handleIsHidden = (ownerUsername) => {
+        if (ownerUsername === currentUserName) {
+            return ""
+        }
+        return "hidden"
+    }
+
+    const handleIsHiddenDelete = (ownerUsername, expenseShares) => {
+        if (ownerUsername === currentUserName) {
+            for (let i = 0; i < expenseShares; i++) {
+                if (expenseShares[i].settled === "yes") {
+                    return "hidden"
+                }
+            }
+            return ""
+        }
+        return "hidden"
+    }
 
     const handleCommentChange = (expenseId, content) => {
         setNewComment({
@@ -66,6 +87,8 @@ const AllExpensesPage = () => {
                             <div className="expense-header" onClick={() => toggleExpense(expense.id)}>
                                 <h2>{expense.description}</h2>
                                 <p><strong>Amount:</strong> ${parseFloat(expense.amount).toFixed(2)}</p>
+                                <button onClick={() => navigate(`/update-expense/${expense.id}`)} className={handleIsHidden(expense.ownerUsername)}>Update</button>
+                                <button className={handleIsHiddenDelete(expense.ownerUsername, expense.expenseShares)}>Delete</button>
                                 <p className={`settled-status ${expense.settled === 'yes' ? 'settled' : 'unsettled'}`}>
                                     {expense.settled === 'yes' ? 'Settled' : 'Unsettled'}
                                 </p>

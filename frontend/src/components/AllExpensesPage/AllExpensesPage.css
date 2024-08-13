@@ -132,3 +132,11 @@ button:hover {
     color: red;
     text-align: center;
 }
+
+p {
+    width: fit-content
+}
+
+.hidden {
+    display: none;
+}

@@ -28,6 +28,7 @@ def get_all_user_expenses():
     Get all expenses that the current user is involved in, either as the owner or as a share participant.
     """
     created_expenses = Expense.query.filter_by(owner_id=current_user.id).all()
+    print(created_expenses, "flag")
 
     involved_expense_ids = db.session.query(ExpenseShare.expense_id).filter_by(user_id=current_user.id).all()
     involved_expense_ids = [id[0] for id in involved_expense_ids]

@@ -1,16 +1,17 @@
 import { useParams, Link, useNavigate } from "react-router-dom"
 import { useEffect, useState} from "react"
 import { useSelector, useDispatch } from 'react-redux';
-import { thunkCreateExpense } from "../../redux/expenses";
-import "./CreateNewExpensePage.css"
+import { thunkUpdateExpense, thunkGetExpenses } from "../../redux/expenses";
 
-const CreateExpense = () => {
+const UpdateExpense = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const {expense_id} = useParams()
     const [errors, setErrors] = useState({})
 
     const [total, setTotal] = useState(0)
     const [description, setDescription] = useState('')
+    const [on, setOn] = useState('on')
 
 
     const [friend, setFriend] = useState('')
@@ -20,6 +21,30 @@ const CreateExpense = () => {
     const [evenVal, setEvenVal] = useState(0)
     const [isEven, setIsEven] = useState(false)
     const [amountElements, setAmountElements] = useState([])
+
+    const currentExpense = useSelector((state) => {
+        if (state.expense.byId) {
+            return state.expense.byId[expense_id]
+        }
+        return state.expense.byId
+    })
+
+    const setValues = () => {
+        if (currentExpense) {
+            setTotal(currentExpense.amount)
+            setDescription(currentExpense.description)
+            let arr1 = []
+            let arr2 = []
+            currentExpense.expenseShares.forEach((share, index) => {
+                console.log(share)
+                arr1.push({first_name: share.username, user_id: share.user_id})
+                arr2.push({id: index, amount: parseFloat(share.amount)})
+
+            })
+            setFriendArr(arr1)
+            setAmountElements(arr2)
+        }
+    }
 
 
     const handleDescription = (e) => {
@@ -80,8 +105,8 @@ const CreateExpense = () => {
 
         if (difference < .03 && difference !== 0) {
             let bigNum = (parseFloat(amountArr[amountArr.length-1].amount) * 100) + (difference * 100)
-            let smallNum = (bigNum / 100).toString()
-            amountArr[amountArr.length-1].amount = smallNum
+            let smallNum = (bigNum / 100).toFixed(2)
+            amountArr[amountArr.length-1].amount = parseFloat(smallNum)
         }
         setAmountElements(amountArr)
     }
@@ -102,11 +127,22 @@ const CreateExpense = () => {
 
 
     useEffect(() => {
+        if (!currentExpense) {
+            dispatch(thunkGetExpenses());
+        }
+
+        if (currentExpense && on === "on") {
+            setOn("off")
+            setValues()
+        }
+
         document.addEventListener('mousedown', handleClickOutside);
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
-    }, [friendArr, isEven, evenVal, handleFriend, amountElements, setAmountElements]);
+
+
+    }, [dispatch, friendArr, isEven, evenVal, handleFriend, amountElements, setAmountElements]);
 
     const friends =  useSelector((state) => {
         return Object.values(state.friend.byId)
@@ -117,7 +153,8 @@ const CreateExpense = () => {
         const splitArr = []
         friendArr.forEach((friend, index) => {
             let splitObj = {}
-            splitObj.user_id = friend.id
+            console.log(friend.user_id)
+            splitObj.user_id = friend.user_id
             splitObj.amount = parseFloat(amountElements[index]['amount'])
             splitObj.settled = "no"
             splitArr.push(splitObj)
@@ -128,7 +165,7 @@ const CreateExpense = () => {
             split: splitArr
         }
 
-        await dispatch(thunkCreateExpense(payload))
+        await dispatch(thunkUpdateExpense(expense_id, payload))
 
         navigate('/all-expenses')
     }
@@ -143,7 +180,7 @@ const CreateExpense = () => {
     return (
 
         <form className="expense-form" onSubmit={handleSubmit}>
-            <h2>Add an expense</h2>
+            <h2>Edit an expense</h2>
             <div>
             <lable>Amount</lable>
             <input type="number" name="amount" value={total} onChange={amountChange}/>
@@ -178,7 +215,7 @@ const CreateExpense = () => {
         {friendArr.map((friend, index) => {
                 return (
                     <>
-                    <p>{friend.first_name + " " + friend.last_name}</p>
+                    <p>{friend.first_name}</p>
                     <label>Split amount</label>
                     <input type="text" value={handleAmountElements(index)} onChange={(e) => {
                         e.preventDefault()
@@ -192,11 +229,11 @@ const CreateExpense = () => {
                 )
             })}
             <div>
-            <button className="submit-button">Submit</button>
+            <button className="submit-button">Update</button>
             </div>
         </form>
     )
 }
 
 
-export default CreateExpense
+export default UpdateExpense

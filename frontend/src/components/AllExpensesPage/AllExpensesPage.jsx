@@ -87,8 +87,7 @@ const AllExpensesPage = () => {
                             <div className="expense-header" onClick={() => toggleExpense(expense.id)}>
                                 <h2>{expense.description}</h2>
                                 <p><strong>Amount:</strong> ${parseFloat(expense.amount).toFixed(2)}</p>
-                                <button onClick={() => navigate(`/update-expense/${expense.id}`)} className={handleIsHidden(expense.ownerUsername)}>Update</button>
-                                <button className={handleIsHiddenDelete(expense.ownerUsername, expense.expenseShares)}>Delete</button>
+
                                 <p className={`settled-status ${expense.settled === 'yes' ? 'settled' : 'unsettled'}`}>
                                     {expense.settled === 'yes' ? 'Settled' : 'Unsettled'}
                                 </p>
@@ -97,6 +96,21 @@ const AllExpensesPage = () => {
                                 <>
                                     <div className="expense-details">
                                         <p><strong>Created by:</strong> {expense.ownerUsername}</p>
+                                        {currentUserName === expense.ownerUsername && (
+                                            <div className='manage-expense'>
+                                                <button
+                                                    id='AllExpenses-update-button'
+                                                    onClick={() => navigate(`/update-expense/${expense.id}`)}
+                                                    className={handleIsHidden(expense.ownerUsername)}>
+                                                    Update
+                                                </button>
+                                                <button
+                                                    id='AllExpenses-delete-button'
+                                                    className={handleIsHiddenDelete(expense.ownerUsername, expense.expenseShares)}>
+                                                    Delete
+                                                </button>
+                                            </div>
+                                        )}
                                     </div>
                                     <div className="expense-shares">
                                         <h3>Shares:</h3>

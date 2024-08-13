@@ -20,6 +20,15 @@ h1 {
     gap: 15px;
 }
 
+.expense-details {
+    display: flex;
+    align-items: center;
+}
+
+.manage-expense {
+    display: flex;
+}
+
 .expense-item {
     background-color: #ffffff;
     padding: 15px;
@@ -43,7 +52,7 @@ h1 {
 }
 
 .expense-header h2 {
-    margin: 0;
+    margin-right: 2rem;
     font-size: 1.2rem;
     color: #007bff;
 }
@@ -52,6 +61,7 @@ h1 {
     padding: 5px 10px;
     border-radius: 5px;
     font-size: 0.9rem;
+    margin-left: auto;
 }
 
 .settled-status.settled {
@@ -122,6 +132,15 @@ button {
     cursor: pointer;
     font-size: 1rem;
     transition: background-color 0.2s ease;
+}
+
+#AllExpenses-update-button,
+#AllExpenses-delete-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 1.75rem;
+    margin-left: .5rem; /* Reduces space between the buttons */
 }
 
 button:hover {

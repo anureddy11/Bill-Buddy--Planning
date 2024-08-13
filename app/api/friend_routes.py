@@ -11,23 +11,47 @@ friend_routes = Blueprint('friends', __name__)
 @login_required
 def get_all_friends():
     """
-    Returns the friends of the logged-in user.
+    Returns the accepted friends and pending friend requests of the logged-in user.
     """
-    friends = Friend.query.filter(
-        and_(Friend.requester == current_user.id, Friend.status == 'accepted')
+    accepted_friends = Friend.query.filter(
+        and_(
+            or_(Friend.user1_id == current_user.id, Friend.user2_id == current_user.id),
+            Friend.status == 'accepted'
+        )
+    ).all()
+
+    pending_requests = Friend.query.filter(
+        and_(Friend.user2_id == current_user.id, Friend.status == 'pending')
     ).all()
 
     friends_list = []
-    for friend in friends:
-        user = User.query.get(friend.user2_id)
+    pending_list = []
+
+    for friend in accepted_friends:
+        user_id = friend.user1_id if friend.user1_id != current_user.id else friend.user2_id
+        user = User.query.get(user_id)
         friends_list.append(OrderedDict([
             ("id", user.id),
             ("first_name", user.first_name),
             ("last_name", user.last_name),
-            ("email", user.email)
+            ("email", user.email),
+            ("status", "accepted")
         ]))
 
-    return jsonify({"friends": friends_list})
+    for request in pending_requests:
+        user = User.query.get(request.user1_id)  
+        pending_list.append(OrderedDict([
+            ("id", user.id),
+            ("first_name", user.first_name),
+            ("last_name", user.last_name),
+            ("email", user.email),
+            ("status", "pending")
+        ]))
+
+    return jsonify({
+        "friends": friends_list,
+        "pending_requests": pending_list
+    })
 
 # ROUTE TO REQUEST A NEW FRIEND
 @friend_routes.route('/<username>/request', methods=['POST'])

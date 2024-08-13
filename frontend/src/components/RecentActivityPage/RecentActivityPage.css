@@ -1,0 +1,42 @@
+.recent-activity {
+    padding: 20px;
+}
+
+.payment-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.payment-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+
+.payment-details {
+    margin-bottom: 16px;
+}
+
+.payment-actions {
+    display: flex;
+    justify-content: space-between;
+}
+
+.payment-actions button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.payment-actions .delete-btn {
+    background-color: #ff4d4d;
+    color: white;
+}
+
+.payment-actions button:hover {
+    opacity: 0.8;
+}

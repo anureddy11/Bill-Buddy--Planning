@@ -9,13 +9,15 @@ import sessionReducer from "./session";
 import expensesReducer from "./expenses"
 import friendsReducer from "./friends";
 import commentsReducer from "./comments";
+import paymentsReducer from "./payment";
 
 
 const rootReducer = combineReducers({
   session: sessionReducer,
   expense: expensesReducer,
   friend: friendsReducer,
-  comments: commentsReducer
+  comments: commentsReducer,
+  payments: paymentsReducer,
 });
 
 let enhancer;

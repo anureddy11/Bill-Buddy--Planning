@@ -1,75 +1,119 @@
-import { useParams, Link, useNavigate } from "react-router-dom"
-import { useEffect, useState} from "react"
-import { useSelector, useDispatch } from 'react-redux';
-import { getExpenses } from "../../redux/expenses";
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { thunkGetExpenses } from '../../redux/expenses';
+import { thunkGetComments, thunkCreateComment, thunkDeleteComment } from '../../redux/comments';
 import './AllExpensesPage.css';
-import commentsReducer from "../../redux/comments";
 
-const Expenses = () =>{
-    const dispatch = useDispatch()
-    const [activeId, setActiveId] = useState(null)
+
+const AllExpensesPage = () => {
+    const dispatch = useDispatch();
+
+    const expenses = useSelector((state) =>
+        state.expense.allIds.map(id => state.expense.byId[id])
+    );
+
+    const comments = useSelector((state) => state.comments.comments);
+
+    const currentUserId = useSelector((state) => state.session.user?.id); // Get the current user's ID
+
+    const error = useSelector((state) => state.expense.error);
+
+    const [newComment, setNewComment] = useState({});
+
+    const [expandedExpense, setExpandedExpense] = useState(null);
 
     useEffect(() => {
-        dispatch(getExpenses())
-    }, [])
+        dispatch(thunkGetExpenses());
+    }, [dispatch]);
 
-    const expensesState = useSelector((state) => {
-        return Object.values(state.expense)
-    })
+    const handleCommentChange = (expenseId, content) => {
+        setNewComment({
+            ...newComment,
+            [expenseId]: content,
+        });
+    };
 
-    if (expensesState[0]) {
-        const expenses = Object.values(expensesState[0])
-        const shares = Object.values(expensesState[1])
-        return (
-            <>
-            <div className="expense-content">
-            <div className="expenses-list">
-                <h2>Created Expenses</h2>
-            {expenses.map(expense => {
-                return (
-                    <div key={expense.id} className="expense-items" onClick={() => activeId !== expense.id ? setActiveId(expense.id): setActiveId(null)}>
-                        <p> amount: ${expense.amount}</p>
-                        <p> description: {expense.description}</p>
-                        <p> settled: {expense.settled}</p>
-                        <p> shares: </p>
-                        <button>Update</button>
-                        {expense.expenseShares.map(share => {
-                            return (
-                                <>
-                                <div key={share.id} className={expense.id === activeId ? 'expense-shares' : 'expense-shares hidden'}>
-                                    <p>user: {share.username}</p>
-                                    <p>amount: {share.amount}</p>
-                                    <p>settled: {share.settled}</p>
-                                </div>
-                                </>
+    const handleCommentSubmit = async (expenseId) => {
+        if (newComment[expenseId]?.trim()) {
+            await dispatch(thunkCreateComment(expenseId, { content: newComment[expenseId] }));
+            setNewComment({ ...newComment, [expenseId]: '' });
+            dispatch(thunkGetComments(expenseId));
+        }
+    };
 
-                            )
-                        })}
-                    </div>
-                )
-            })}
-            </div>
-            <div className="shares-list">
-                <h2>Expenses from others</h2>
-            {shares.map(share => {
-                return (
-                    <div key={share.id} className="expense-items">
-                        <p> amount: ${share.amount} </p>
-                        <p> description: {share.description}</p>
-                        <p> settled: {share.settled}</p>
-                    </div>
-                )
-            })}
-            </div>
-            </div>
-            </>
-        )
+    const handleDeleteComment = async (expenseId, commentId) => {
+        dispatch(thunkDeleteComment(expenseId, commentId));
+        dispatch(thunkGetComments(expenseId));
     }
 
+    const toggleExpense = (expenseId) => {
+        if (expandedExpense === expenseId) {
+            setExpandedExpense(null);
+        } else {
+            setExpandedExpense(expenseId);
+            dispatch(thunkGetComments(expenseId));
+        }
+    };
+
     return (
-        <h1>loading</h1>
-    )
-}
+        <div className="all-expenses-page">
+            <h1>All Expenses</h1>
+            {error && <p className="error-message">{error}</p>}
+            <div className="expenses-list">
+                {expenses.length > 0 ? (
+                    expenses.map(expense => (
+                        <div key={expense.id} className="expense-item">
+                            <div className="expense-header" onClick={() => toggleExpense(expense.id)}>
+                                <h2>{expense.description}</h2>
+                                <p><strong>Amount:</strong> ${parseFloat(expense.amount).toFixed(2)}</p>
+                                <p className={`settled-status ${expense.settled === 'yes' ? 'settled' : 'unsettled'}`}>
+                                    {expense.settled === 'yes' ? 'Settled' : 'Unsettled'}
+                                </p>
+                            </div>
+                            {expandedExpense === expense.id && (
+                                <>
+                                    <div className="expense-details">
+                                        <p><strong>Created by:</strong> {expense.ownerUsername}</p>
+                                    </div>
+                                    <div className="expense-shares">
+                                        <h3>Shares:</h3>
+                                        {expense.expenseShares.map(share => (
+                                            <div key={share.user_id} className="share-item">
+                                                <p><strong>{share.username}:</strong> ${parseFloat(share.amount).toFixed(2)} - {share.settled === 'yes' ? 'Settled' : 'Unsettled'}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <div className="expense-comments">
+                                        <h3>Comments:</h3>
+                                        <div className="comments-list">
+                                            {Object.values(comments).filter(comment => comment.expenseId === expense.id).map(comment => (
+                                                <div key={comment.id} className="comment-item">
+                                                    <p><strong>{comment.user.firstName} {comment.user.lastName}</strong>: {comment.content}</p>
+                                                    {
+                                                        comment.userId === currentUserId && (
+                                                            <button id='delete-comments-button' onClick={() => handleDeleteComment(comment.expenseId, comment.id)}>Delete</button>
+                                                        )
+                                                    }
+                                                </div>
+                                            ))}
+                                        </div>
+                                        <textarea
+                                            value={newComment[expense.id] || ''}
+                                            onChange={(e) => handleCommentChange(expense.id, e.target.value)}
+                                            placeholder="Add a comment..."
+                                        />
+                                        <button onClick={() => handleCommentSubmit(expense.id)}>Post Comment</button>
+                                    </div>
+                                </>
+                            )}
+                        </div>
+                    ))
+                ) : (
+                    <p>No expenses to show.</p>
+                )}
+            </div>
+        </div>
+    );
+};
 
-
-export default Expenses
+export default AllExpensesPage;

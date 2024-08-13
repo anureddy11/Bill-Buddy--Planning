@@ -1,0 +1,112 @@
+/* Container for centering the modal */
+.login-modal-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 20px;
+    box-sizing: border-box;
+    font-family: 'Open Sans', sans-serif;
+
+}
+
+/* Modal content styling */
+.login-modal-content {
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    padding: 30px;
+    max-width: 400px;
+    width: 100%;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Title styling */
+.login-modal-title {
+    font-size: 26px;
+    margin-bottom: 25px;
+    text-align: center;
+    color: #265486;
+    font-family: 'Roboto', sans-serif;
+}
+
+/* Form styling */
+.login-form {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Label styling */
+.login-label {
+    margin-bottom: 15px;
+    color: #2c3e50;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+
+.login-input {
+    width: 90%;
+    padding: 12px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    font-size: 16px;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.login-input:focus {
+    border-color: #265486;
+    outline: none;
+    box-shadow: 0 0 6px rgba(38, 84, 134, 0.4);
+
+}
+
+.login-button {
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    background-color: #265486;
+    /* Same as nav-link */
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-family: 'Roboto', sans-serif;
+}
+
+.login-button:hover {
+    background-color: #274466;
+
+}
+
+.login-error {
+    color: #ff4d4f;
+    font-size: 14px;
+    margin-top: -10px;
+    margin-bottom: 10px;
+    text-align: left;
+
+}
+
+.demo-user-button {
+    margin-top: 20px;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    background-color: #1e90ff;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-family: 'Roboto', sans-serif;
+    display: block;
+    width: 100%;
+    text-align: center;
+
+}
+
+.demo-user-button:hover {
+    background-color: #007acc;
+
+}

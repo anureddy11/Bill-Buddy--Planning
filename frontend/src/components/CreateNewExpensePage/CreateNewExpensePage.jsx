@@ -1,13 +1,16 @@
 import { useParams, Link, useNavigate } from "react-router-dom"
 import { useEffect, useState} from "react"
 import { useSelector, useDispatch } from 'react-redux';
-import "./CreateExpensePage.css"
+import { thunkCreateExpense } from "../../redux/expenses";
+import "./CreateNewExpensePage.css"
 
 const CreateExpense = () => {
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const [errors, setErrors] = useState({})
+
     const [total, setTotal] = useState(0)
-    const [split, setSplit] = useState([])
+    const [description, setDescription] = useState('')
 
 
     const [friend, setFriend] = useState('')
@@ -17,6 +20,11 @@ const CreateExpense = () => {
     const [evenVal, setEvenVal] = useState(0)
     const [isEven, setIsEven] = useState(false)
     const [amountElements, setAmountElements] = useState([])
+
+
+    const handleDescription = (e) => {
+        setDescription(e.target.value)
+    }
 
 
     const extractNames = (arrayOfObjects) => {
@@ -57,22 +65,27 @@ const CreateExpense = () => {
 
     const setEvenFunc = () => {
         let splitNum = total / friendArr.length
-        setEvenVal(splitNum.toFixed(2))
-        setIsEven(false)
-        setIsEven(true)
-        amountElements.forEach(el => {
-            el.amount = evenVal
-        })
-    }
+        let difference = 0
 
-    // const handleOnClick = async (friend) => {
-    //     const filteredFriends = friends.filter(f =>
-    //         f["first_name"] === friend.split(' ')[0] && f["last_name"] === friend.split(' ')[1]
-    //     )
-    //     setFriendArr([...friendArr, friend])
-    //     setIsEven(false)
-    //     return
-    // }
+        if (total - (parseFloat(splitNum.toFixed(2)) * friendArr.length !== 0)) {
+            difference = (parseFloat((total - parseFloat(splitNum.toFixed(2) * friendArr.length)).toFixed(2)))
+        }
+        setEvenVal(splitNum.toFixed(2))
+        setIsEven(true)
+        let amountArr = []
+        amountElements.forEach(el => {
+            el.amount = splitNum.toFixed(2)
+            amountArr.push(el)
+        })
+
+        if (difference < .03 && difference !== 0) {
+            console.log(amountArr[amountArr.length - 1])
+            let bigNum = (parseFloat(amountArr[amountArr.length-1].amount) * 100) + (difference * 100)
+            let smallNum = (bigNum / 100).toString()
+            amountArr[amountArr.length-1].amount = smallNum
+        }
+        setAmountElements(amountArr)
+    }
 
     const handleFriend = (friend) => {
         const friendObj = friends.filter(f =>
@@ -94,7 +107,7 @@ const CreateExpense = () => {
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
-    }, [friendArr, isEven, evenVal, handleFriend]);
+    }, [friendArr, isEven, evenVal, handleFriend, amountElements, setAmountElements]);
 
     const friends =  useSelector((state) => {
         return Object.values(state.friend.byId)
@@ -102,17 +115,23 @@ const CreateExpense = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-
+        const splitArr = []
+        friendArr.forEach((friend, index) => {
+            let splitObj = {}
+            splitObj.user_id = friend.id
+            splitObj.amount = parseFloat(amountElements[index]['amount'])
+            splitObj.settled = "no"
+            splitArr.push(splitObj)
+        })
         const payload = {
-
+            amount: total,
+            description: description,
+            split: splitArr
         }
-        let res = await dispatch(postGroup(payload))
 
-        const imagePayload = {
-            url: img,
-            preview: true
-        }
-        navigate('/')
+        await dispatch(thunkCreateExpense(payload))
+
+        navigate('/all-expenses')
     }
 
     const handleClickOutside = (event) => {
@@ -132,7 +151,7 @@ const CreateExpense = () => {
             </div>
             <div>
             <lable>Description</lable>
-            <input type="text"></input>
+            <input type="text" value={description} onChange={handleDescription}></input>
             </div>
             <div className="autocomplete-container">
             <input
@@ -141,13 +160,13 @@ const CreateExpense = () => {
                 value={friend}
                 placeholder="Type a friend's name"
             />
-            <button type="button" onClick={setEvenFunc}>Split evenly</button>
+            <button type="button" className="split-evenly-button" onClick={setEvenFunc}>Split evenly</button>
             {suggestions.length > 0 && (
                 <ul className="suggestions-list">
                     {suggestions.map((friend, index) => (
                         <li
                             key={friend}
-                            className={index === selectedIndex ? 'highlighted' : ''}
+                            className={index === selectedIndex ? 'highlighted suggestion' : 'suggestion'}
                             onClick={() => handleFriend(friend)}
                         >
                             {friend}
@@ -162,16 +181,19 @@ const CreateExpense = () => {
                     <>
                     <p>{friend.first_name + " " + friend.last_name}</p>
                     <label>Split amount</label>
-                    <input type="text" value={isEven ? evenVal : handleAmountElements(index)} onChange={(e) => {
-                        setIsEven(false)
+                    <input type="text" value={handleAmountElements(index)} onChange={(e) => {
+                        e.preventDefault()
                         amountElements[index].amount = e.target.value
+                        setAmountElements([...amountElements])
+                        setIsEven(false)
+
                         }}/>
                     <button type="button" onClick={() =>removeSplitFriends(index)} onChange={() => setIsEven(false)}>remove</button>
                     </>
                 )
             })}
             <div>
-            <button>Submit</button>
+            <button className="submit-button">Submit</button>
             </div>
         </form>
     )

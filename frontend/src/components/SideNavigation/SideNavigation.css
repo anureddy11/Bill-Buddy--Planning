@@ -24,41 +24,30 @@
 .sidebar ul li a.active {
     color: #0056b3;
     font-weight: bold;
-    /* Highlight the active link */
-}
-
-
-
-
-​.sidebar ul li a {
-    text-decoration: none;
-    color: #007BFF;
-}
-
-.sidebar ul li a:hover,
-.sidebar ul li a.active {
-    color: #0056b3;
-    /* Changes the color to indicate active state */
-    font-weight: bold;
-    /* Makes the text bold to further highlight the active state */
 }
 
 .SideBar-friends {
     display: flex;
-    background-color: rgb(214, 214, 214);
-    padding: 0.25rem 1rem;
     justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    background-color: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+    border-bottom: 1px solid #dee2e6;
 }
 
 .SideBar-friends button {
-    border-style: none;
+    background-color: #007BFF;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 3px;
+    border: none;
     cursor: pointer;
-    font-size: 1rem;
-    background: none;
+    font-size: 0.875rem;
 }
 
 .SideBar-friends button:hover {
-    color: #007BFF;
+    background-color: #0056b3;
 }
 
 .modal-overlay {
@@ -99,12 +88,14 @@
 
 .modal-body input,
 .modal-body textarea {
-    width: 80%;
+    width: calc(100% - 40px);
     padding: 10px;
     margin-top: 10px;
     margin-bottom: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .modal-footer {
@@ -127,4 +118,82 @@
     border: none;
     cursor: pointer;
     text-decoration: underline;
+}
+
+.error-message {
+    color: #dc3545;
+    font-size: 0.9rem;
+    margin-top: 10px;
+}
+
+.success-message {
+    color: #28a745;
+    font-size: 0.9rem;
+    margin-top: 10px;
+}
+
+/* New styling for Pending Requests Section */
+.pending-requests {
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    background-color: #e9ecef;
+    border-radius: 5px;
+}
+
+.pending-requests h3 {
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    color: #495057;
+}
+
+.pending-requests ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.pending-requests li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.pending-requests li:last-child {
+    border-bottom: none;
+}
+
+.pending-requests span {
+    font-size: 0.9rem;
+    color: #343a40;
+    flex-grow: 1;
+}
+
+.accept-button,
+.reject-button {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    margin-left: 5px;
+}
+
+.accept-button {
+    background-color: #28a745;
+    color: white;
+}
+
+.accept-button:hover {
+    background-color: #218838;
+}
+
+.reject-button {
+    background-color: #dc3545;
+    color: white;
+}
+
+.reject-button:hover {
+    background-color: #c82333;
 }

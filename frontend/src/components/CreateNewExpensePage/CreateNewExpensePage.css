@@ -1,0 +1,59 @@
+.expense-form {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+/* Header style */
+.expense-form h2 {
+    margin-bottom: 10px;
+    color: #333;
+    font-family: Arial, sans-serif;
+}
+
+/* Style for labels */
+.expense-form label {
+    display: block;
+    margin-bottom: 8px;
+    color: #555;
+    font-weight: bold;
+}
+
+/* Style for input fields */
+.expense-form input[type="number"],
+.expense-form input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.suggestions-list {
+    position: absolute;
+    top: 29%; /*Position it just below the input field */
+    width: 10%;
+    max-height: 200px; /* Limit the height of the dropdown */
+    list-style: none;
+    border: 1px solid #ccc; /* Light border around the dropdown */
+    border-radius: 4px; /* Rounded corners */
+    background-color: #fff; /* White background for the dropdown */
+}
+
+.suggestion {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+}
+
+.split-evenly-button{
+    margin-top:30px;
+}
+
+.submit-button {
+    margin-top: 30px;
+}

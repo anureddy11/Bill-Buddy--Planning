@@ -1,194 +1,122 @@
-from flask import Flask, render_template, redirect, Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request
 from flask_login import current_user, login_required
 from app.models import Expense, ExpenseShare, db, User
 
-
 expense_routes = Blueprint('expenses', __name__)
 
-def get_expense_by_id(expense_id):
-    """
-    get expense by id
-    """
+def get_expense_details(expense):
+    expense_dict = expense.to_dict()
+    shares = ExpenseShare.query.filter_by(expense_id=expense.id).all()
 
-    expense = Expense.query.filter(Expense.id == expense_id)
+    owner = User.query.get(expense.owner_id)
+    expense_dict['ownerUsername'] = owner.username if owner else "Unknown"
 
-    if not expense:
-        return {
-            "error": "expense does not exist"
-        }
-    return expense[0].to_dict()
+    expense_dict['expenseShares'] = [
+        {
+            'user_id': share.user_id,
+            'amount': share.amount,
+            'settled': share.settled,
+            'username': User.query.get(share.user_id).username
+        } for share in shares
+    ]
+    return expense_dict
 
-
-@expense_routes.route('/')
+@expense_routes.route('/all', methods=['GET'])
 @login_required
-def expenses():
+def get_all_user_expenses():
     """
-    Query for all expenses that belong to user
+    Get all expenses that the current user is involved in, either as the owner or as a share participant.
     """
-    expenses = Expense.query.filter(current_user.id == Expense.owner_id).all()
-    user_shares = ExpenseShare.query.filter(current_user.id == ExpenseShare.user_id).all()
-    user_shares_list = []
+    created_expenses = Expense.query.filter_by(owner_id=current_user.id).all()
 
-    for a in user_shares:
-        expense_share_dict = a.to_dict()
-        owner_expense = get_expense_by_id(expense_share_dict['expense_id'])
-        expense_share_dict['description'] = owner_expense['description']
-        user_shares_list.append(expense_share_dict)
+    involved_expense_ids = db.session.query(ExpenseShare.expense_id).filter_by(user_id=current_user.id).all()
+    involved_expense_ids = [id[0] for id in involved_expense_ids]
 
+    involved_expenses = Expense.query.filter(Expense.id.in_(involved_expense_ids)).all()
 
-    arr = [expense.to_dict() for expense in expenses]
-    y = 0
+    all_expenses = {expense.id: get_expense_details(expense) for expense in (created_expenses + involved_expenses)}
 
-    for i in expenses:
-        shares = ExpenseShare.query.filter(ExpenseShare.expense_id == i.id).all()
-        i.expenseShares = []
-        for j in shares:
-            user_info = User.query.filter(j.user_id == User.id).first()
-            user_dict = user_info.to_dict()
-            i.expenseShares.append({'user_id': j.user_id, "amount": j.amount, "settled": j.settled, "username": user_dict["username"]})
-        arr[y]['expenseShares'] = i.expenseShares
-        y += 1
-
-    return_obj = {
-        'expenses': arr,
-        'shares': user_shares_list
-    }
-    return jsonify(return_obj), 200
-
-
-
+    return jsonify({"expenses": list(all_expenses.values())}), 200
 
 @expense_routes.route('/', methods=['POST'])
 @login_required
 def create_expense():
     """
-    Create and expense and create all split expenses
-
+    Create a new expense and corresponding shares.
     """
-    # Extract the JSON data
     data = request.get_json()
+
     description = data.get('description')
-    owner_id = data.get('owner_id')
     amount = data.get('amount')
     split = data.get('split')
 
-    # Create new expense
     new_expense = Expense(
-        owner_id = owner_id,
-        description = description,
-        settled = "no",
-        amount = amount
+        owner_id=current_user.id,
+        description=description,
+        settled="no",
+        amount=amount
     )
     db.session.add(new_expense)
     db.session.commit()
 
-    expense_id = new_expense.id
-    share_list = []
-    new_expense_dict = new_expense.to_dict()
-
-    for i in split:
+    for share in split:
         new_expense_share = ExpenseShare(
-            user_id = i['user_id'],
-            amount = i['amount'],
-            settled = i['settled'],
-            expense_id = new_expense.id
+            user_id=share['user_id'],
+            amount=share['amount'],
+            settled=share['settled'],
+            expense_id=new_expense.id
         )
-
         db.session.add(new_expense_share)
-        db.session.commit()
-        json_share_list = new_expense_share.to_dict()
-        share_list.append(json_share_list)
-
-
-    return_obj = {
-        "expense": new_expense_dict,
-        "expense_shares": share_list
-    }
-    return jsonify(return_obj), 201
-
-
-@expense_routes.route('/<int:expense_id>', methods=['PUT'])
-@login_required
-def update_expense(expense_id):
-    """
-    update expense and shares
-
-    """
-    # Extract the JSON data
-    data = request.get_json()
-    description = data.get('description')
-    owner_id = data.get('owner_id')
-    settled = data.get("settled")
-    amount = data.get('amount')
-    split = data.get('split')
-
-
-
-
-    #update the expense and expense shares
-    expense = Expense.query.filter(Expense.id == expense_id).first()
-
-    # check if user owns the expense
-    if (current_user.id != expense.owner_id):
-        return {
-            "error": "User not authorized."
-        }
-
-    expense.description = description
-    expense.amount = amount
-    expense.split = split
-    expense.settled = settled
 
     db.session.commit()
 
-    exp_dict = expense.to_dict()
-
-    expense_shares = ExpenseShare.query.filter(ExpenseShare.expense_id == expense.id).all()
-    exp_share_list = []
-    exp_share_dict = exp_share_list
-    for i, j in zip(expense_shares, split):
-        i.amount = j['amount']
-        i.settled = j['settled']
-
-        db.session.commit()
-        exp_share_list.append(i.to_dict())
-
-    return_obj = {
-        "expense": exp_dict,
-        "expense_shares": exp_share_dict
-    }
-    return jsonify(return_obj)
-
+    return jsonify(get_expense_details(new_expense)), 201
 
 @expense_routes.route('/<int:expense_id>', methods=['DELETE'])
 @login_required
 def delete_expense(expense_id):
     """
-    deletes expense and expense shares
-
+    Delete an expense if it belongs to the current user.
     """
-    # check if user owns the expense
+    expense = Expense.query.get(expense_id)
 
+    if not expense or expense.owner_id != current_user.id:
+        return jsonify({"error": "Unauthorized or expense not found."}), 403
 
-
-
-    expense = Expense.query.filter(Expense.id == expense_id).first()
-    expense_shares = ExpenseShare.query.filter(ExpenseShare.expense_id == expense_id).all()
-
-    if not expense:
-        return jsonify(
-            {"error": "expense could not be found"}
-        )
-
-    if current_user.id != expense.owner_id:
-        return {
-            "error": "unauthorized user."
-        }
-
-    for i in expense_shares:
-        db.session.delete(i)
-        db.session.commit()
-
+    ExpenseShare.query.filter_by(expense_id=expense.id).delete()
     db.session.delete(expense)
     db.session.commit()
-    return jsonify({"message": "Successfully deleted expense"})
+
+    return jsonify({"message": "Successfully deleted expense"}), 200
+
+@expense_routes.route('/<int:expense_id>', methods=['PUT'])
+@login_required
+def update_expense(expense_id):
+    """
+    Update an expense and its shares.
+    """
+    data = request.get_json()
+    expense = Expense.query.get(expense_id)
+
+    if not expense or expense.owner_id != current_user.id:
+        return jsonify({"error": "Unauthorized or expense not found."}), 403
+
+    expense.description = data.get('description', expense.description)
+    expense.amount = data.get('amount', expense.amount)
+    expense.settled = data.get('settled', expense.settled)
+
+    split = data.get('split')
+    if split:
+        ExpenseShare.query.filter_by(expense_id=expense.id).delete()
+        for share in split:
+            updated_share = ExpenseShare(
+                user_id=share['user_id'],
+                amount=share['amount'],
+                settled=share['settled'],
+                expense_id=expense.id
+            )
+            db.session.add(updated_share)
+
+    db.session.commit()
+
+    return jsonify(get_expense_details(expense)), 200

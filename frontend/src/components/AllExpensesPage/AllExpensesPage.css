@@ -141,6 +141,29 @@ textarea {
     box-sizing: border-box;
 }
 
+#AllExpenses-update-button {
+    background-color: #ffa500;
+    /* Orange color for Update button */
+    color: white;
+}
+
+#AllExpenses-delete-button {
+    background-color: #dc3545;
+    /* Red color for Delete button */
+    color: white;
+}
+
+#AllExpenses-update-button:hover {
+    background-color: #e59400;
+    /* Darker orange on hover */
+}
+
+#AllExpenses-delete-button:hover {
+    background-color: #c82333;
+    /* Darker red on hover */
+}
+
+
 button {
     background-color: #007bff;
     color: white;

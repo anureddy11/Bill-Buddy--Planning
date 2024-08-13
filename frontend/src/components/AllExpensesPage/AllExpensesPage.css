@@ -1,83 +1,129 @@
-.expense-content {
-    margin: auto;
-    width: 50%;
-    margin-top: 0px;
+.all-expenses-page {
+    width: 100%;
+    max-width: 1200px; 
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f5f7fa;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
 }
 
 .expenses-list {
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
-.shares-list {
-    text-align: center;
+.expense-item {
+    background-color: #ffffff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.2s ease;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-.expense-items {
-    margin-bottom: 50px;
-    text-align: left;
-    margin-left: 50px;
-    border-style: solid;
-    height: fit-content;
+.expense-item:hover {
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
 }
 
-.hover {
-    cursor: pointer;
+.expense-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.expense-header h2 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #007bff;
+}
+
+.settled-status {
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+}
+
+.settled-status.settled {
+    background-color: #28a745;
+    color: white;
+}
+
+.settled-status.unsettled {
+    background-color: #dc3545;
+    color: white;
+}
+
+.expense-details {
+    margin-bottom: 10px;
+    color: #555;
 }
 
 .expense-shares {
-    margin-left: 20px;
-    border-style: solid;
-    border-left: none;
-    border-right: none;
-    border-top: none;
-    border-width: 1px;
-    margin-bottom: 10px;
-    margin-right: 20px;
+    margin-top: 10px;
 }
 
-.expense-shares.hidden {
-    display: none;
+.share-item {
+    margin-top: 5px;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
 }
 
+.expense-comments {
+    margin-top: 20px;
+}
 
 .comments-list {
     margin-top: 10px;
-    padding-left: 20px;
+    margin-bottom: 10px;
 }
 
 .comment-item {
+    background-color: #f1f1f1;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
     margin-bottom: 10px;
-    padding: 10px 15px;
-    background-color: #265486;
-    /* Set the bubble color */
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #007bff;
     color: white;
-    /* Ensure text is visible against the dark background */
-    border-radius: 20px;
-    max-width: 60%;
-    position: relative;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    font-size: 14px;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.2s ease;
 }
 
-.comment-item:before {
-    content: "";
-    position: absolute;
-    top: 10px;
-    left: -10px;
-    border-width: 10px;
-    border-style: solid;
-    border-color: transparent #265486 transparent transparent;
-    /* Match the arrow color with the bubble */
+button:hover {
+    background-color: #0056b3;
 }
 
-.comment-item p {
-    margin: 0;
-    padding: 0;
-}
-
-.comment-item strong {
-    font-weight: bold;
-    color: #fff;
-    /* Keep the username bold and white for visibility */
-    margin-right: 5px;
+.error-message {
+    color: red;
+    text-align: center;
 }

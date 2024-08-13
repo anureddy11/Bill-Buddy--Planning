@@ -1,140 +1,106 @@
-import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from 'react-redux';
-import { getExpenses } from "../../redux/expenses";
-import { thunkCreateComment, thunkGetComments } from "../../redux/comments";
-
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { thunkGetExpenses } from '../../redux/expenses';
+import { thunkGetComments, thunkCreateComment } from '../../redux/comments';
 import './AllExpensesPage.css';
 
-const Expenses = () => {
+const AllExpensesPage = () => {
     const dispatch = useDispatch();
-    const [activeId, setActiveId] = useState(null);
-    const [commentContent, setCommentContent] = useState({}); // Store content of comments by shareId
 
+    const expenses = useSelector((state) =>
+        state.expense.allIds.map(id => state.expense.byId[id])
+    );
 
-    // Grabbing states
-    const expensesState = useSelector((state) => {
-        return Object.values(state.expense);
-    });
+    const comments = useSelector((state) => state.comments.comments);
 
-    const expenseId = expensesState[0]
-    console.log(expenseId)
+    const error = useSelector((state) => state.expense.error);
 
-    const commentsState = useSelector((state) => {
-        return Object.values(state.comments.comments)
-    })
+    const [newComment, setNewComment] = useState({});
 
+    const [expandedExpense, setExpandedExpense] = useState(null);
 
     useEffect(() => {
-        dispatch(getExpenses());
-        dispatch(thunkGetComments(expenseId))
+        dispatch(thunkGetExpenses());
     }, [dispatch]);
 
-    // Handle the comment change in state 
-    const handleCommentChange = (shareId, content) => {
-        setCommentContent({
-            ...commentContent,
-            [shareId]: content, // Store comment content specific to each share
+    const handleCommentChange = (expenseId, content) => {
+        setNewComment({
+            ...newComment,
+            [expenseId]: content,
         });
     };
 
-    const handleCommentSubmit = (expenseId, shareId = null) => {
-        // Prepare the data payload based on whether it's for an expense or a specific share
-        const payload = {
-            expense_id: expenseId,
-            content: commentContent[shareId] || "", // Retrieve content for the specific share
-        };
-        if (shareId) {
-            payload.share_id = shareId;
+    const handleCommentSubmit = async (expenseId) => {
+        if (newComment[expenseId]?.trim()) {
+            await dispatch(thunkCreateComment(expenseId, { content: newComment[expenseId] }));
+            setNewComment({ ...newComment, [expenseId]: '' });
+            dispatch(thunkGetComments(expenseId));
         }
-
-        // Dispatch the create comment action
-        dispatch(thunkCreateComment(expenseId, payload));
-        setCommentContent({ ...commentContent, [shareId]: "" }); // Clear the specific textarea after submission
     };
 
-    // Filter comments based on expenseId
-    const getCommentsForExpense = (expenseId) => {
-        return Object.values(commentsState).filter(comment => comment.expense_id === expenseId)
-    }
+    const toggleExpense = (expenseId) => {
+        if (expandedExpense === expenseId) {
+            setExpandedExpense(null);
+        } else {
+            setExpandedExpense(expenseId);
+            dispatch(thunkGetComments(expenseId));
+        }
+    };
 
-    if (expensesState[0]) {
-        const expenses = Object.values(expensesState[0]);
-        const shares = Object.values(expensesState[1]);
-        return (
-            <>
-                <div className="expense-content">
-                    <div className="expenses-list">
-                        <h2>Created Expenses</h2>
-                        {expenses.map(expense => {
-                            return (
-                                <div key={expense.id} className="expense-items hover" onClick={() => activeId !== expense.id ? setActiveId(expense.id) : setActiveId(null)}>
-                                    <p> Amount: ${expense.amount}</p>
-                                    <p> Description: {expense.description}</p>
-                                    <p> Settled: {expense.settled}</p>
-                                    <p> Shares: </p>
-                                    {expense.expenseShares.map(share => {
-                                        return (
-                                            <div key={share.id} className={expense.id === activeId ? 'expense-shares' : 'expense-shares hidden'}>
-                                                <p>User: {share.username}</p>
-                                                <p>Amount: {share.amount}</p>
-                                                <p>Settled: {share.settled}</p>
-                                                <textarea
-                                                    value={commentContent[share.id] || ""} // Bind the specific comment content to the textarea
-                                                    onChange={(e) => handleCommentChange(share.id, e.target.value)} // Update the comment content
-                                                    placeholder="Add a comment..."
-                                                />
-                                                <button onClick={() => handleCommentSubmit(expense.id, share.id)}>
-                                                    POST
-                                                </button>
-                                                <div className="comments-list">
-                                                    {getCommentsForExpense(expense.id).map(comment => (
-                                                        <div key={comment.id} className="comment-item">
-                                                            <p><strong>{comment.user.first_name} {comment.user.last_name}</strong>: {comment.content}</p>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                        );
-                                    })}
-                                </div>
-                            );
-                        })}
-                    </div>
-                    <div className="shares-list">
-                        <h2>Expenses from others</h2>
-                        {shares.map(share => {
-                            return (
-                                <div key={share.id} className="expense-items">
-                                    <p> Amount: ${share.amount} </p>
-                                    <p> Description: {share.description}</p>
-                                    <p> Settled: {share.settled}</p>
-                                    <textarea
-                                        value={commentContent[share.id] || ""} // Bind the specific comment content to the textarea
-                                        onChange={(e) => handleCommentChange(share.id, e.target.value)} // Update the comment content
-                                        placeholder="Add a comment..."
-                                    />
-                                    <button onClick={() => handleCommentSubmit(share.expense_id, share.id)}>
-                                        POST
-                                    </button>
-                                    <div className="comments-list">
-                                        {getCommentsForExpense(share.expense_id).map(comment => (
-                                            <div key={comment.id} className="comment-item">
-                                                <p><strong>{comment.user.first_name} {comment.user.last_name}</strong>: {comment.content}</p>
+    return (
+        <div className="all-expenses-page">
+            <h1>All Expenses</h1>
+            {error && <p className="error-message">{error}</p>}
+            <div className="expenses-list">
+                {expenses.length > 0 ? (
+                    expenses.map(expense => (
+                        <div key={expense.id} className="expense-item">
+                            <div className="expense-header" onClick={() => toggleExpense(expense.id)}>
+                                <h2>{expense.description}</h2>
+                                <p><strong>Amount:</strong> ${parseFloat(expense.amount).toFixed(2)}</p>
+                                <p className={`settled-status ${expense.settled === 'yes' ? 'settled' : 'unsettled'}`}>
+                                    {expense.settled === 'yes' ? 'Settled' : 'Unsettled'}
+                                </p>
+                            </div>
+                            {expandedExpense === expense.id && (
+                                <>
+                                    <div className="expense-details">
+                                        <p><strong>Created by:</strong> {expense.ownerUsername}</p>
+                                    </div>
+                                    <div className="expense-shares">
+                                        <h3>Shares:</h3>
+                                        {expense.expenseShares.map(share => (
+                                            <div key={share.user_id} className="share-item">
+                                                <p><strong>{share.username}:</strong> ${parseFloat(share.amount).toFixed(2)} - {share.settled === 'yes' ? 'Settled' : 'Unsettled'}</p>
                                             </div>
                                         ))}
                                     </div>
-                                </div>
-                            );
-                        })}
-                    </div>
-                </div>
-            </>
-        );
-    }
-
-    return (
-        <h1>Loading...</h1>
+                                    <div className="expense-comments">
+                                        <h3>Comments:</h3>
+                                        <div className="comments-list">
+                                            {Object.values(comments).filter(comment => comment.expenseId === expense.id).map(comment => (
+                                                <div key={comment.id} className="comment-item">
+                                                    <p><strong>{comment.user.firstName} {comment.user.lastName}</strong>: {comment.content}</p>
+                                                </div>
+                                            ))}
+                                        </div>
+                                        <textarea
+                                            value={newComment[expense.id] || ''}
+                                            onChange={(e) => handleCommentChange(expense.id, e.target.value)}
+                                            placeholder="Add a comment..."
+                                        />
+                                        <button onClick={() => handleCommentSubmit(expense.id)}>Post Comment</button>
+                                    </div>
+                                </>
+                            )}
+                        </div>
+                    ))
+                ) : (
+                    <p>No expenses to show.</p>
+                )}
+            </div>
+        </div>
     );
 };
 
-export default Expenses;
+export default AllExpensesPage;

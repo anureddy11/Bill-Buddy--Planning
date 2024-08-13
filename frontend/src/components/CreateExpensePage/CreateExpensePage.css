@@ -1,0 +1,36 @@
+.autocomplete-container {
+    position: relative;
+    display: inline-block;
+}
+
+.autocomplete-container input {
+    width: 300px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.suggestions-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: white;
+    max-height: 150px;
+    overflow-y: auto;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    z-index: 1000;
+}
+
+.suggestions-list li {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.suggestions-list li.highlighted {
+    background-color: #f0f0f0;
+}

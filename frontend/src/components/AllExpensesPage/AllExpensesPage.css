@@ -34,3 +34,7 @@
 .expense-shares.hidden {
     display: none;
 }
+
+p {
+    width: fit-content
+}

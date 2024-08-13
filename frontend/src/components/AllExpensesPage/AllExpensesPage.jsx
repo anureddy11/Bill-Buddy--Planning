@@ -3,6 +3,7 @@ import { useEffect, useState} from "react"
 import { useSelector, useDispatch } from 'react-redux';
 import { getExpenses } from "../../redux/expenses";
 import './AllExpensesPage.css';
+import commentsReducer from "../../redux/comments";
 
 const Expenses = () =>{
     const dispatch = useDispatch()
@@ -31,13 +32,17 @@ const Expenses = () =>{
                         <p> description: {expense.description}</p>
                         <p> settled: {expense.settled}</p>
                         <p> shares: </p>
+                        <button>Update</button>
                         {expense.expenseShares.map(share => {
                             return (
+                                <>
                                 <div key={share.id} className={expense.id === activeId ? 'expense-shares' : 'expense-shares hidden'}>
                                     <p>user: {share.username}</p>
                                     <p>amount: {share.amount}</p>
                                     <p>settled: {share.settled}</p>
                                 </div>
+                                </>
+
                             )
                         })}
                     </div>

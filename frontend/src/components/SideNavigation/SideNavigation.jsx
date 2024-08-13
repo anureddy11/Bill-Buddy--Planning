@@ -2,7 +2,8 @@ import './SideNavigation.css';
 import { NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { thunkGetFriends, thunkRequestFriend, thunkAcceptFriend, thunkRejectFriend } from '../../redux/friends';
+import { thunkGetFriends, thunkRequestFriend, thunkAcceptFriend, thunkRejectFriend, thunkRemoveFriend } from '../../redux/friends';
+import FriendMenuModal from './FriendMenuModal';
 
 function SideNavigation() {
     const dispatch = useDispatch();
@@ -12,16 +13,17 @@ function SideNavigation() {
     const [username, setUsername] = useState('');
     const [error, setError] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
+    const [selectedFriend, setSelectedFriend] = useState(null);
 
     useEffect(() => {
         dispatch(thunkGetFriends());
     }, [dispatch]);
 
-    const openModal = () => {
+    const openInviteModal = () => {
         setIsModalOpen(true);
     };
 
-    const closeModal = () => {
+    const closeInviteModal = () => {
         setIsModalOpen(false);
         setUsername('');
         setError('');
@@ -43,17 +45,28 @@ function SideNavigation() {
             setError('');
             setSuccessMessage('Friend request sent successfully!');
             setTimeout(() => {
-                closeModal();
+                closeInviteModal();
             }, 1500);
         }
     };
 
     const handleAccept = async (friendId) => {
         await dispatch(thunkAcceptFriend(friendId));
+        dispatch(thunkGetFriends()); // Refresh the friends and pending requests list
     };
 
     const handleReject = async (friendId) => {
         await dispatch(thunkRejectFriend(friendId));
+        dispatch(thunkGetFriends()); // Refresh the friends and pending requests list
+    };
+
+    const handleFriendClick = (friend) => {
+        setSelectedFriend(friend);
+    };
+
+    const handleRemoveFriend = async (friendId) => {
+        await dispatch(thunkRemoveFriend(friendId));
+        dispatch(thunkGetFriends()); // Refresh the friends list after removal
     };
 
     return (
@@ -63,11 +76,11 @@ function SideNavigation() {
                     <li><NavLink to="/dashboard" className={({ isActive }) => isActive ? "active" : ""}>Dashboard</NavLink></li>
                     <li><NavLink to="/recent-activity" className={({ isActive }) => isActive ? "active" : ""}>Recent Activity</NavLink></li>
                     <li><NavLink to="/all-expenses" className={({ isActive }) => isActive ? "active" : ""}>All expenses</NavLink></li>
-                    <div className='SideBar-friends'>Friends<button onClick={openModal}>+ Add</button></div>
+                    <div className='SideBar-friends'>Friends<button onClick={openInviteModal}>+ Add</button></div>
                     <ul>
                         {Object.values(friends).map(friend => (
-                            <li key={friend.id}>
-                                <NavLink to={`/friends/${friend.id}`} className={({ isActive }) => isActive ? "active" : ""}>
+                            <li key={friend.id} onClick={() => handleFriendClick(friend)}>
+                                <NavLink to="#" className={({ isActive }) => isActive ? "active" : ""}>
                                     {friend.first_name} {friend.last_name}
                                 </NavLink>
                             </li>
@@ -90,11 +103,11 @@ function SideNavigation() {
                 </ul>
             </nav>
 
-            {/* Modal */}
+            {/* Modal for inviting friends */}
             {isModalOpen && (
                 <div className="modal-overlay">
                     <div className="modal-content">
-                        <button className="close-modal" onClick={closeModal}>×</button>
+                        <button className="close-modal" onClick={closeInviteModal}>×</button>
                         <h2>Invite friends</h2>
                         <div className="modal-body">
                             <label>To:
@@ -113,6 +126,15 @@ function SideNavigation() {
                         </div>
                     </div>
                 </div>
+            )}
+
+            {/* Modal for managing a friend */}
+            {selectedFriend && (
+                <FriendMenuModal
+                    friend={selectedFriend}
+                    onClose={() => setSelectedFriend(null)}
+                    onRemove={handleRemoveFriend}
+                />
             )}
         </>
     );

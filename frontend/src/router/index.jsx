@@ -4,6 +4,7 @@ import LandingPage from '../components/LandingPage';
 import DashboardPage from '../components/DashboardPage';
 import AllExpensesPage from '../components/AllExpensesPage';
 import RecentActivityPage from '../components/RecentActivityPage';
+import CreateExpense from '../components/CreateNewExpensePage';
 
 export const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ export const router = createBrowserRouter([
         path: "/all-expenses",
         element: <AllExpensesPage />
       },
+      {
+        path: "/create-expense",
+        element: <CreateExpense/>
+      }
 
     ],
   },

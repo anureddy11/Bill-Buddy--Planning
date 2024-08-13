@@ -187,7 +187,7 @@ const CreateExpense = () => {
                         setIsEven(false)
 
                         }}/>
-                    <button type="button" onClick={() =>removeSplitFriends(index)} onChange={() => setIsEven(false)}>remove</button>
+                    <button type="button" onClick={() =>removeSplitFriends(index)} onChange={() => setIsEven(false)} id="New-remove-button">Remove</button>
                     </>
                 )
             })}

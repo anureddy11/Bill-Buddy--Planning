@@ -179,7 +179,7 @@ const UpdateExpense = () => {
 
     return (
 
-        <form className="expense-form" onSubmit={handleSubmit}>
+        <form className="expense-form" id="expense-form" onSubmit={handleSubmit}>
             <h2>Edit an expense</h2>
             <div>
             <lable>Amount</lable>
@@ -224,7 +224,7 @@ const UpdateExpense = () => {
                         setIsEven(false)
 
                         }}/>
-                    <button type="button" onClick={() =>removeSplitFriends(index)} onChange={() => setIsEven(false)}>remove</button>
+                    <button type="button" onClick={() =>removeSplitFriends(index)} onChange={() => setIsEven(false)}>Remove</button>
                     </>
                 )
             })}

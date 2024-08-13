@@ -1,5 +1,6 @@
 .expense-form {
     max-width: 600px;
+    width: 100%;
     margin: 0 auto;
     padding: 20px;
     border: 1px solid #ddd;
@@ -25,6 +26,7 @@
 /* Style for input fields */
 .expense-form input[type="number"],
 .expense-form input[type="text"] {
+    box-sizing: border-box;
     width: 100%;
     padding: 10px;
     margin-bottom: 20px;
@@ -52,8 +54,14 @@
 
 .split-evenly-button{
     margin-top:30px;
+    width: 8rem;
 }
 
 .submit-button {
     margin-top: 30px;
+    width: 8rem;
+}
+
+#New-remove-button {
+    width: 8rem;
 }

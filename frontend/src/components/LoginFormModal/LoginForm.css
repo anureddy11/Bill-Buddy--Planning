@@ -3,7 +3,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
     background-color: rgba(0, 0, 0, 0.6);
     /* Dark overlay */
     padding: 20px;
@@ -14,7 +13,8 @@
 
 /* Modal content styling */
 .login-modal-content {
-    background-color: #fff;
+    background-color: #f8f9fa;
+    /* Background similar to the navbar */
     border-radius: 12px;
     padding: 30px;
     max-width: 400px;
@@ -27,7 +27,8 @@
     font-size: 26px;
     margin-bottom: 25px;
     text-align: center;
-    color: #333;
+    color: #265486;
+    /* Same color as nav-link */
     font-family: 'Roboto', sans-serif;
     /* Adjust this font to match your landing page */
 }
@@ -41,27 +42,31 @@
 /* Label styling */
 .login-label {
     margin-bottom: 15px;
-    color: #555;
+    color: #2c3e50;
+    /* Darker color similar to the dropdown */
     font-weight: bold;
     font-size: 14px;
 }
 
 /* Input field styling */
 .login-input {
-    width: 100%;
+    width: 90%;
     padding: 12px;
     margin-top: 5px;
     margin-bottom: 15px;
-    border: 1px solid #ccc;
+    border: 1px solid #dee2e6;
+    /* Border similar to the navbar border */
     border-radius: 6px;
     font-size: 16px;
     font-family: 'Open Sans', sans-serif;
 }
 
 .login-input:focus {
-    border-color: #007bff;
+    border-color: #265486;
+    /* Focus border color similar to nav-link */
     outline: none;
-    box-shadow: 0 0 6px rgba(0, 123, 255, 0.4);
+    box-shadow: 0 0 6px rgba(38, 84, 134, 0.4);
+    /* Shadow with a tint of the nav-link color */
 }
 
 /* Button styling */
@@ -69,7 +74,8 @@
     padding: 12px;
     border: none;
     border-radius: 6px;
-    background-color: #007bff;
+    background-color: #265486;
+    /* Same as nav-link */
     color: #fff;
     font-size: 16px;
     cursor: pointer;
@@ -78,7 +84,8 @@
 }
 
 .login-button:hover {
-    background-color: #0056b3;
+    background-color: #121921;
+    /* Same as nav-link:hover */
 }
 
 /* Error message styling */
@@ -88,4 +95,20 @@
     margin-top: -10px;
     margin-bottom: 10px;
     text-align: left;
+}
+
+/* Responsive design adjustments */
+@media (max-width: 500px) {
+    .login-modal-content {
+        padding: 20px;
+    }
+
+    .login-modal-title {
+        font-size: 22px;
+    }
+
+    .login-button {
+        font-size: 14px;
+        padding: 10px;
+    }
 }

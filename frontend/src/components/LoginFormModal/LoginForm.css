@@ -1,0 +1,91 @@
+/* Container for centering the modal */
+.login-modal-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    /* Dark overlay */
+    padding: 20px;
+    box-sizing: border-box;
+    font-family: 'Open Sans', sans-serif;
+    /* Example: Adjust based on your landing page font */
+}
+
+/* Modal content styling */
+.login-modal-content {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 30px;
+    max-width: 400px;
+    width: 100%;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Title styling */
+.login-modal-title {
+    font-size: 26px;
+    margin-bottom: 25px;
+    text-align: center;
+    color: #333;
+    font-family: 'Roboto', sans-serif;
+    /* Adjust this font to match your landing page */
+}
+
+/* Form styling */
+.login-form {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Label styling */
+.login-label {
+    margin-bottom: 15px;
+    color: #555;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* Input field styling */
+.login-input {
+    width: 100%;
+    padding: 12px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.login-input:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 6px rgba(0, 123, 255, 0.4);
+}
+
+/* Button styling */
+.login-button {
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-family: 'Roboto', sans-serif;
+}
+
+.login-button:hover {
+    background-color: #0056b3;
+}
+
+/* Error message styling */
+.login-error {
+    color: #ff4d4f;
+    font-size: 14px;
+    margin-top: -10px;
+    margin-bottom: 10px;
+    text-align: left;
+}

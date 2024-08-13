@@ -2,11 +2,12 @@ import './SideNavigation.css';
 import { NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { thunkGetFriends, thunkRequestFriend } from '../../redux/friends';
+import { thunkGetFriends, thunkRequestFriend, thunkAcceptFriend, thunkRejectFriend } from '../../redux/friends';
 
 function SideNavigation() {
     const dispatch = useDispatch();
     const friends = useSelector((state) => state.friend.byId);
+    const pendingRequests = useSelector((state) => state.friend.pendingById);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [username, setUsername] = useState('');
     const [error, setError] = useState('');
@@ -47,6 +48,14 @@ function SideNavigation() {
         }
     };
 
+    const handleAccept = async (friendId) => {
+        await dispatch(thunkAcceptFriend(friendId));
+    };
+
+    const handleReject = async (friendId) => {
+        await dispatch(thunkRejectFriend(friendId));
+    };
+
     return (
         <>
             <nav className="sidebar">
@@ -64,6 +73,20 @@ function SideNavigation() {
                             </li>
                         ))}
                     </ul>
+                    {Object.values(pendingRequests).length > 0 && (
+                        <div className="pending-requests">
+                            <h3>Pending Requests</h3>
+                            <ul>
+                                {Object.values(pendingRequests).map(request => (
+                                    <li key={request.id}>
+                                        <span>{request.first_name} {request.last_name}</span>
+                                        <button onClick={() => handleAccept(request.id)} className="accept-button">Accept</button>
+                                        <button onClick={() => handleReject(request.id)} className="reject-button">Reject</button>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
                 </ul>
             </nav>
 

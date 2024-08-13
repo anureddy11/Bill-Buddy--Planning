@@ -1,19 +1,11 @@
-// Action Types
 const GET_EXPENSES = 'expenses/GET_EXPENSES';
-const GET_INVOLVED_EXPENSES = 'expenses/GET_INVOLVED_EXPENSES';
 const ADD_EXPENSE = 'expenses/ADD_EXPENSE';
 const UPDATE_EXPENSE = 'expenses/UPDATE_EXPENSE';
 const DELETE_EXPENSE = 'expenses/DELETE_EXPENSE';
 const EXPENSE_ERROR = 'expenses/EXPENSE_ERROR';
 
-// Action Creators
 const getExpenses = (expenses) => ({
     type: GET_EXPENSES,
-    payload: expenses,
-});
-
-const getInvolvedExpenses = (expenses) => ({
-    type: GET_INVOLVED_EXPENSES,
     payload: expenses,
 });
 
@@ -40,7 +32,7 @@ const expenseError = (error) => ({
 // Thunks
 export const thunkGetExpenses = () => async (dispatch) => {
     try {
-        const response = await fetch('/api/expenses/user');
+        const response = await fetch('/api/expenses/all');
         const data = await response.json();
         if (response.ok) {
             dispatch(getExpenses(data.expenses));
@@ -52,19 +44,6 @@ export const thunkGetExpenses = () => async (dispatch) => {
     }
 };
 
-export const thunkGetInvolvedExpenses = () => async (dispatch) => {
-    try {
-        const response = await fetch('/api/expenses/involved');
-        const data = await response.json();
-        if (response.ok) {
-            dispatch(getInvolvedExpenses(data.expenses));
-        } else {
-            dispatch(expenseError(data.message));
-        }
-    } catch (error) {
-        dispatch(expenseError(error.toString()));
-    }
-};
 
 export const thunkCreateExpense = (expenseData) => async (dispatch) => {
     try {
@@ -125,18 +104,15 @@ export const thunkDeleteExpense = (expenseId) => async (dispatch) => {
     }
 };
 
-// Initial State
 const initialState = {
     byId: {},
     allIds: [],
     error: null,
 };
 
-// Reducer
 const expensesReducer = (state = initialState, action) => {
     switch (action.type) {
         case GET_EXPENSES:
-        case GET_INVOLVED_EXPENSES:
             const normalizedData = action.payload.reduce((acc, expense) => {
                 acc.byId[expense.id] = expense;
                 acc.allIds.push(expense.id);

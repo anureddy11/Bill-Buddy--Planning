@@ -39,7 +39,7 @@ def get_all_friends():
         ]))
 
     for request in pending_requests:
-        user = User.query.get(request.user1_id)  
+        user = User.query.get(request.user1_id)
         pending_list.append(OrderedDict([
             ("id", user.id),
             ("first_name", user.first_name),
@@ -60,7 +60,7 @@ def request_friend(username):
     """
     Request a new friendship via username.
     """
-    # Find the user by username
+    
     user = User.query.filter_by(username=username).first()
 
     if not user:
@@ -68,7 +68,7 @@ def request_friend(username):
 
     friendId = user.id
 
-    # Check if the friend relationship already exists or is pending
+
     existing_friend = Friend.query.filter(
         or_(
             and_(Friend.user1_id == current_user.id, Friend.user2_id == friendId),
@@ -77,7 +77,13 @@ def request_friend(username):
     ).first()
 
     if existing_friend:
-        return jsonify({"message": "User is already a friend or request is pending"}), 400
+        if existing_friend.status == 'rejected':
+            existing_friend.status = 'pending'
+            existing_friend.requester = current_user.id
+            db.session.commit()
+            return jsonify({"friendId": friendId, "status": "pending"}), 200
+        elif existing_friend.status in ['pending', 'accepted']:
+            return jsonify({"message": "User is already a friend or request is pending"}), 400
 
     friend_request = Friend(
         user1_id=current_user.id,
@@ -87,6 +93,7 @@ def request_friend(username):
     )
     db.session.add(friend_request)
     db.session.commit()
+
     return jsonify({"friendId": friendId, "status": "pending"}), 200
 
 # ROUTE TO ACCEPT INCOMING FRIEND REQUEST

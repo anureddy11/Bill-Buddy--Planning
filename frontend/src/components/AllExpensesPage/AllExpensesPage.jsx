@@ -10,18 +10,24 @@ const Expenses = () => {
     const [activeId, setActiveId] = useState(null);
     const [commentContent, setCommentContent] = useState({}); // Store content of comments by shareId
 
-    useEffect(() => {
-        dispatch(getExpenses());
-        dispatch(thunkGetComments())
-    }, [dispatch]);
 
     // Grabbing states
     const expensesState = useSelector((state) => {
         return Object.values(state.expense);
     });
+
+    const expenseId = expensesState[0]
+    console.log(expenseId)
+
     const commentsState = useSelector((state) => {
         return Object.values(state.comments.comments)
     })
+
+
+    useEffect(() => {
+        dispatch(getExpenses());
+        dispatch(thunkGetComments(expenseId))
+    }, [dispatch]);
 
     // Handle the comment change in state 
     const handleCommentChange = (shareId, content) => {

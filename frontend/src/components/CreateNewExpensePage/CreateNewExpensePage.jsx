@@ -158,8 +158,8 @@ const CreateExpense = () => {
                 onChange={suggestionChange}
                 value={friend}
                 placeholder="Type a friend's name"
+                id="input-suggestion"
             />
-            <button type="button" className="split-evenly-button" onClick={setEvenFunc}>Split evenly</button>
             {suggestions.length > 0 && (
                 <ul className="suggestions-list">
                     {suggestions.map((friend, index) => (
@@ -173,6 +173,8 @@ const CreateExpense = () => {
                     ))}
                 </ul>
             )}
+            <button type="button" className="split-evenly-button" onClick={setEvenFunc}>Split evenly</button>
+
 
         </div>
         {friendArr.map((friend, index) => {

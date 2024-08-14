@@ -12,12 +12,11 @@ const DashboardPage = () => {
     const navigate = useNavigate();
 
     const user = useSelector(state => state.session.user);
-    const userShares = useSelector(state => state.expense.userShares);
-    const userCreatedExpenses = useSelector(state => state.expense.userCreatedExpenses);
-    const paymentsMade = useSelector(state => state.payments.paymentsMade);
-    const paymentsReceived = useSelector(state => state.payments.paymentsReceived);
+    const userShares = useSelector(state => state.expense.userShares || []);
+    const userCreatedExpenses = useSelector(state => state.expense.userCreatedExpenses || []);
+    const paymentsMade = useSelector(state => state.payments.paymentsMade || []);
+    const paymentsReceived = useSelector(state => state.payments.paymentsReceived || []);
 
-    // Callback to fetch all data again
     const refreshData = useCallback(() => {
         dispatch(thunkGetUserShares());
         dispatch(thunkGetUserCreatedExpenses());
@@ -29,13 +28,12 @@ const DashboardPage = () => {
         refreshData();
     }, [refreshData]);
 
-    // Calculate the balance overview
+
     const balance = {
         owes: 0,
         owed: 0
     };
 
-    // Calculate how much the user owes based on shares and payments made
     const youOweList = userShares.map(share => {
         const totalPaidToOwner = paymentsMade
             .filter(payment => payment.payee_id === share.owner_id)
@@ -52,7 +50,6 @@ const DashboardPage = () => {
         return null;
     }).filter(item => item !== null);
 
-    // Calculate how much the user is owed based on created expenses and payments received
     const youAreOwedList = userCreatedExpenses.map(expense => {
         const totalReceivedFromUser = paymentsReceived
             .filter(payment => payment.payer_id === expense.user_id)
@@ -73,7 +70,7 @@ const DashboardPage = () => {
         <div className="Dashboard">
             <div className="dashboard-header">
                 <h1>Dashboard</h1>
-                <div className="buttons">
+                <div className="buttons-dashboard">
                     <button className="add-expense-button" onClick={() => navigate("/create-expense")}>Add an expense</button>
                     <OpenModalMenuItem
                         itemText={<button className="settle-up-button">Settle up</button>}

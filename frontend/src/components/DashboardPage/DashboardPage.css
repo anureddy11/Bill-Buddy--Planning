@@ -22,13 +22,17 @@
     color: #2c3e50 !important;
 }
 
-.buttons {
+.buttons-dashboard {
     display: flex;
+    align-items: center;
     gap: 10px;
 }
 
 .add-expense-button,
 .settle-up-button {
+    display: flex;
+    align-items: center; /* Vertically center the text */
+    justify-content: center; /* Horizontally center the text */
     padding: 10px 20px;
     font-size: 1rem;
     border-radius: 5px;
@@ -40,10 +44,12 @@
 .add-expense-button {
     background-color: #007bff !important;
     color: white !important;
+    height: 2rem;
 }
 
 .settle-up-button {
     background-color: #28a745 !important;
+    height: 2rem;
     color: white !important;
 }
 

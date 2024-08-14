@@ -54,7 +54,7 @@ const deletePaymentFailure = (error) => ({
 // Thunk Action to Fetch All Payments
 export const fetchPayments = () => async (dispatch) => {
     try {
-        const response = await fetch('/api/payments/all'); // Adjust the endpoint as needed
+        const response = await fetch('/api/payments/all');
         if (!response.ok) {
             throw new Error('Failed to fetch payments');
         }

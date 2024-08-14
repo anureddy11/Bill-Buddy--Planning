@@ -22,7 +22,7 @@ const DeleteExpense = (expenseId) => {
             <h1 className="delete-expense-heading">Are you sure you want to delete this expense?</h1>
             <div className="button-group">
                 <button className="delete-button" onClick={handleDelete}>Delete</button>
-                <button className="cancel-button" onClick={closeModal}>Cancel</button>
+                <button id="cancel-button" onClick={closeModal}>Cancel</button>
             </div>
         </section>
     );

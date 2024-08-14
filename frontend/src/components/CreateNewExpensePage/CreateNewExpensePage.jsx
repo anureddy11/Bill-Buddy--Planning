@@ -11,6 +11,7 @@ const CreateExpense = () => {
 
     const [total, setTotal] = useState(0)
     const [description, setDescription] = useState('')
+    const [on, setOn] = useState('on')
 
 
     const [friend, setFriend] = useState('')
@@ -25,6 +26,13 @@ const CreateExpense = () => {
     const handleDescription = (e) => {
         setDescription(e.target.value)
     }
+
+    const currentUser = useSelector((state) => {
+        if (state.session.user) {
+            return state.session.user
+        }
+        return false
+    })
 
 
     const extractNames = (arrayOfObjects) => {
@@ -102,6 +110,16 @@ const CreateExpense = () => {
 
 
     useEffect(() => {
+        if (currentUser && on === "on") {
+            currentUser.first_name = currentUser.username
+            currentUser.last_name = ""
+            setFriendArr([currentUser])
+            setAmountElements([{id: amountElements.length, amount: 0}])
+            setOn("off")
+        }
+
+
+
         document.addEventListener('mousedown', handleClickOutside);
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
@@ -138,6 +156,8 @@ const CreateExpense = () => {
             setSuggestions([]);
         }
     };
+
+    console.log(friendArr)
 
 
     return (

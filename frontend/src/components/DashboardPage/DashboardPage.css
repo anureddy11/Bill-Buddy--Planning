@@ -1,73 +1,143 @@
-.dashboard {
-    width: 100%;
-    max-width: 800px;
-    background-color: #ffffff;
-    padding: 40px;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Softer shadow */
-    text-align: left; /* Align text to the left for a more professional feel */
+/* Main content container */
+.Dashboard {
+    max-width: 1200px;
+    width: 60%;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: .5rem;
+    background-color: #e8effa !important;
 }
 
-.dashboard h1 {
+/* Dashboard header styling */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 20px;
-    color: #333;
-    font-size: 2.2rem;
-    font-weight: 700;
-    border-bottom: 1px solid #e9ecef;
-    padding-bottom: 10px;
 }
 
-.dashboard button {
-    padding: 15px 25px;
-    font-size: 1.1rem;
-    border-radius: 8px;
+.dashboard-header h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #2c3e50 !important;
+}
+
+.buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.add-expense-button,
+.settle-up-button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 5px;
     border: none;
     cursor: pointer;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    margin: 20px 10px;
-    display: inline-block;
-    font-weight: 600;
+    font-weight: bold;
 }
 
 .add-expense-button {
-    background-color: #28a745;
-    color: white;
-    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.2);
-}
-
-.add-expense-button:hover {
-    background-color: #218838;
-    box-shadow: 0 6px 16px rgba(40, 167, 69, 0.3);
+    background-color: #007bff !important;
+    color: white !important;
 }
 
 .settle-up-button {
-    background-color: #007bff;
-    color: white;
-    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
+    background-color: #28a745 !important;
+    color: white !important;
 }
 
-.settle-up-button:hover {
-    background-color: #0056b3;
-    box-shadow: 0 6px 16px rgba(0, 123, 255, 0.3);
-}
-
-.button-wrapper {
+/* Balance overview */
+.balance-overview {
     display: flex;
+    justify-content: space-between;
+    background-color: #f8f9fa !important;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    text-align: center;
 }
 
-@media (max-width: 768px) {
-    .dashboard {
-        padding: 20px;
-        max-width: 95%;
-    }
+.balance-item {
+    width: 30%;
+}
 
-    .dashboard h1 {
-        font-size: 1.8rem;
-    }
+.balance-item p {
+    margin: 0;
+    font-size: 1rem;
+    color: #666 !important;
+}
 
-    .dashboard button {
-        padding: 12px 15px;
-        font-size: 1rem;
-        margin: 10px 5px;
-    }
+.balance-item h3 {
+    padding: 1rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #007bff !important;
+}
+
+.negative-balance {
+    color: #ff7b00 !important;
+}
+
+.you-owe {
+    color: #ff7b00 !important;
+}
+
+/* You Owe / You Are Owed Sections */
+.balances {
+    display: flex;
+    justify-content: space-between;
+}
+
+.you-owe-section,
+.you-are-owed-section {
+    width: 48%;
+}
+
+.you-owe-section h2,
+.you-are-owed-section h2 {
+    text-align: left;
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #2c3e50 !important;
+    margin-bottom: 15px;
+}
+
+.balances-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.balance-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.balance-item img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+.amount-owe {
+    color: #e74c3c !important;
+    width: 10rem;
+}
+
+.amount-owed {
+    color: #28a745 !important;
+    width: 12rem;
+}
+
+.username-balance {
+    font-weight: bold;
+    font-size: 1.25rem !important;
+}
+
+.you-are-owed-section p {
+    color: #aaa !important;
+    font-size: 1rem;
 }

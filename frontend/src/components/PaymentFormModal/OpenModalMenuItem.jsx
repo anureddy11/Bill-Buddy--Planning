@@ -1,4 +1,5 @@
 import { useModal } from '../../context/Modal';
+import './PaymentFormModal.css'; // Assuming this is the CSS file being used
 
 function OpenModalMenuItem({
   modalComponent, // component to render inside the modal
@@ -15,7 +16,9 @@ function OpenModalMenuItem({
   };
 
   return (
-    <li onClick={onClick}>{itemText}</li>
+    <div onClick={onClick} className="open-modal-menu-item">
+      <span className="menu-item-text">{itemText}</span>
+    </div>
   );
 }
 

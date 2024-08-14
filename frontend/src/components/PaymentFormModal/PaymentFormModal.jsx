@@ -29,7 +29,8 @@ const PaymentFormModal = () => {
     };
 
     return (
-        <div className="container">
+        <div className="payment-form-container">
+            <button className="close-modal" onClick={closeModal}>&times;</button>
             <h2>Payment Form</h2>
             <form onSubmit={handleSubmit}>
 

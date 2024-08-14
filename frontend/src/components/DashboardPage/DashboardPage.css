@@ -1,43 +1,73 @@
-/* DashboardPage.css */
-
-.dashboard-container {
-    display: flex;
-    height: 100vh;
-}
-
-.main-content {
-    display: flex;
-    flex-grow: 1;
-}
-
 .dashboard {
-    flex-grow: 1;
-    padding: 20px;
-    background-color: #e9ecef;
+    width: 100%;
+    max-width: 800px;
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Softer shadow */
+    text-align: left; /* Align text to the left for a more professional feel */
 }
 
 .dashboard h1 {
-    font-size: 24px;
     margin-bottom: 20px;
+    color: #333;
+    font-size: 2.2rem;
+    font-weight: 700;
+    border-bottom: 1px solid #e9ecef;
+    padding-bottom: 10px;
 }
 
-.add-expense-button,
-.settle-up-button {
-    padding: 10px 20px;
-    margin-right: 10px;
-    background-color: #007BFF;
-    color: white;
+.dashboard button {
+    padding: 15px 25px;
+    font-size: 1.1rem;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    margin: 20px 10px;
+    display: inline-block;
+    font-weight: 600;
+}
 
-    ​⬤ .sidebar ul li a {
-        text-decoration: none;
-        color: #007BFF;
+.add-expense-button {
+    background-color: #28a745;
+    color: white;
+    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.2);
+}
+
+.add-expense-button:hover {
+    background-color: #218838;
+    box-shadow: 0 6px 16px rgba(40, 167, 69, 0.3);
+}
+
+.settle-up-button {
+    background-color: #007bff;
+    color: white;
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
+}
+
+.settle-up-button:hover {
+    background-color: #0056b3;
+    box-shadow: 0 6px 16px rgba(0, 123, 255, 0.3);
+}
+
+.button-wrapper {
+    display: flex;
+}
+
+@media (max-width: 768px) {
+    .dashboard {
+        padding: 20px;
+        max-width: 95%;
     }
 
-    .sidebar ul li a:hover,
-    .sidebar ul li a.active {
-        color: #0056b3;
-        /* Changes the color to indicate active state */
-        font-weight: bold;
-        /* Makes the text bold to further highlight the active state */
+    .dashboard h1 {
+        font-size: 1.8rem;
+    }
+
+    .dashboard button {
+        padding: 12px 15px;
+        font-size: 1rem;
+        margin: 10px 5px;
     }
 }

@@ -3,6 +3,7 @@ const ADD_EXPENSE = 'expenses/ADD_EXPENSE';
 const UPDATE_EXPENSE = 'expenses/UPDATE_EXPENSE';
 const DELETE_EXPENSE = 'expenses/DELETE_EXPENSE';
 const EXPENSE_ERROR = 'expenses/EXPENSE_ERROR';
+const CLEAR_EXPENSE = 'expenses/CLEAR_EXPENSE'
 
 const getExpenses = (expenses) => ({
     type: GET_EXPENSES,
@@ -29,9 +30,18 @@ const expenseError = (error) => ({
     payload: error,
 });
 
+const clearExpense = () => {
+    return {
+        type: CLEAR_EXPENSE
+    }
+}
+
 // Thunks
 export const thunkGetExpenses = () => async (dispatch) => {
     try {
+        // Clear the expense redux state 
+        dispatch(clearExpense());
+
         const response = await fetch('/api/expenses/all');
         const data = await response.json();
         if (response.ok) {
@@ -151,6 +161,13 @@ const expensesReducer = (state = initialState, action) => {
                 ...state,
                 error: action.payload,
             };
+        case CLEAR_EXPENSE:
+            const initialState = {
+                byId: {},
+                allIds: [],
+                error: null,
+            }
+            return initialState;
 
         default:
             return state;

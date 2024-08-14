@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { thunkGetExpenses } from '../../redux/expenses';
-import { thunkGetComments, thunkCreateComment, thunkDeleteComment } from '../../redux/comments';
+import { thunkGetComments, thunkCreateComment, thunkDeleteComment, thunkUpdateComment } from '../../redux/comments';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import OpenModalMenuItem from '../Navigation/OpenModalMenuItem';
@@ -71,16 +71,31 @@ const AllExpensesPage = () => {
         dispatch(thunkGetComments(expenseId));
     }
 
+    const handleEditComment = (comment) => {
+        setEditCommentId(comment.id);
+        setEditCommentContent(comment.content);
+        setNewComment({
+            ...newComment,
+            [comment.expenseId]: comment.content, // Load the existing comment content into the textarea
+        });
+    };
+
     const handleUpdateComment = async (expenseId, commentId) => {
         if (editCommentContent.trim()) {
             const updatedComment = await dispatch(thunkUpdateComment(expenseId, commentId, { content: editCommentContent }));
             if (updatedComment) {
                 setEditCommentId(null); // Exit edit mode
                 setEditCommentContent(''); // Clear the input
+                setNewComment({ ...newComment, [expenseId]: '' })
                 dispatch(thunkGetComments(expenseId)); // Refresh comments
             }
         }
     };
+
+    const handleCancelEdit = (expenseId) => {
+        setEditCommentId(null);
+        setNewComment({ ...newComment, [expenseId]: '' })
+    }
 
     const toggleExpense = (expenseId) => {
         if (expandedExpense === expenseId) {
@@ -147,21 +162,42 @@ const AllExpensesPage = () => {
                                         <div className="comments-list">
                                             {Object.values(comments).filter(comment => comment.expenseId === expense.id).map(comment => (
                                                 <div key={comment.id} className="comment-item">
-                                                    <p><strong>{comment.user.firstName} {comment.user.lastName}</strong>: {comment.content}</p>
-                                                    {
-                                                        comment.userId === currentUserId && (
-                                                            <button id='AllExpenses-delete-button' onClick={() => handleDeleteComment(comment.expenseId, comment.id)}>Delete</button>
-                                                        )
-                                                    }
+                                                    {editCommentId === comment.id ? (
+                                                        <>
+                                                            <textarea
+                                                                value={editCommentContent}
+                                                                onChange={(e) => setEditCommentContent(e.target.value)}
+                                                                placeholder="Edit your comment..."
+                                                            />
+                                                            <div className='edit-actions'>
+                                                                <button onClick={() => handleUpdateComment(expense.id, comment.id)}>Save</button>
+                                                                <button className='cancel-button' onClick={() => handleCancelEdit(expense.id)}>Cancel</button>
+                                                            </div>
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <p><strong>{comment.user.firstName} {comment.user.lastName}</strong>: {comment.content}</p>
+                                                            {comment.userId === currentUserId && (
+                                                                <div className="comment-actions">
+                                                                    <button id='AllExpenses-update-button' onClick={() => handleEditComment(comment)}>Update</button>
+                                                                    <button id='AllExpenses-delete-button' onClick={() => handleDeleteComment(comment.expenseId, comment.id)}>Delete</button>
+                                                                </div>
+                                                            )}
+                                                        </>
+                                                    )}
                                                 </div>
                                             ))}
                                         </div>
-                                        <textarea
-                                            value={newComment[expense.id] || ''}
-                                            onChange={(e) => handleCommentChange(expense.id, e.target.value)}
-                                            placeholder="Add a comment..."
-                                        />
-                                        <button onClick={() => handleCommentSubmit(expense.id)}>Post Comment</button>
+                                        {editCommentId === null && (
+                                            <>
+                                                <textarea
+                                                    value={newComment[expense.id] || ''}
+                                                    onChange={(e) => handleCommentChange(expense.id, e.target.value)}
+                                                    placeholder="Add a comment..."
+                                                />
+                                                <button onClick={() => handleCommentSubmit(expense.id)}>Post Comment</button>
+                                            </>
+                                        )}
                                     </div>
                                 </>
                             )}

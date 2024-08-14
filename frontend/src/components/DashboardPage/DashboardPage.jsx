@@ -43,7 +43,8 @@ const DashboardPage = () => {
         if (amountOwed > 0) {
             balance.owes += amountOwed;
             return {
-                ownerUsername: share.owner_username,
+                first_name: share.first_name,
+                last_name: share.last_name,
                 amountOwed
             };
         }
@@ -59,7 +60,8 @@ const DashboardPage = () => {
         if (totalOwed > 0) {
             balance.owed += totalOwed;
             return {
-                username: expense.username,
+                first_name: expense.first_name,
+                last_name: expense.last_name,
                 totalOwed
             };
         }
@@ -101,7 +103,7 @@ const DashboardPage = () => {
                         {youOweList.length > 0 ? youOweList.map((item, index) => (
                             <li key={index} className="balance-item">
                                 <div>
-                                    <p className='username-balance'>{item.ownerUsername}</p>
+                                    <p className='username-balance'>{item.first_name} {item.last_name}</p>
                                     <p className="amount-owe">you owe ${item.amountOwed.toFixed(2)}</p>
                                 </div>
                             </li>
@@ -114,8 +116,8 @@ const DashboardPage = () => {
                         {youAreOwedList.length > 0 ? youAreOwedList.map((item, index) => (
                             <li key={index} className="balance-item">
                                 <div>
-                                    <p className='username-balance'>{item.username}</p>
-                                    <p className="amount-owed">you are owed ${item.totalOwed.toFixed(2)}</p>
+                                    <p className='username-balance'>{item.first_name} {item.last_name}</p>
+                                    <p className="amount-owed">owes you ${item.totalOwed.toFixed(2)}</p>
                                 </div>
                             </li>
                         )) : <p>You are not owed anything</p>}

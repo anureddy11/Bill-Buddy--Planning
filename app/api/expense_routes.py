@@ -59,7 +59,9 @@ def get_user_expense_shares():
                 'amount': share.amount,
                 'settled': share.settled,
                 'owner_id': owner.id,
-                'owner_username': owner.username
+                'owner_username': owner.username,
+                'first_name': owner.first_name,
+                'last_name': owner.last_name
             })
 
     return jsonify({"shares": result}), 200
@@ -84,6 +86,8 @@ def get_expenses_created_by_user():
                 result.append({
                     'user_id': user.id,
                     'username': user.username,
+                    'first_name': user.first_name,
+                    'last_name': user.last_name,
                     'amount': share.amount
                 })
 

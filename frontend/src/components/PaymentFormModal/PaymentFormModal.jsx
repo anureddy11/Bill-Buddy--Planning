@@ -1,27 +1,28 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../context/Modal";
-import { addPayment } from '../../redux/payment'; // Import addPayment thunk
+import { addPayment } from '../../redux/payment';
 import "./PaymentFormModal.css";
 import { thunkGetFriends } from "../../redux/friends";
 
-const PaymentFormModal = () => {
+const PaymentFormModal = ({ onPaymentSuccess }) => {
     const [status, setStatus] = useState('');
     const [amount, setAmount] = useState('');
-    const [friendId, setFriendId] = useState(''); // State to hold the selected friend ID
+    const [friendId, setFriendId] = useState('');
     const { closeModal } = useModal();
 
     const dispatch = useDispatch();
     const friends = useSelector(state => state.friend.byId);
 
     useEffect(() => {
-        dispatch(thunkGetFriends()); // Fetch the friends list when the component mounts
+        dispatch(thunkGetFriends());
     }, [dispatch]);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (friendId) {
-            dispatch(addPayment(friendId, status, parseFloat(amount))); // Dispatch addPayment thunk with friendId
+            await dispatch(addPayment(friendId, status, parseFloat(amount)));
+            if (onPaymentSuccess) onPaymentSuccess();
             closeModal();
         } else {
             alert("Please select a friend to make a payment.");
@@ -33,7 +34,6 @@ const PaymentFormModal = () => {
             <button className="close-modal" onClick={closeModal}>&times;</button>
             <h2>Payment Form</h2>
             <form onSubmit={handleSubmit}>
-
                 <label htmlFor="friendId">Friend</label>
                 <select
                     id="friendId"
@@ -48,7 +48,6 @@ const PaymentFormModal = () => {
                         </option>
                     ))}
                 </select>
-
                 <label htmlFor="status">Status</label>
                 <input
                     type="text"
@@ -57,7 +56,6 @@ const PaymentFormModal = () => {
                     onChange={(e) => setStatus(e.target.value)}
                     required
                 />
-
                 <label htmlFor="amount">Amount</label>
                 <input
                     type="number"
@@ -67,7 +65,6 @@ const PaymentFormModal = () => {
                     onChange={(e) => setAmount(e.target.value)}
                     required
                 />
-
                 <div className="form-group">
                     <button type="submit">Submit Payment</button>
                 </div>

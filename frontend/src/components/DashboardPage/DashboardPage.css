@@ -1,9 +1,11 @@
 /* Main content container */
 .Dashboard {
     max-width: 1200px;
+    width: 60%;
     margin: 0 auto;
     padding: 20px;
-    background-color: #f5f7fa;
+    border-radius: .5rem;
+    background-color: #e8effa !important;
 }
 
 /* Dashboard header styling */
@@ -17,7 +19,7 @@
 .dashboard-header h1 {
     font-size: 2rem;
     font-weight: bold;
-    color: #333;
+    color: #2c3e50 !important;
 }
 
 .buttons {
@@ -36,20 +38,20 @@
 }
 
 .add-expense-button {
-    background-color: #ff7f50;
-    color: white;
+    background-color: #007bff !important;
+    color: white !important;
 }
 
 .settle-up-button {
-    background-color: #2ecc71;
-    color: white;
+    background-color: #28a745 !important;
+    color: white !important;
 }
 
 /* Balance overview */
 .balance-overview {
     display: flex;
     justify-content: space-between;
-    background-color: #f0f0f0;
+    background-color: #f8f9fa !important;
     padding: 20px;
     border-radius: 10px;
     margin-bottom: 20px;
@@ -63,21 +65,22 @@
 .balance-item p {
     margin: 0;
     font-size: 1rem;
-    color: #888;
+    color: #666 !important;
 }
 
 .balance-item h3 {
-    margin-top: 5px;
+    padding: 1rem;
     font-size: 1.5rem;
     font-weight: bold;
+    color: #007bff !important;
 }
 
 .negative-balance {
-    color: #e74c3c;
+    color: #ff7b00 !important;
 }
 
 .you-owe {
-    color: #e74c3c;
+    color: #ff7b00 !important;
 }
 
 /* You Owe / You Are Owed Sections */
@@ -93,9 +96,10 @@
 
 .you-owe-section h2,
 .you-are-owed-section h2 {
+    text-align: left;
     font-size: 1.25rem;
     font-weight: bold;
-    color: #666;
+    color: #2c3e50 !important;
     margin-bottom: 15px;
 }
 
@@ -118,17 +122,22 @@
     margin-right: 15px;
 }
 
-.balance-item p {
-    margin: 0;
-    font-size: 1rem;
+.amount-owe {
+    color: #e74c3c !important;
+    width: 10rem;
 }
 
-.amount-owe {
-    color: #e74c3c;
+.amount-owed {
+    color: #28a745 !important;
+    width: 12rem;
+}
+
+.username-balance {
     font-weight: bold;
+    font-size: 1.25rem !important;
 }
 
 .you-are-owed-section p {
-    color: #aaa;
+    color: #aaa !important;
     font-size: 1rem;
 }

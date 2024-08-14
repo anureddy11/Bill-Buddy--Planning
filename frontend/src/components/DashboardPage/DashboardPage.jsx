@@ -1,50 +1,73 @@
 import './DashboardPage.css';
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import PaymentFormModal from "../PaymentFormModal";
 import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
-import { thunkGetExpenses } from "../../redux/expenses";
-import { fetchPayments } from "../../redux/payment";
+import { thunkGetUserShares, thunkGetUserCreatedExpenses } from "../../redux/expenses";
+import { fetchPaymentsMade, fetchPaymentsReceived } from "../../redux/payment";
 
 const DashboardPage = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const user = useSelector(state => state.session.user);
-    const expenses = useSelector(state => state.expense.allIds.map(id => state.expense.byId[id]));
+    const userShares = useSelector(state => state.expense.userShares);
+    const userCreatedExpenses = useSelector(state => state.expense.userCreatedExpenses);
+    const paymentsMade = useSelector(state => state.payments.paymentsMade);
+    const paymentsReceived = useSelector(state => state.payments.paymentsReceived);
 
-    useEffect(() => {
-        dispatch(thunkGetExpenses());
-        dispatch(fetchPayments());
+    // Callback to fetch all data again
+    const refreshData = useCallback(() => {
+        dispatch(thunkGetUserShares());
+        dispatch(thunkGetUserCreatedExpenses());
+        dispatch(fetchPaymentsMade());
+        dispatch(fetchPaymentsReceived());
     }, [dispatch]);
 
+    useEffect(() => {
+        refreshData();
+    }, [refreshData]);
+
     // Calculate the balance overview
-    const balance = expenses.reduce(
-        (acc, expense) => {
-            expense.expenseShares.forEach(share => {
-                // Exclude shares where the user is the owner of the expense
-                if (share.user_id === user.id && user.id !== expense.owner_id) {
-                    acc.owes += parseFloat(share.amount);
-                } else if (share.user_id !== user.id && expense.ownerUsername === user.username) {
-                    acc.owed += parseFloat(share.amount);
-                }
-            });
-            return acc;
-        },
-        { owes: 0, owed: 0 }
-    );
+    const balance = {
+        owes: 0,
+        owed: 0
+    };
 
-    // Calculate the "You Owe" and "You Are Owed" lists
-    const youOwe = expenses.filter(expense =>
-        expense.ownerUsername !== user.username && // Exclude expenses where the user is the owner
-        expense.expenseShares.some(share => share.user_id === user.id)
-    );
+    // Calculate how much the user owes based on shares and payments made
+    const youOweList = userShares.map(share => {
+        const totalPaidToOwner = paymentsMade
+            .filter(payment => payment.payee_id === share.owner_id)
+            .reduce((acc, payment) => acc + parseFloat(payment.amount), 0);
+        const amountOwed = parseFloat(share.amount) - totalPaidToOwner;
 
-    const youAreOwed = expenses.filter(expense =>
-        expense.ownerUsername === user.username && // Include only expenses where the user is the owner
-        expense.expenseShares.some(share => share.user_id !== user.id)
-    );
+        if (amountOwed > 0) {
+            balance.owes += amountOwed;
+            return {
+                ownerUsername: share.owner_username,
+                amountOwed
+            };
+        }
+        return null;
+    }).filter(item => item !== null);
+
+    // Calculate how much the user is owed based on created expenses and payments received
+    const youAreOwedList = userCreatedExpenses.map(expense => {
+        const totalReceivedFromUser = paymentsReceived
+            .filter(payment => payment.payer_id === expense.user_id)
+            .reduce((acc, payment) => acc + parseFloat(payment.amount), 0);
+        const totalOwed = parseFloat(expense.amount) - totalReceivedFromUser;
+
+        if (totalOwed > 0) {
+            balance.owed += totalOwed;
+            return {
+                username: expense.username,
+                totalOwed
+            };
+        }
+        return null;
+    }).filter(item => item !== null);
 
     return (
         <div className="Dashboard">
@@ -54,7 +77,7 @@ const DashboardPage = () => {
                     <button className="add-expense-button" onClick={() => navigate("/create-expense")}>Add an expense</button>
                     <OpenModalMenuItem
                         itemText={<button className="settle-up-button">Settle up</button>}
-                        modalComponent={<PaymentFormModal />}
+                        modalComponent={<PaymentFormModal onPaymentSuccess={refreshData} />}
                     />
                 </div>
             </div>
@@ -78,40 +101,32 @@ const DashboardPage = () => {
                 <div className="you-owe-section">
                     <h2>YOU OWE</h2>
                     <ul className="balances-list">
-                        {youOwe.length > 0 ? youOwe.map(expense => {
-                            const amountOwed = expense.expenseShares.find(share => share.user_id === user.id).amount;
-                            return (
-                                <li key={expense.id} className="balance-item">
-                                    <div>
-                                        <p>{expense.ownerUsername}</p>
-                                        <p className="amount-owe">you owe ${amountOwed}</p>
-                                    </div>
-                                </li>
-                            );
-                        }) : <p>You don't owe anything</p>}
+                        {youOweList.length > 0 ? youOweList.map((item, index) => (
+                            <li key={index} className="balance-item">
+                                <div>
+                                    <p className='username-balance'>{item.ownerUsername}</p>
+                                    <p className="amount-owe">you owe ${item.amountOwed.toFixed(2)}</p>
+                                </div>
+                            </li>
+                        )) : <p>You don't owe anything</p>}
                     </ul>
                 </div>
                 <div className="you-are-owed-section">
                     <h2>YOU ARE OWED</h2>
                     <ul className="balances-list">
-                        {youAreOwed.length > 0 ? youAreOwed.map(expense => {
-                            const totalAmountOwed = expense.expenseShares
-                                .filter(share => share.user_id !== user.id)
-                                .reduce((acc, share) => acc + parseFloat(share.amount), 0);
-                            return (
-                                <li key={expense.id} className="balance-item">
-                                    <div>
-                                        <p>{expense.ownerUsername}</p>
-                                        <p className="amount-owed">you are owed ${totalAmountOwed.toFixed(2)}</p>
-                                    </div>
-                                </li>
-                            );
-                        }) : <p>You are not owed anything</p>}
+                        {youAreOwedList.length > 0 ? youAreOwedList.map((item, index) => (
+                            <li key={index} className="balance-item">
+                                <div>
+                                    <p className='username-balance'>{item.username}</p>
+                                    <p className="amount-owed">you are owed ${item.totalOwed.toFixed(2)}</p>
+                                </div>
+                            </li>
+                        )) : <p>You are not owed anything</p>}
                     </ul>
                 </div>
             </div>
         </div>
-    )
+    );
 }
 
 export default DashboardPage;

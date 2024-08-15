@@ -48,14 +48,14 @@ const PaymentFormModal = ({ onPaymentSuccess }) => {
                         </option>
                     ))}
                 </select>
-                <label htmlFor="status">Status</label>
+                {/* <label htmlFor="status">Status</label>
                 <input
                     type="text"
                     id="status"
                     value={status}
                     onChange={(e) => setStatus(e.target.value)}
                     required
-                />
+                /> */}
                 <label htmlFor="amount">Amount</label>
                 <input
                     type="number"

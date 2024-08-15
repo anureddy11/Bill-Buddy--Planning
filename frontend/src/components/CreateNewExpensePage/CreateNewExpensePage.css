@@ -72,3 +72,7 @@
 #input-suggestion {
     margin-bottom: 0px;
 }
+
+#errors {
+    color: red;
+}

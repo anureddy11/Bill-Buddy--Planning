@@ -1,10 +1,9 @@
 /* Main content container */
 .Dashboard {
-    max-width: 1200px;
-    width: 60%;
+    max-width: 80%; /* Use percentage for width */
     margin: 0 auto;
-    padding: 20px;
-    border-radius: .5rem;
+    padding: 2vw; /* Use viewport width for padding */
+    border-radius: 0.5rem;
     background-color: #e8effa !important;
 }
 
@@ -13,7 +12,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 2vw;
 }
 
 .dashboard-header h1 {
@@ -25,7 +24,7 @@
 .buttons-dashboard {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 1vw; /* Use viewport width for gap */
 }
 
 .add-expense-button,
@@ -33,23 +32,22 @@
     display: flex;
     align-items: center; /* Vertically center the text */
     justify-content: center; /* Horizontally center the text */
-    padding: 10px 20px;
+    padding: 1vw 2vw; /* Use viewport width for padding */
     font-size: 1rem;
-    border-radius: 5px;
+    border-radius: 0.5rem;
     border: none;
     cursor: pointer;
     font-weight: bold;
+    height: 2.5rem;
 }
 
 .add-expense-button {
     background-color: #007bff !important;
     color: white !important;
-    height: 2rem;
 }
 
 .settle-up-button {
     background-color: #28a745 !important;
-    height: 2rem;
     color: white !important;
 }
 
@@ -58,9 +56,9 @@
     display: flex;
     justify-content: space-between;
     background-color: #f8f9fa !important;
-    padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 20px;
+    padding: 2vw;
+    border-radius: 1rem;
+    margin-bottom: 2vw;
     text-align: center;
 }
 
@@ -106,7 +104,7 @@
     font-size: 1.25rem;
     font-weight: bold;
     color: #2c3e50 !important;
-    margin-bottom: 15px;
+    margin-bottom: 1.5vw;
 }
 
 .balances-list {
@@ -118,24 +116,24 @@
 .balance-item {
     display: flex;
     align-items: center;
-    margin-bottom: 15px;
+    margin-bottom: 1.5vw;
 }
 
 .balance-item img {
-    width: 40px;
-    height: 40px;
+    width: 4vw; /* Use viewport width for image size */
+    height: 4vw;
     border-radius: 50%;
-    margin-right: 15px;
+    margin-right: 1.5vw;
 }
 
 .amount-owe {
     color: #e74c3c !important;
-    width: 10rem;
+    width: 10vw; /* Use viewport width for element width */
 }
 
 .amount-owed {
     color: #28a745 !important;
-    width: 12rem;
+    width: 12vw; /* Use viewport width for element width */
 }
 
 .username-balance {

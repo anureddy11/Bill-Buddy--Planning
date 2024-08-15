@@ -29,6 +29,7 @@ h1 {
 
 .manage-expense {
     display: flex;
+    align-items: center;
 }
 
 .expense-item {

@@ -188,8 +188,10 @@ const UpdateExpense = () => {
             splitObj.user_id = friend.user_id
             splitObj.amount = parseFloat(amountElements[index]['amount'])
             friend.user_id === currentUser.id ? splitObj.settled = "yes" : splitObj.settled = "no"
+            console.log(friend)
             // splitObj.settled = "no"
             splitArr.push(splitObj)
+            console.log(friend.user_id === currentUser.id)
         })
         const payload = {
             amount: total,
@@ -197,9 +199,9 @@ const UpdateExpense = () => {
             split: splitArr
         }
 
-        await dispatch(thunkUpdateExpense(expense_id, payload))
+        // await dispatch(thunkUpdateExpense(expense_id, payload))
 
-        navigate('/all-expenses')
+        // navigate('/all-expenses')
     }
 
     const handleClickOutside = (event) => {

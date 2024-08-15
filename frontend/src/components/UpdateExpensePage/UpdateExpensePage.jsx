@@ -188,8 +188,10 @@ const UpdateExpense = () => {
             splitObj.user_id = friend.user_id
             splitObj.amount = parseFloat(amountElements[index]['amount'])
             friend.user_id === currentUser.id ? splitObj.settled = "yes" : splitObj.settled = "no"
+            console.log(friend)
             // splitObj.settled = "no"
             splitArr.push(splitObj)
+            console.log(friend.user_id === currentUser.id)
         })
         const payload = {
             amount: total,

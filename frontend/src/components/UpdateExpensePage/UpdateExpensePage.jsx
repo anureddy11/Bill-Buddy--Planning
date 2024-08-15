@@ -199,9 +199,9 @@ const UpdateExpense = () => {
             split: splitArr
         }
 
-        // await dispatch(thunkUpdateExpense(expense_id, payload))
+        await dispatch(thunkUpdateExpense(expense_id, payload))
 
-        // navigate('/all-expenses')
+        navigate('/all-expenses')
     }
 
     const handleClickOutside = (event) => {

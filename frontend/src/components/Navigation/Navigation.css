@@ -105,3 +105,8 @@
   text-align: left;
   /* Ensure text is aligned to the left */
 }
+
+#profile-logout-button {
+  color: white;
+  background-color: rgb(234, 54, 54);
+}

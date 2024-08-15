@@ -3,6 +3,9 @@ const ADD_EXPENSE = 'expenses/ADD_EXPENSE';
 const UPDATE_EXPENSE = 'expenses/UPDATE_EXPENSE';
 const DELETE_EXPENSE = 'expenses/DELETE_EXPENSE';
 const EXPENSE_ERROR = 'expenses/EXPENSE_ERROR';
+const CLEAR_EXPENSE = 'expenses/CLEAR_EXPENSE'
+const GET_USER_SHARES = 'expenses/GET_USER_SHARES';
+const GET_USER_CREATED_EXPENSES = 'expenses/GET_USER_CREATED_EXPENSES';
 
 const getExpenses = (expenses) => ({
     type: GET_EXPENSES,
@@ -29,9 +32,29 @@ const expenseError = (error) => ({
     payload: error,
 });
 
+const clearExpense = () => {
+    return {
+        type: CLEAR_EXPENSE
+    }
+}
+
+
+const getUserShares = (shares) => ({
+    type: GET_USER_SHARES,
+    payload: shares,
+});
+
+const getUserCreatedExpenses = (owedByOthers) => ({
+    type: GET_USER_CREATED_EXPENSES,
+    payload: owedByOthers,
+});
+
 // Thunks
 export const thunkGetExpenses = () => async (dispatch) => {
     try {
+        // Clear the expense redux state
+        dispatch(clearExpense());
+
         const response = await fetch('/api/expenses/all');
         const data = await response.json();
         if (response.ok) {
@@ -43,7 +66,6 @@ export const thunkGetExpenses = () => async (dispatch) => {
         dispatch(expenseError(error.toString()));
     }
 };
-
 
 export const thunkCreateExpense = (expenseData) => async (dispatch) => {
     try {
@@ -104,12 +126,46 @@ export const thunkDeleteExpense = (expenseId) => async (dispatch) => {
     }
 };
 
+//Get all expense shares involving the current user
+export const thunkGetUserShares = () => async (dispatch) => {
+    try {
+        const response = await fetch('/api/expenses/shares');
+        const data = await response.json();
+        if (response.ok) {
+            dispatch(getUserShares(data.shares));
+        } else {
+            dispatch(expenseError(data.message));
+        }
+    } catch (error) {
+        dispatch(expenseError(error.toString()));
+    }
+};
+
+//Get all expenses created by the current user
+export const thunkGetUserCreatedExpenses = () => async (dispatch) => {
+    try {
+        const response = await fetch('/api/expenses/created');
+        const data = await response.json();
+        if (response.ok) {
+            dispatch(getUserCreatedExpenses(data.owed_by_others));
+        } else {
+            dispatch(expenseError(data.message));
+        }
+    } catch (error) {
+        dispatch(expenseError(error.toString()));
+    }
+};
+
+// Initial state
 const initialState = {
     byId: {},
     allIds: [],
+    userShares: [],
+    userCreatedExpenses: [],
     error: null,
 };
 
+// Reducer
 const expensesReducer = (state = initialState, action) => {
     switch (action.type) {
         case GET_EXPENSES:
@@ -146,11 +202,32 @@ const expensesReducer = (state = initialState, action) => {
                 error: null,
             };
 
+        case GET_USER_SHARES:
+            return {
+                ...state,
+                userShares: action.payload,
+                error: null,
+            };
+
+        case GET_USER_CREATED_EXPENSES:
+            return {
+                ...state,
+                userCreatedExpenses: action.payload,
+                error: null,
+            };
+
         case EXPENSE_ERROR:
             return {
                 ...state,
                 error: action.payload,
             };
+        case CLEAR_EXPENSE:
+            const initialState = {
+                byId: {},
+                allIds: [],
+                error: null,
+            }
+            return initialState;
 
         default:
             return state;

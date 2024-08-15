@@ -36,14 +36,16 @@
 }
 
 .suggestions-list {
-    position: absolute;
-    top: 29%; /*Position it just below the input field */
+    position: fixed;
+    top: 100; /*Position it just below the input field */
     width: 10%;
     max-height: 200px; /* Limit the height of the dropdown */
     list-style: none;
     border: 1px solid #ccc; /* Light border around the dropdown */
     border-radius: 4px; /* Rounded corners */
     background-color: #fff; /* White background for the dropdown */
+    z-index: 1000;
+    margin-top: 0px;
 }
 
 .suggestion {
@@ -64,4 +66,13 @@
 
 #New-remove-button {
     width: 8rem;
+}
+
+
+#input-suggestion {
+    margin-bottom: 0px;
+}
+
+#errors {
+    color: red;
 }

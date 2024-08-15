@@ -171,8 +171,6 @@ const UpdateExpense = () => {
         navigate('/all-expenses')
     }
 
-    console.log(friendArr)
-
     const handleClickOutside = (event) => {
         if (!event.target.closest('.autocomplete-container')) {
             setSuggestions([]);
@@ -198,8 +196,8 @@ const UpdateExpense = () => {
                 onChange={suggestionChange}
                 value={friend}
                 placeholder="Type a friend's name"
+                id="input-suggestion"
             />
-            <button type="button" className="split-evenly-button" onClick={setEvenFunc}>Split evenly</button>
             {suggestions.length > 0 && (
                 <ul className="suggestions-list">
                     {suggestions.map((friend, index) => (
@@ -213,6 +211,7 @@ const UpdateExpense = () => {
                     ))}
                 </ul>
             )}
+            <button type="button" className="split-evenly-button" onClick={setEvenFunc}>Split evenly</button>
 
         </div>
         {friendArr.map((friend, index) => {

@@ -7,7 +7,8 @@ const DELETE_PAYMENT_SUCCESS = 'payments/DELETE_PAYMENT_SUCCESS';
 const DELETE_PAYMENT_FAILURE = 'payments/DELETE_PAYMENT_FAILURE';
 const FETCH_PAYMENTS_SUCCESS = 'payments/FETCH_PAYMENTS_SUCCESS';
 const FETCH_PAYMENTS_FAILURE = 'payments/FETCH_PAYMENTS_FAILURE';
-
+const FETCH_PAYMENTS_MADE_SUCCESS = 'payments/FETCH_PAYMENTS_MADE_SUCCESS';
+const FETCH_PAYMENTS_RECEIVED_SUCCESS = 'payments/FETCH_PAYMENTS_RECEIVED_SUCCESS';
 
 // Action Creators
 
@@ -19,6 +20,16 @@ const fetchPaymentsSuccess = (payments) => ({
 const fetchPaymentsFailure = (error) => ({
     type: FETCH_PAYMENTS_FAILURE,
     payload: error,
+});
+
+const fetchPaymentsMadeSuccess = (payments) => ({
+    type: FETCH_PAYMENTS_MADE_SUCCESS,
+    payload: payments,
+});
+
+const fetchPaymentsReceivedSuccess = (payments) => ({
+    type: FETCH_PAYMENTS_RECEIVED_SUCCESS,
+    payload: payments,
 });
 
 const addPaymentSuccess = (payment) => ({
@@ -54,20 +65,47 @@ const deletePaymentFailure = (error) => ({
 // Thunk Action to Fetch All Payments
 export const fetchPayments = () => async (dispatch) => {
     try {
-        const response = await fetch('/api/payments/all'); // Adjust the endpoint as needed
+        const response = await fetch('/api/payments/all');
         if (!response.ok) {
             throw new Error('Failed to fetch payments');
         }
 
         const payments = await response.json();
-        console.log(payments)
         dispatch(fetchPaymentsSuccess(payments));
     } catch (error) {
         dispatch(fetchPaymentsFailure(error.toString()));
     }
 };
 
+// Thunk Action to Fetch Payments Made by the Current User
+export const fetchPaymentsMade = () => async (dispatch) => {
+    try {
+        const response = await fetch('/api/payments/made');
+        if (!response.ok) {
+            throw new Error('Failed to fetch payments made');
+        }
 
+        const payments = await response.json();
+        dispatch(fetchPaymentsMadeSuccess(payments));
+    } catch (error) {
+        dispatch(fetchPaymentsFailure(error.toString()));
+    }
+};
+
+// Thunk Action to Fetch Payments Received by the Current User
+export const fetchPaymentsReceived = () => async (dispatch) => {
+    try {
+        const response = await fetch('/api/payments/received');
+        if (!response.ok) {
+            throw new Error('Failed to fetch payments received');
+        }
+
+        const payments = await response.json();
+        dispatch(fetchPaymentsReceivedSuccess(payments));
+    } catch (error) {
+        dispatch(fetchPaymentsFailure(error.toString()));
+    }
+};
 
 // Thunk Action to Add Payment
 export const addPayment = (payee_id, status, amount) => async (dispatch) => {
@@ -107,13 +145,11 @@ export const updatePayment = (id, payee_id, amount, status) => async (dispatch) 
         }
 
         const payment = await response.json();
-        console.log(payment)
         dispatch(updatePaymentSuccess(payment));
     } catch (error) {
         dispatch(updatePaymentFailure(error.toString()));
     }
 };
-
 
 // Thunk Action to Delete Payment
 export const deletePayment = (id) => async (dispatch) => {
@@ -132,10 +168,10 @@ export const deletePayment = (id) => async (dispatch) => {
     }
 };
 
-
-
 const initialState = {
-    payments: [],  // Assuming you are tracking payments in the state
+    payments: [],
+    paymentsMade: [],
+    paymentsReceived: [],
     message: '',
     error: null,
 };
@@ -182,7 +218,6 @@ const paymentsReducer = (state = initialState, action) => {
                 message: '',
                 error: action.payload,
             };
-
         case FETCH_PAYMENTS_SUCCESS:
             return {
                 ...state,
@@ -190,7 +225,20 @@ const paymentsReducer = (state = initialState, action) => {
                 message: 'Payments fetched successfully',
                 error: null,
             };
-
+        case FETCH_PAYMENTS_MADE_SUCCESS:
+            return {
+                ...state,
+                paymentsMade: action.payload,
+                message: 'Payments made fetched successfully',
+                error: null,
+            };
+        case FETCH_PAYMENTS_RECEIVED_SUCCESS:
+            return {
+                ...state,
+                paymentsReceived: action.payload,
+                message: 'Payments received fetched successfully',
+                error: null,
+            };
         case FETCH_PAYMENTS_FAILURE:
             return {
                 ...state,

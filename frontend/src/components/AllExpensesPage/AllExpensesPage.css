@@ -29,6 +29,7 @@ h1 {
 
 .manage-expense {
     display: flex;
+    align-items: center;
 }
 
 .expense-item {
@@ -146,7 +147,8 @@ textarea {
     color: white;
 }
 
-#AllExpenses-delete-button {
+#AllExpenses-delete-button,
+.cancel-button {
     background-color: #dc3545;
     color: white;
 }
@@ -155,7 +157,8 @@ textarea {
     background-color: #e59400;
 }
 
-#AllExpenses-delete-button:hover {
+#AllExpenses-delete-button:hover,
+.cancel-button:hover {
     background-color: #c82333;
 }
 
@@ -202,4 +205,22 @@ p {
     font-family: 'Arial', sans-serif;
     font-size: 18px;
     color: #535562;
+}
+
+.comment-actions,
+.edit-actions {
+    display: flex;
+    gap: 10px;
+    /* Space between buttons */
+    margin-top: 10px;
+}
+
+.comment-actions button,
+.edit-actions button {
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.2s ease;
+    border: none;
 }

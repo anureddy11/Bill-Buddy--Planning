@@ -8,12 +8,9 @@ const CreateExpense = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const [errors, setErrors] = useState({})
-
     const [total, setTotal] = useState(0)
     const [description, setDescription] = useState('')
     const [on, setOn] = useState('on')
-
-
     const [friend, setFriend] = useState('')
     const [suggestions, setSuggestions] = useState([])
     const [selectedIndex, setSelectedIndex] = useState(-1)

@@ -12,8 +12,6 @@ const UpdateExpense = () => {
     const [total, setTotal] = useState(0)
     const [description, setDescription] = useState('')
     const [on, setOn] = useState('on')
-
-
     const [friend, setFriend] = useState('')
     const [suggestions, setSuggestions] = useState([])
     const [selectedIndex, setSelectedIndex] = useState(-1)
@@ -29,6 +27,13 @@ const UpdateExpense = () => {
         return state.expense.byId
     })
 
+    const currentUser = useSelector((state) => {
+        if (state.session.user) {
+            return state.session.user
+        }
+        return false
+    })
+
     const setValues = () => {
         if (currentExpense) {
             setTotal(currentExpense.amount)
@@ -36,10 +41,8 @@ const UpdateExpense = () => {
             let arr1 = []
             let arr2 = []
             currentExpense.expenseShares.forEach((share, index) => {
-                console.log(share)
                 arr1.push({first_name: share.username, user_id: share.user_id})
                 arr2.push({id: index, amount: parseFloat(share.amount)})
-
             })
             setFriendArr(arr1)
             setAmountElements(arr2)
@@ -88,6 +91,25 @@ const UpdateExpense = () => {
         }
     };
 
+    const handleErrors = () => {
+        let sum = 0
+
+        amountElements.forEach(el => {
+            sum += parseFloat(el.amount)
+        })
+        const errs = {}
+
+        if (parseFloat(total) !== sum) {
+            errs.total = "All splits must add up to the exact amount."
+        }
+
+        if (errs.total) {
+            setErrors(errs)
+            return true
+        }
+        return false
+    }
+
     const setEvenFunc = () => {
         let splitNum = total / friendArr.length
         let difference = 0
@@ -128,6 +150,12 @@ const UpdateExpense = () => {
 
 
     useEffect(() => {
+
+        const errors = {}
+
+        if (errors.total)
+
+
         if (!currentExpense) {
             dispatch(thunkGetExpenses());
         }
@@ -151,13 +179,16 @@ const UpdateExpense = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+        if (handleErrors()) {
+            return
+        }
         const splitArr = []
         friendArr.forEach((friend, index) => {
             let splitObj = {}
-            console.log(friend.user_id)
             splitObj.user_id = friend.user_id
             splitObj.amount = parseFloat(amountElements[index]['amount'])
-            splitObj.settled = "no"
+            friend.user_id === currentUser.id ? splitObj.settled = "yes" : splitObj.settled = "no"
+            // splitObj.settled = "no"
             splitArr.push(splitObj)
         })
         const payload = {
@@ -233,6 +264,7 @@ const UpdateExpense = () => {
             <div>
             <button className="submit-button">Update</button>
             </div>
+            <p id="errors">{errors.total}</p>
         </form>
     )
 }

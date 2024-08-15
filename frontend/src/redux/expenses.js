@@ -99,6 +99,7 @@ export const thunkUpdateExpense = (expenseId, expenseData) => async (dispatch) =
         });
 
         const data = await response.json();
+        console.log(data)
         if (response.ok) {
             dispatch(updateExpense(data.expense));
         } else {

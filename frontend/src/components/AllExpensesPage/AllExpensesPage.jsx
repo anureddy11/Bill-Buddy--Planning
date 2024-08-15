@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { thunkGetExpenses } from '../../redux/expenses';
+import { thunkGetExpenses, thunkUpdateExpense } from '../../redux/expenses';
 import { thunkGetComments, thunkCreateComment, thunkDeleteComment, thunkUpdateComment } from '../../redux/comments';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
@@ -106,10 +106,22 @@ const AllExpensesPage = () => {
         }
     };
 
+    const handleSettled = async (shareId, expenseData) => {
+        let toChange = expenseData.expenseShares.filter((el) => el.user_id === shareId)
+        toChange[0].settled = 'yes'
+        expenseData.split = expenseData.expenseShares
+        console.log(JSON.stringify(expenseData))
+        await dispatch(thunkUpdateExpense(expenseData.id, expenseData))
+        navigate('/all-expenses')
+
+    }
+
+    console.log(error !== "TypeError: Cannot read properties of undefined (reading 'id')")
+
     return (
         <div className="all-expenses-page">
             <h1>All Expenses</h1>
-            {error && <p className="error-message">{error}</p>}
+            {error && error !== "TypeError: Cannot read properties of undefined (reading 'id')" && <p className="error-message">{error}</p>}
             <div className="expenses-list">
                 {expenses.length > 0 ? (
                     expenses.map(expense => (
@@ -154,6 +166,7 @@ const AllExpensesPage = () => {
                                         {expense.expenseShares.map(share => (
                                             <div key={share.user_id} className="share-item">
                                                 <p><strong>{share.username}:</strong> ${parseFloat(share.amount).toFixed(2)} - {share.settled === 'yes' ? 'Settled' : 'Unsettled'}</p>
+                                                <button className={handleIsHiddenDelete(expense.ownerUsername, expense.expenseShares)} onClick={() => handleSettled(share.user_id, expense)}>Mark as settled</button>
                                             </div>
                                         ))}
                                     </div>

@@ -38,6 +38,61 @@ def get_all_user_expenses():
 
     return jsonify({"expenses": list(all_expenses.values())}), 200
 
+# Route 1: Get all expense shares involving the current user
+@expense_routes.route('/shares', methods=['GET'])
+@login_required
+def get_user_expense_shares():
+    """
+    Get all expense shares involving the current user.
+    Include the owner of the expense in the response if it's not the current user.
+    """
+    expense_shares = ExpenseShare.query.filter_by(user_id=current_user.id).all()
+    result = []
+
+    for share in expense_shares:
+        expense = Expense.query.get(share.expense_id)
+        owner = User.query.get(expense.owner_id)
+
+        if owner.id != current_user.id:
+            result.append({
+                'expense_id': share.expense_id,
+                'amount': share.amount,
+                'settled': share.settled,
+                'owner_id': owner.id,
+                'owner_username': owner.username,
+                'first_name': owner.first_name,
+                'last_name': owner.last_name
+            })
+
+    return jsonify({"shares": result}), 200
+
+# Route 2: Get all expenses created by the current user
+@expense_routes.route('/created', methods=['GET'])
+@login_required
+def get_expenses_created_by_user():
+    """
+    Get all expenses created by the current user.
+    Exclude shares where the user_id is the current user.
+    Return the id, username, and amount of users who owe the current user money.
+    """
+    expenses = Expense.query.filter_by(owner_id=current_user.id).all()
+    result = []
+
+    for expense in expenses:
+        shares = ExpenseShare.query.filter_by(expense_id=expense.id).all()
+        for share in shares:
+            if share.user_id != current_user.id:
+                user = User.query.get(share.user_id)
+                result.append({
+                    'user_id': user.id,
+                    'username': user.username,
+                    'first_name': user.first_name,
+                    'last_name': user.last_name,
+                    'amount': share.amount
+                })
+
+    return jsonify({"owed_by_others": result}), 200
+
 @expense_routes.route('/', methods=['POST'])
 @login_required
 def create_expense():

@@ -4,6 +4,8 @@ import { thunkGetExpenses } from '../../redux/expenses';
 import { thunkGetComments, thunkCreateComment, thunkDeleteComment, thunkUpdateComment } from '../../redux/comments';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import OpenModalMenuItem from '../Navigation/OpenModalMenuItem';
+import DeleteExpense from '../DeleteExpenseModal';
 import './AllExpensesPage.css';
 
 
@@ -134,11 +136,16 @@ const AllExpensesPage = () => {
                                                     className={handleIsHidden(expense.ownerUsername)}>
                                                     Update
                                                 </button>
-                                                <button
-                                                    id='AllExpenses-delete-button'
-                                                    className={handleIsHiddenDelete(expense.ownerUsername, expense.expenseShares)}>
-                                                    Delete
-                                                </button>
+                                                <OpenModalMenuItem
+                                                    itemText=
+                                                    {<button
+                                                        id='AllExpenses-delete-button'
+                                                        className={handleIsHiddenDelete(expense.ownerUsername, expense.expenseShares)}>
+                                                        Delete
+                                                    </button>}
+                                                    modalComponent={<DeleteExpense expenseId={expense.id}/>}
+                                                />
+
                                             </div>
                                         )}
                                     </div>

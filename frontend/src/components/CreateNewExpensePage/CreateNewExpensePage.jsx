@@ -45,8 +45,15 @@ const CreateExpense = () => {
     }
 
     const amountChange = (event) => {
-        const query = event.target.value
-        setTotal(parseInt(query))
+        let query = event.target.value
+        if (query.includes(".")) {
+            let queryArr = query.split('.')
+            if(queryArr[1].length > 2) {
+                return
+            }
+        }
+
+        setTotal(parseFloat(query))
         setIsEven(false)
     }
 
@@ -108,6 +115,26 @@ const CreateExpense = () => {
         return amountElements[index].amount
     }
 
+    const handleErrors = () => {
+        let sum = 0
+
+        amountElements.forEach(el => {
+            sum += parseFloat(el.amount)
+        })
+        const errs = {}
+
+        if (total !== sum) {
+            errs.total = "All splits must add up to the exact amount."
+
+        }
+
+        if (errs.total) {
+            setErrors(errs)
+            return true
+        }
+        return false
+    }
+
 
     useEffect(() => {
         if (currentUser && on === "on") {
@@ -132,12 +159,15 @@ const CreateExpense = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+        if (handleErrors()) {
+            return
+        }
         const splitArr = []
         friendArr.forEach((friend, index) => {
             let splitObj = {}
             splitObj.user_id = friend.id
             splitObj.amount = parseFloat(amountElements[index]['amount'])
-            splitObj.settled = "no"
+            friend.id === currentUser.id ? splitObj.settled = "yes" : splitObj.settled = "no"
             splitArr.push(splitObj)
         })
         const payload = {
@@ -157,8 +187,6 @@ const CreateExpense = () => {
         }
     };
 
-    console.log(friendArr)
-
 
     return (
 
@@ -166,7 +194,7 @@ const CreateExpense = () => {
             <h2>Add an expense</h2>
             <div>
             <lable>Amount</lable>
-            <input type="number" name="amount" value={total} onChange={amountChange}/>
+            <input type="number" name="amount" step="0.01" value={total} onChange={amountChange}/>
             </div>
             <div>
             <lable>Description</lable>
@@ -216,6 +244,7 @@ const CreateExpense = () => {
             <div>
             <button className="submit-button">Submit</button>
             </div>
+            <p id="errors">{errors.total}</p>
         </form>
     )
 }

@@ -66,14 +66,29 @@
   list-style: none;
   color: #2c3e50;
   transition: background-color 0.3s ease;
+  white-space: nowrap;
+  /* Prevent text from wrapping to the next line */
+  overflow: hidden;
+  /* Hide overflow text */
+  text-overflow: ellipsis;
+  /* Display ellipsis (...) if text is too long */
 }
+
+.profile-dropdown li.username,
+.profile-dropdown li.email {
+  font-size: 1rem;
+  /* Set a base font size */
+  max-width: 100%;
+  /* Ensure it doesn't exceed the dropdown's width */
+}
+
 
 .profile-dropdown li:hover {
   background-color: #f1f3f5;
 }
 
 .open-modal-menu-item {
-  padding: 10px 20px; 
+  padding: 10px 20px;
   cursor: pointer;
   font-size: 1rem;
   color: #2c3e50;
@@ -87,5 +102,11 @@
 .menu-item-text {
   display: inline-block;
   width: 100%;
-  text-align: left; /* Ensure text is aligned to the left */
+  text-align: left;
+  /* Ensure text is aligned to the left */
+}
+
+#profile-logout-button {
+  color: white;
+  background-color: rgb(234, 54, 54);
 }
